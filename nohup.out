@@ -2961,3 +2961,2624 @@ Error: No such command 't'.
   Local URL: http://localhost:8501
   Network URL: http://10.26.50.228:8501
 
+
+  You can now view your Streamlit app in your browser.
+
+  Network URL: http://10.26.50.228:8501
+  External URL: http://117.28.251.137:8501
+
+No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+2023-08-02 15:34:20.527 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 391, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 316, in run
+    raw_specs, filenames = upload_module(upload_file, save_path=save_path)
+  File "/home/room/streamlit/denoise/denoise.py", line 143, in upload_module
+    spec = load_data(file, save_path)
+  File "/home/room/streamlit/denoise/denoise.py", line 64, in load_data
+    spec.columns = ['wavenumber', 'raw_intensity']
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/generic.py", line 6002, in __setattr__
+    return object.__setattr__(self, name, value)
+  File "pandas/_libs/properties.pyx", line 69, in pandas._libs.properties.AxisProperty.__set__
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/generic.py", line 730, in _set_axis
+    self._mgr.set_axis(axis, labels)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/managers.py", line 225, in set_axis
+    self._validate_set_axis(axis, new_labels)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/base.py", line 70, in _validate_set_axis
+    raise ValueError(
+ValueError: Length mismatch: Expected axis has 10 elements, new values have 2 elements
+2023-08-02 16:13:14.714 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 391, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 316, in run
+    raw_specs, filenames = upload_module(upload_file, save_path=save_path)
+  File "/home/room/streamlit/denoise/denoise.py", line 143, in upload_module
+    spec = load_data(file, save_path)
+  File "/home/room/streamlit/denoise/denoise.py", line 64, in load_data
+    spec.columns = ['wavenumber', 'raw_intensity']
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/generic.py", line 6002, in __setattr__
+    return object.__setattr__(self, name, value)
+  File "pandas/_libs/properties.pyx", line 69, in pandas._libs.properties.AxisProperty.__set__
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/generic.py", line 730, in _set_axis
+    self._mgr.set_axis(axis, labels)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/managers.py", line 225, in set_axis
+    self._validate_set_axis(axis, new_labels)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/base.py", line 70, in _validate_set_axis
+    raise ValueError(
+ValueError: Length mismatch: Expected axis has 123 elements, new values have 2 elements
+No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+2023-08-02 22:41:04.294 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 391, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 330, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 275, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 121, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-02 22:41:04.841 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 391, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 330, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 275, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 121, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-02 22:51:15.527 Session with id c112b37a-25db-4a43-b3c1-677acf3840b0 is already connected! Connecting to a new session.
+2023-08-03 02:14:35.456 Session with id 7e77690c-83c8-419a-910f-67b855e25089 is already connected! Connecting to a new session.
+2023-08-03 02:23:47.718 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 391, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 330, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 275, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 121, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 857, in curve_fit
+    raise TypeError(f"The number of func parameters={n} must not"
+TypeError: The number of func parameters=3 must not exceed the number of data points=2
+2023-08-03 02:25:07.989 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 391, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 316, in run
+    raw_specs, filenames = upload_module(upload_file, save_path=save_path)
+  File "/home/room/streamlit/denoise/denoise.py", line 143, in upload_module
+    spec = load_data(file, save_path)
+  File "/home/room/streamlit/denoise/denoise.py", line 64, in load_data
+    spec.columns = ['wavenumber', 'raw_intensity']
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/generic.py", line 6002, in __setattr__
+    return object.__setattr__(self, name, value)
+  File "pandas/_libs/properties.pyx", line 69, in pandas._libs.properties.AxisProperty.__set__
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/generic.py", line 730, in _set_axis
+    self._mgr.set_axis(axis, labels)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/managers.py", line 225, in set_axis
+    self._validate_set_axis(axis, new_labels)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/base.py", line 70, in _validate_set_axis
+    raise ValueError(
+ValueError: Length mismatch: Expected axis has 22 elements, new values have 2 elements
+2023-08-03 02:28:18.542 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 391, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 316, in run
+    raw_specs, filenames = upload_module(upload_file, save_path=save_path)
+  File "/home/room/streamlit/denoise/denoise.py", line 143, in upload_module
+    spec = load_data(file, save_path)
+  File "/home/room/streamlit/denoise/denoise.py", line 64, in load_data
+    spec.columns = ['wavenumber', 'raw_intensity']
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/generic.py", line 6002, in __setattr__
+    return object.__setattr__(self, name, value)
+  File "pandas/_libs/properties.pyx", line 69, in pandas._libs.properties.AxisProperty.__set__
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/generic.py", line 730, in _set_axis
+    self._mgr.set_axis(axis, labels)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/managers.py", line 225, in set_axis
+    self._validate_set_axis(axis, new_labels)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/base.py", line 70, in _validate_set_axis
+    raise ValueError(
+ValueError: Length mismatch: Expected axis has 20 elements, new values have 2 elements
+No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+2023-08-12 15:36:59.944 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 391, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 330, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 275, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 118, in find_and_fit_peaks
+    initial_guess = [y_peak.max(), x_peak[np.argmax(y_peak)], 1.0]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/numpy/core/_methods.py", line 41, in _amax
+    return umr_maximum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation maximum which has no identity
+2023-08-12 15:37:10.575 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 391, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 330, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 275, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 118, in find_and_fit_peaks
+    initial_guess = [y_peak.max(), x_peak[np.argmax(y_peak)], 1.0]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/numpy/core/_methods.py", line 41, in _amax
+    return umr_maximum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation maximum which has no identity
+2023-08-12 15:38:37.557 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 391, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 330, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 275, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 118, in find_and_fit_peaks
+    initial_guess = [y_peak.max(), x_peak[np.argmax(y_peak)], 1.0]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/numpy/core/_methods.py", line 41, in _amax
+    return umr_maximum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation maximum which has no identity
+2023-08-12 15:38:39.707 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 391, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 330, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 275, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 118, in find_and_fit_peaks
+    initial_guess = [y_peak.max(), x_peak[np.argmax(y_peak)], 1.0]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/numpy/core/_methods.py", line 41, in _amax
+    return umr_maximum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation maximum which has no identity
+2023-08-12 15:38:58.060 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 391, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 330, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 275, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 118, in find_and_fit_peaks
+    initial_guess = [y_peak.max(), x_peak[np.argmax(y_peak)], 1.0]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/numpy/core/_methods.py", line 41, in _amax
+    return umr_maximum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation maximum which has no identity
+No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+2023-08-14 09:31:59.848 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 391, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 343, in run
+    tmp_df = find_and_fit_peaks(res, *peak_analysis_args[1:], verbose=False)
+  File "/home/room/streamlit/denoise/denoise.py", line 121, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 09:32:44.063 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 391, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 330, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 275, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 121, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 857, in curve_fit
+    raise TypeError(f"The number of func parameters={n} must not"
+TypeError: The number of func parameters=3 must not exceed the number of data points=2
+2023-08-14 11:07:33.302 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 394, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 330, in run
+    option = st.selectbox(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/selectbox.py", line 171, in selectbox
+    return self._selectbox(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/selectbox.py", line 233, in _selectbox
+    widget_state = register_widget(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/state/widgets.py", line 164, in register_widget
+    return register_widget_from_metadata(metadata, ctx, widget_func_name, element_type)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/state/widgets.py", line 209, in register_widget_from_metadata
+    raise DuplicateWidgetID(
+streamlit.errors.DuplicateWidgetID: There are multiple identical `st.selectbox` widgets with the
+same generated key.
+
+When a widget is created, it's assigned an internal key based on
+its structure. Multiple widgets with an identical structure will
+result in the same internal key, which causes this error.
+
+To fix this error, please pass a unique `key` argument to
+`st.selectbox`.
+2023-08-14 11:17:46.016 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 401, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 335, in run
+    demo_spec, cut_args = cut_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 158, in cut_module
+    values = st.slider('Select the range of wavenumber', min_value=MIN, max_value=MAX, value=(float(MIN), float(MAX)))
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/slider.py", line 338, in slider
+    return self._slider(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/slider.py", line 626, in _slider
+    widget_state = register_widget(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/state/widgets.py", line 164, in register_widget
+    return register_widget_from_metadata(metadata, ctx, widget_func_name, element_type)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/state/widgets.py", line 209, in register_widget_from_metadata
+    raise DuplicateWidgetID(
+streamlit.errors.DuplicateWidgetID: There are multiple identical `st.slider` widgets with the
+same generated key.
+
+When a widget is created, it's assigned an internal key based on
+its structure. Multiple widgets with an identical structure will
+result in the same internal key, which causes this error.
+
+To fix this error, please pass a unique `key` argument to
+`st.slider`.
+2023-08-14 11:28:38.923 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 402, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 338, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 40, in to_dict
+    raise ValueError("{} encoding field is specified without a type; "
+ValueError: layer encoding field is specified without a type; the type cannot be inferred because it does not match any column in the data.
+2023-08-14 11:32:37.662 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 407, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 343, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.core.FacetedEncoding->y, validating 'anyOf'
+
+        [{'field': 'raw_intensity', 'type': 'quantitative'}, {'field': 'processed', 'type': 'quantitative'}] is not valid under any of the given schemas
+        
+2023-08-14 11:38:16.082 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 405, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 341, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 40, in to_dict
+    raise ValueError("{} encoding field is specified without a type; "
+ValueError: layer encoding field is specified without a type; the type cannot be inferred because it does not match any column in the data.
+2023-08-14 11:38:16.723 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 405, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 341, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 40, in to_dict
+    raise ValueError("{} encoding field is specified without a type; "
+ValueError: layer encoding field is specified without a type; the type cannot be inferred because it does not match any column in the data.
+2023-08-14 11:38:19.632 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 405, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 341, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 40, in to_dict
+    raise ValueError("{} encoding field is specified without a type; "
+ValueError: layer encoding field is specified without a type; the type cannot be inferred because it does not match any column in the data.
+2023-08-14 11:38:21.651 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 405, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 341, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 40, in to_dict
+    raise ValueError("{} encoding field is specified without a type; "
+ValueError: layer encoding field is specified without a type; the type cannot be inferred because it does not match any column in the data.
+2023-08-14 11:38:23.765 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 405, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 341, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 40, in to_dict
+    raise ValueError("{} encoding field is specified without a type; "
+ValueError: layer encoding field is specified without a type; the type cannot be inferred because it does not match any column in the data.
+2023-08-14 11:39:56.629 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 405, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 341, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 40, in to_dict
+    raise ValueError("{} encoding field is specified without a type; "
+ValueError: layer encoding field is specified without a type; the type cannot be inferred because it does not match any column in the data.
+2023-08-14 11:40:16.951 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 410, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 346, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 40, in to_dict
+    raise ValueError("{} encoding field is specified without a type; "
+ValueError: layer encoding field is specified without a type; the type cannot be inferred because it does not match any column in the data.
+2023-08-14 11:40:42.359 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 410, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 346, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 40, in to_dict
+    raise ValueError("{} encoding field is specified without a type; "
+ValueError: layer encoding field is specified without a type; the type cannot be inferred because it does not match any column in the data.
+2023-08-14 11:41:17.897 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 410, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 346, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 57, in to_dict
+    return super(FieldChannelMixin, self).to_dict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.channels.Color, validating 'additionalProperties'
+
+        Additional properties are not allowed ('processed', 'raw_intensity' were unexpected)
+        
+2023-08-14 11:41:56.775 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 408, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 344, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 57, in to_dict
+    return super(FieldChannelMixin, self).to_dict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.channels.Color, validating 'additionalProperties'
+
+        Additional properties are not allowed ('processed', 'raw_intensity' were unexpected)
+        
+2023-08-14 11:43:50.788 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 411, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 338, in run
+    color=alt.datum.layer.scale(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 278, in __getattr__
+    return _getattr(attr)
+AttributeError: 'GetAttrExpression' object has no attribute 'scale'
+2023-08-14 11:44:48.418 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 411, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 347, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 57, in to_dict
+    return super(FieldChannelMixin, self).to_dict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.channels.Color, validating 'additionalProperties'
+
+        Additional properties are not allowed ('datum' was unexpected)
+        
+2023-08-14 11:46:06.159 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 409, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 338, in run
+    color=alt.datum(alt.repeat('layer')).map(color_dict)
+AttributeError: 'dict' object has no attribute 'map'
+2023-08-14 11:46:21.249 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 406, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 337, in run
+    color=alt.datum(alt.repeat('layer')).map(color_dict),
+AttributeError: 'dict' object has no attribute 'map'
+2023-08-14 19:21:31.709 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 407, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 328, in run
+    st.line_chart(demo_spec, x='wavenumber', y=['raw_intensity', 'processed'], color=['#00f900', '#ff0000'])
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+TypeError: DataFrameSelectorMixin.line_chart() got an unexpected keyword argument 'color'
+2023-08-14 19:24:54.574 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 155, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index_class_helper.pxi", line 70, in pandas._libs.index.Int64Engine._check_type
+KeyError: 'raw_intensity'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 409, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 348, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 236, in peak_analysis_module
+    spec_df['processed'] = spec_df['raw_intensity'].copy()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 'raw_intensity'
+2023-08-14 19:26:09.723 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 155, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index_class_helper.pxi", line 70, in pandas._libs.index.Int64Engine._check_type
+KeyError: 'raw_intensity'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 401, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 340, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 236, in peak_analysis_module
+    spec_df['processed'] = spec_df['raw_intensity'].copy()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 'raw_intensity'
+2023-08-14 19:26:20.244 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 401, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 337, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 40, in to_dict
+    raise ValueError("{} encoding field is specified without a type; "
+ValueError: index encoding field is specified without a type; the type cannot be inferred because it does not match any column in the data.
+2023-08-14 19:27:17.404 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 402, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 335, in run
+    source = data.movies()
+NameError: name 'data' is not defined
+2023-08-14 19:27:48.234 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 1282, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 1328, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 1277, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 1037, in _send_output
+    self.send(msg)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 975, in send
+    self.connect()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 1447, in connect
+    super().connect()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 941, in connect
+    self.sock = self._create_connection(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/socket.py", line 824, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno -3] Temporary failure in name resolution
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 403, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 336, in run
+    source = data.movies()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/vega_datasets/core.py", line 233, in __call__
+    datasource = BytesIO(self.raw(use_local=use_local))
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/vega_datasets/core.py", line 212, in raw
+    return urlopen(self.url).read()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 1391, in https_open
+    return self.do_open(http.client.HTTPSConnection, req,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno -3] Temporary failure in name resolution>
+2023-08-14 19:28:14.117 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 1282, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 1328, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 1277, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 1037, in _send_output
+    self.send(msg)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 975, in send
+    self.connect()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 1447, in connect
+    super().connect()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 941, in connect
+    self.sock = self._create_connection(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/socket.py", line 824, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno -3] Temporary failure in name resolution
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 403, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 336, in run
+    source = data.movies()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/vega_datasets/core.py", line 233, in __call__
+    datasource = BytesIO(self.raw(use_local=use_local))
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/vega_datasets/core.py", line 212, in raw
+    return urlopen(self.url).read()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 1391, in https_open
+    return self.do_open(http.client.HTTPSConnection, req,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno -3] Temporary failure in name resolution>
+2023-08-14 19:28:31.008 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 1282, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 1328, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 1277, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 1037, in _send_output
+    self.send(msg)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 975, in send
+    self.connect()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 1447, in connect
+    super().connect()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/http/client.py", line 941, in connect
+    self.sock = self._create_connection(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/socket.py", line 824, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno -3] Temporary failure in name resolution
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 403, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 336, in run
+    source = data.movies()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/vega_datasets/core.py", line 233, in __call__
+    datasource = BytesIO(self.raw(use_local=use_local))
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/vega_datasets/core.py", line 212, in raw
+    return urlopen(self.url).read()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 1391, in https_open
+    return self.do_open(http.client.HTTPSConnection, req,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno -3] Temporary failure in name resolution>
+2023-08-14 19:36:11.128 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'raw_intensity'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 401, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 340, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 236, in peak_analysis_module
+    spec_df['processed'] = spec_df['raw_intensity'].copy()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 'raw_intensity'
+2023-08-14 19:36:25.803 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'raw_intensity'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 401, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 340, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 236, in peak_analysis_module
+    spec_df['processed'] = spec_df['raw_intensity'].copy()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 'raw_intensity'
+2023-08-14 19:36:51.903 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'raw_intensity'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 402, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 341, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 236, in peak_analysis_module
+    spec_df['processed'] = spec_df['raw_intensity'].copy()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 'raw_intensity'
+2023-08-14 19:37:02.068 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'raw_intensity'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 402, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 341, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 236, in peak_analysis_module
+    spec_df['processed'] = spec_df['raw_intensity'].copy()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 'raw_intensity'
+2023-08-14 19:37:30.553 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'raw_intensity'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 402, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 341, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 236, in peak_analysis_module
+    spec_df['processed'] = spec_df['raw_intensity'].copy()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 'raw_intensity'
+2023-08-14 19:37:43.623 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'raw_intensity'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 402, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 341, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 236, in peak_analysis_module
+    spec_df['processed'] = spec_df['raw_intensity'].copy()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 'raw_intensity'
+2023-08-14 19:39:41.226 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'raw_intensity'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 400, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 339, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 236, in peak_analysis_module
+    spec_df['processed'] = spec_df['raw_intensity'].copy()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 'raw_intensity'
+2023-08-14 19:39:47.637 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'raw_intensity'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 400, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 339, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 236, in peak_analysis_module
+    spec_df['processed'] = spec_df['raw_intensity'].copy()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/frame.py", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 'raw_intensity'
+2023-08-14 19:40:39.023 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 398, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 334, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in _todict
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in <listcomp>
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 40, in to_dict
+    raise ValueError("{} encoding field is specified without a type; "
+ValueError: red encoding field is specified without a type; the type cannot be inferred because it does not match any column in the data.
+2023-08-14 19:51:51.648 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 425, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 333, in run
+    pre_color = st.color_picker('Pick A Color for processed spectrum', '#00f900', label='collapsed')
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+TypeError: ColorPickerMixin.color_picker() got multiple values for argument 'label'
+2023-08-14 19:55:55.533 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 427, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 334, in run
+    pre_color = st.color_picker('Pick A Color for processed spectrum', 'red')
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/color_picker.py", line 141, in color_picker
+    return self._color_picker(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/color_picker.py", line 191, in _color_picker
+    raise StreamlitAPIException(
+streamlit.errors.StreamlitAPIException: 
+                'red' is not a valid hex code for colors. Valid ones are like
+                '#00FFAA' or '#000'.
+                
+2023-08-14 19:59:51.703 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 427, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 363, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in _todict
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in <listcomp>
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 57, in to_dict
+    return super(FieldChannelMixin, self).to_dict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.channels.Opacity->field, validating 'anyOf'
+
+        1 is not valid under any of the given schemas
+        
+2023-08-14 20:08:42.281 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 435, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 318, in run
+    raw_specs, filenames = upload_module(upload_file, save_path=save_path)
+  File "/home/room/streamlit/denoise/denoise.py", line 144, in upload_module
+    spec = load_data(file, save_path)
+  File "/home/room/streamlit/denoise/denoise.py", line 65, in load_data
+    spec.columns = ['wavenumber', 'raw']
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/generic.py", line 6002, in __setattr__
+    return object.__setattr__(self, name, value)
+  File "pandas/_libs/properties.pyx", line 69, in pandas._libs.properties.AxisProperty.__set__
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/generic.py", line 730, in _set_axis
+    self._mgr.set_axis(axis, labels)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/managers.py", line 225, in set_axis
+    self._validate_set_axis(axis, new_labels)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/base.py", line 70, in _validate_set_axis
+    raise ValueError(
+ValueError: Length mismatch: Expected axis has 4 elements, new values have 2 elements
+2023-08-14 20:08:47.549 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 435, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 318, in run
+    raw_specs, filenames = upload_module(upload_file, save_path=save_path)
+  File "/home/room/streamlit/denoise/denoise.py", line 144, in upload_module
+    spec = load_data(file, save_path)
+  File "/home/room/streamlit/denoise/denoise.py", line 65, in load_data
+    spec.columns = ['wavenumber', 'raw']
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/generic.py", line 6002, in __setattr__
+    return object.__setattr__(self, name, value)
+  File "pandas/_libs/properties.pyx", line 69, in pandas._libs.properties.AxisProperty.__set__
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/generic.py", line 730, in _set_axis
+    self._mgr.set_axis(axis, labels)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/managers.py", line 225, in set_axis
+    self._validate_set_axis(axis, new_labels)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/base.py", line 70, in _validate_set_axis
+    raise ValueError(
+ValueError: Length mismatch: Expected axis has 4 elements, new values have 2 elements
+2023-08-14 20:08:49.402 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 435, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 318, in run
+    raw_specs, filenames = upload_module(upload_file, save_path=save_path)
+  File "/home/room/streamlit/denoise/denoise.py", line 144, in upload_module
+    spec = load_data(file, save_path)
+  File "/home/room/streamlit/denoise/denoise.py", line 65, in load_data
+    spec.columns = ['wavenumber', 'raw']
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/generic.py", line 6002, in __setattr__
+    return object.__setattr__(self, name, value)
+  File "pandas/_libs/properties.pyx", line 69, in pandas._libs.properties.AxisProperty.__set__
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/generic.py", line 730, in _set_axis
+    self._mgr.set_axis(axis, labels)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/managers.py", line 225, in set_axis
+    self._validate_set_axis(axis, new_labels)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/base.py", line 70, in _validate_set_axis
+    raise ValueError(
+ValueError: Length mismatch: Expected axis has 4 elements, new values have 2 elements
+2023-08-14 20:08:59.780 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 432, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 362, in run
+    line, baseline
+UnboundLocalError: local variable 'baseline' referenced before assignment
+2023-08-14 20:11:04.627 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 428, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 364, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in _todict
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in <listcomp>
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 76, in to_dict
+    return super(ValueChannelMixin, copy).to_dict(validate=validate,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.channels.ColorValue, validating 'additionalProperties'
+
+        Additional properties are not allowed ('legend' was unexpected)
+        
+2023-08-14 20:12:20.890 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 428, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 364, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in _todict
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in <listcomp>
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 76, in to_dict
+    return super(ValueChannelMixin, copy).to_dict(validate=validate,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.channels.ColorValue, validating 'additionalProperties'
+
+        Additional properties are not allowed ('legend' was unexpected)
+        
+2023-08-14 20:12:27.136 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 428, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 364, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in _todict
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in <listcomp>
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 76, in to_dict
+    return super(ValueChannelMixin, copy).to_dict(validate=validate,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.channels.ColorValue, validating 'additionalProperties'
+
+        Additional properties are not allowed ('legend' was unexpected)
+        
+2023-08-14 20:12:34.034 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 428, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 364, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in _todict
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in <listcomp>
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 76, in to_dict
+    return super(ValueChannelMixin, copy).to_dict(validate=validate,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.channels.ColorValue, validating 'additionalProperties'
+
+        Additional properties are not allowed ('legend' was unexpected)
+        
+2023-08-14 20:12:48.808 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 428, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 364, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in _todict
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in <listcomp>
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 76, in to_dict
+    return super(ValueChannelMixin, copy).to_dict(validate=validate,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.channels.ColorValue, validating 'additionalProperties'
+
+        Additional properties are not allowed ('legend' was unexpected)
+        
+2023-08-14 20:13:09.148 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 428, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 364, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in _todict
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in <listcomp>
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.api.Chart, validating 'additionalProperties'
+
+        Additional properties are not allowed ('color', 'opacity' were unexpected)
+        
+2023-08-14 20:13:14.447 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 428, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 364, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in _todict
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in <listcomp>
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.api.Chart, validating 'additionalProperties'
+
+        Additional properties are not allowed ('color', 'opacity' were unexpected)
+        
+2023-08-14 20:13:31.565 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 428, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 364, in run
+    st.altair_chart(c, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in _todict
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in <listcomp>
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.api.Chart, validating 'additionalProperties'
+
+        Additional properties are not allowed ('color', 'opacity' were unexpected)
+        
+2023-08-14 20:13:43.593 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 428, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 367, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 122, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 20:16:57.787 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 357, in run
+    color=alt.Color('category:N', scale=alt.Scale(domain=list(custom_colors.keys()), range=alt.ColorValue(baseline_color))),
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/core.py", line 13244, in __init__
+    super(Scale, self).__init__(align=align, base=base, bins=bins, clamp=clamp, constant=constant,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 197, in __init__
+    self.to_dict(validate=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.core.Scale->range, validating 'anyOf'
+
+        {'value': '#22CE12'} is not valid under any of the given schemas
+        
+2023-08-14 20:17:06.692 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 357, in run
+    color=alt.Color('category:N', scale=alt.Scale(range=alt.ColorValue(baseline_color))),
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/core.py", line 13244, in __init__
+    super(Scale, self).__init__(align=align, base=base, bins=bins, clamp=clamp, constant=constant,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 197, in __init__
+    self.to_dict(validate=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.core.Scale->range, validating 'anyOf'
+
+        {'value': '#22CE12'} is not valid under any of the given schemas
+        
+2023-08-14 20:17:24.602 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 357, in run
+    color=alt.Color('category:N', scale=alt.Scale(range=alt.ColorValue(baseline_color))),
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/core.py", line 13244, in __init__
+    super(Scale, self).__init__(align=align, base=base, bins=bins, clamp=clamp, constant=constant,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 197, in __init__
+    self.to_dict(validate=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.core.Scale->range, validating 'anyOf'
+
+        {'value': '#22CE12'} is not valid under any of the given schemas
+        
+2023-08-14 20:17:28.062 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 357, in run
+    color=alt.Color('category:N', scale=alt.Scale(range=alt.ColorValue(baseline_color))),
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/core.py", line 13244, in __init__
+    super(Scale, self).__init__(align=align, base=base, bins=bins, clamp=clamp, constant=constant,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 197, in __init__
+    self.to_dict(validate=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.core.Scale->range, validating 'anyOf'
+
+        {'value': '#22CE12'} is not valid under any of the given schemas
+        
+2023-08-14 20:17:30.840 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 357, in run
+    color=alt.Color('category:N', scale=alt.Scale(domain=['baseline'], range=alt.ColorValue(baseline_color))),
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/core.py", line 13244, in __init__
+    super(Scale, self).__init__(align=align, base=base, bins=bins, clamp=clamp, constant=constant,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 197, in __init__
+    self.to_dict(validate=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.core.Scale->range, validating 'anyOf'
+
+        {'value': '#22CE12'} is not valid under any of the given schemas
+        
+2023-08-14 20:17:32.790 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 357, in run
+    color=alt.Color('category:N', scale=alt.Scale(domain=['baseline'], range=alt.ColorValue(baseline_color))),
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/core.py", line 13244, in __init__
+    super(Scale, self).__init__(align=align, base=base, bins=bins, clamp=clamp, constant=constant,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 197, in __init__
+    self.to_dict(validate=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.core.Scale->range, validating 'anyOf'
+
+        {'value': '#22CE12'} is not valid under any of the given schemas
+        
+2023-08-14 20:17:41.675 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 369, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 122, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 20:17:49.993 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 369, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 122, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 20:17:51.100 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 369, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 122, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 20:17:55.889 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 369, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 122, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 20:17:57.398 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 369, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 122, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 20:17:58.049 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 369, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 122, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 20:17:59.092 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 369, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 122, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 20:17:59.688 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 369, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 122, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 20:18:24.159 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 357, in run
+    color=alt.Color('category:N', scale=alt.Scale(domain=['baseline'], range=alt.ColorValue(1))),
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/core.py", line 13244, in __init__
+    super(Scale, self).__init__(align=align, base=base, bins=bins, clamp=clamp, constant=constant,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 197, in __init__
+    self.to_dict(validate=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.core.Scale->range, validating 'anyOf'
+
+        {'value': 1} is not valid under any of the given schemas
+        
+2023-08-14 20:18:34.922 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 357, in run
+    color=alt.Color('category:N', scale=alt.Scale(domain=['baseline'], range=[alt.ColorValue(baseline_color)])),
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/core.py", line 13244, in __init__
+    super(Scale, self).__init__(align=align, base=base, bins=bins, clamp=clamp, constant=constant,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 197, in __init__
+    self.to_dict(validate=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.core.Scale->1->items, validating 'anyOf'
+
+        {'value': '#22CE12'} is not valid under any of the given schemas
+        
+2023-08-14 20:18:44.367 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 357, in run
+    color=alt.Color('category:N', scale=alt.Scale(domain=['baseline'], range=[alt.ColorValue(0.25)])),
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/core.py", line 13244, in __init__
+    super(Scale, self).__init__(align=align, base=base, bins=bins, clamp=clamp, constant=constant,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 197, in __init__
+    self.to_dict(validate=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.core.Scale->1->items, validating 'anyOf'
+
+        {'value': 0.25} is not valid under any of the given schemas
+        
+2023-08-14 20:19:28.774 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 430, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 357, in run
+    color=alt.Color('category:N', scale=alt.Scale(domain=['baseline'], range=[alt.ColorValue(baseline_color)])),
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/core.py", line 13244, in __init__
+    super(Scale, self).__init__(align=align, base=base, bins=bins, clamp=clamp, constant=constant,
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 197, in __init__
+    self.to_dict(validate=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.core.Scale->1->items, validating 'anyOf'
+
+        {'value': '#22CE12'} is not valid under any of the given schemas
+        
+2023-08-14 20:20:54.468 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 417, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 353, in run
+    st.altair_chart(c, use_container_width=True)
+NameError: name 'c' is not defined
+2023-08-14 20:24:21.659 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 431, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 370, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 122, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 20:24:36.456 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 431, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 370, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 122, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 20:24:37.572 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 431, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 370, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 122, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 20:24:38.573 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 431, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 370, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 122, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 20:24:39.520 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 431, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 370, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 122, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 20:24:40.914 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 431, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 370, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 122, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 20:24:41.362 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 431, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 370, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 122, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-14 20:27:29.324 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 434, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 363, in run
+    color=alt.ColorValue(baseline_color),
+UnboundLocalError: local variable 'baseline_color' referenced before assignment
+2023-08-14 20:27:48.564 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 433, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 362, in run
+    color=alt.ColorValue(baseline_color),
+UnboundLocalError: local variable 'baseline_color' referenced before assignment
+2023-08-14 20:28:21.253 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 434, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 363, in run
+    color=alt.ColorValue(baseline_color),
+UnboundLocalError: local variable 'baseline_color' referenced before assignment
+2023-08-14 20:28:45.133 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 437, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 370, in run
+    c = line + baseline
+UnboundLocalError: local variable 'baseline' referenced before assignment
+2023-08-14 20:29:32.165 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 440, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 341, in run
+    color=alt.Color('category:N', scale=alt.Scale(domain=list(custom_colors.keys()), range=list(custom_colors.values()))),
+UnboundLocalError: local variable 'custom_colors' referenced before assignment

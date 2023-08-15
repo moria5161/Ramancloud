@@ -1,6 +1,7 @@
 import os
 import uuid
 import time
+import altair as alt
 
 import streamlit as st
 from markdownlit import mdlit
@@ -39,10 +40,13 @@ def load_data(file, save_path=None):
         with open (os.path.join(save_path, file.name), 'wb') as f:
             f.write(file.getvalue())
 
-    # remove # in files
+    # load data and remove text before the number by re 
+    import re
+    pattern = re.compile(b'^[-]?\d+[.]?')
+
     with open (os.path.join(save_path, file.name), 'rb') as f:
         lines = f.readlines()
-        lines = [line for line in lines if line[0] != 35]
+        lines = [line for line in lines if pattern.match(line)]
     with open (os.path.join(save_path, file.name), 'wb') as f:
         f.writelines(lines)
 
@@ -58,7 +62,7 @@ def load_data(file, save_path=None):
     
     # load data with delimiter '\t' and ',' automaticlly
     spec = pd.read_csv(os.path.join(save_path, file.name), delimiter=delimiter, header=None)
-    spec.columns = ['wavenumber', 'raw_intensity']
+    spec.columns = ['wavenumber', 'raw']
     st.session_state['raw_spec'] = spec
     
     return spec 
@@ -68,7 +72,7 @@ def gaussian(x, amp, cen, wid):
 
 def find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance, verbose=True):
     
-    inp = spec_df['processed'] if verbose else spec_df['raw_intensity']
+    inp = spec_df['processed'] if verbose else spec_df['raw']
 
     peaks, properties  = find_peaks(inp, height=height_threshold, prominence=1, width=peak_width, distance=peak_distance)
 
@@ -159,7 +163,7 @@ def cut_module(spec_df):
 
 def smooth_module(spec_df):
     if 'processed' not in spec_df.columns:
-        spec_df['processed'] = spec_df['raw_intensity'].copy()
+        spec_df['processed'] = spec_df['raw'].copy()
     st.subheader('Smooth')
     col1, col2 = st.columns(2)
     with col1:
@@ -194,7 +198,7 @@ def smooth_module(spec_df):
 
 def baseline_module(spec_df):
     if 'processed' not in spec_df.columns:
-        spec_df['processed'] = spec_df['raw_intensity'].copy()
+        spec_df['processed'] = spec_df['raw'].copy()
     st.subheader('Baseline removal')
     col1, col2 = st.columns(2)
     with col1:
@@ -212,8 +216,9 @@ def baseline_module(spec_df):
         if order_ >= lambda_:
             st.error('order must be less than lambda')
             st.stop()
+        cache = spec_df['processed'].copy()
         spec_df['processed'] = baseline(spec_df['processed'], lambda_, order_)
-        spec_df['baseline'] = spec_df['raw_intensity'] - spec_df['processed']
+        spec_df['baseline'] = cache - spec_df['processed']
         with st.expander("See explanation"):
             mdlit(
                 """This method is based on [airPLS](https://doi.org/10.1039/B922045C) created by Zhi-Min Zhang in Central South University.  
@@ -229,7 +234,7 @@ def baseline_module(spec_df):
 def peak_analysis_module(spec_df):
     
     if 'processed' not in spec_df.columns:
-        spec_df['processed'] = spec_df['raw_intensity'].copy()
+        spec_df['processed'] = spec_df['raw'].copy()
     st.subheader('Peak analysis')
     col1, col2 = st.columns(2)
     with col1:
@@ -283,12 +288,13 @@ def peak_analysis_module(spec_df):
         st.pyplot(fig)
 
         return (skip_peak, height_threshold, edge_threshold, peak_width, peak_distance)
-        
+    else:
+        return (skip_peak,)
 
 def process(file:pd.DataFrame, cut_args, smooth_args, baseline_args):
     res_df = cut(file, *cut_args)
-    res_df['raw_intensity'] = smooth(res_df['raw_intensity'], *smooth_args[1:]) if not smooth_args[0] else res_df['raw_intensity']
-    res_df['raw_intensity'] = baseline(res_df['raw_intensity'], *baseline_args[1:]) if not baseline_args[0] else res_df['raw_intensity']
+    res_df['raw'] = smooth(res_df['raw'], *smooth_args[1:]) if not smooth_args[0] else res_df['raw']
+    res_df['raw'] = baseline(res_df['raw'], *baseline_args[1:]) if not baseline_args[0] else res_df['raw']
     return res_df
 
 
@@ -312,16 +318,58 @@ def run():
         raw_specs, filenames = upload_module(upload_file, save_path=save_path)
         
 
-        option = st.selectbox(
+        demo_file = st.selectbox(
         'Select a spectrum for preprocessing', filenames)
-
-        st.write('You selected:', option)
-        demo_spec = raw_specs[filenames.index(option)]
+        st.write('You selected:', demo_file)
+        demo_spec = raw_specs[filenames.index(demo_file)]
         
         demo_spec, cut_args = cut_module(demo_spec)
         demo_spec, smooth_args = smooth_module(demo_spec)
         demo_spec, baseline_args = baseline_module(demo_spec)
-        st.line_chart(demo_spec, x='wavenumber',use_container_width=True)
+        demo_spec_fig = demo_spec.melt('wavenumber', var_name='category', value_name='intensity')
+        
+        # change the charet color
+        col1, col2 = st.columns(2)
+        with col1:
+            pre_color = st.color_picker('Pick A Color for processed spectrum', '#FF0000')            
+        
+        if not baseline_args[0]:
+            with col2:
+                baseline_color = st.color_picker('Pick A Color for baseline', '#22CE12')
+            
+            custom_colors = {
+                'raw': 'blue',
+                'processed': pre_color,
+                'baseline': baseline_color,
+            }
+
+            baseline = alt.Chart(demo_spec_fig[demo_spec_fig.category == 'baseline']).mark_line(interpolate='basis').encode(
+            x='wavenumber:Q',
+            y='intensity:Q',
+            color=alt.ColorValue(baseline_color),
+            opacity=alt.OpacityValue(1)
+        )
+
+
+        else:
+            custom_colors = {
+                'raw': 'blue',
+                'processed': pre_color,
+            }
+
+
+        line = alt.Chart(demo_spec_fig).mark_line(interpolate='basis').encode(
+            x='wavenumber:Q',
+            y='intensity:Q',
+            color=alt.Color('category:N', scale=alt.Scale(domain=list(custom_colors.keys()), range=list(custom_colors.values()))),
+            opacity=alt.OpacityValue(0.6)
+        )
+       
+        if not baseline_args[0]:
+            line = line + baseline
+
+        st.altair_chart(line, use_container_width=True)
+        
 
         peak_analysis_args = peak_analysis_module(demo_spec)
 
