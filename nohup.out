@@ -5582,3 +5582,2710 @@ Traceback (most recent call last):
   File "/home/room/streamlit/denoise/denoise.py", line 341, in run
     color=alt.Color('category:N', scale=alt.Scale(domain=list(custom_colors.keys()), range=list(custom_colors.values()))),
 UnboundLocalError: local variable 'custom_colors' referenced before assignment
+2023-08-15 13:42:19.246 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 444, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 383, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 292, in peak_analysis_module
+    res_df = pd.DataFrame({'Start':[spec_df.wavenumber[p] for p in start_points],
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/frame.py", line 709, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/construction.py", line 481, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/construction.py", line 120, in arrays_to_mgr
+    arrays, refs = _homogenize(arrays, index, dtype)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/construction.py", line 608, in _homogenize
+    com.require_length_match(val, index)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/common.py", line 576, in require_length_match
+    raise ValueError(
+ValueError: Length of values (2) does not match length of index (1)
+2023-08-15 14:16:09.639 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 446, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 385, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 79, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[13] not in index'
+2023-08-15 14:19:22.370 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 457, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 396, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 289, in peak_analysis_module
+    st.altair_chart(raw_spec, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 57, in to_dict
+    return super(FieldChannelMixin, self).to_dict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.schema.channels.Y, validating 'additionalProperties'
+
+        Additional properties are not allowed ('legend' was unexpected)
+        
+2023-08-15 14:20:18.937 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 458, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 397, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 290, in peak_analysis_module
+    st.altair_chart(raw_spec, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 393, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 360, in to_dict
+    raise SchemaValidationError(self, err)
+altair.utils.schemapi.SchemaValidationError: Invalid specification
+
+        altair.vegalite.v4.api.Chart, validating 'additionalProperties'
+
+        Additional properties are not allowed ('ylabel' was unexpected)
+        
+2023-08-15 14:26:08.383 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 472, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 411, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 119, in find_and_fit_peaks
+    initial_guess = [y_peak.max(), x_peak[np.argmax(y_peak)], 1.0]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/numpy/core/_methods.py", line 41, in _amax
+    return umr_maximum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation maximum which has no identity
+2023-08-15 14:27:30.178 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 472, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 411, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 277, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 119, in find_and_fit_peaks
+    initial_guess = [y_peak.max(), x_peak[np.argmax(y_peak)], 1.0]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/numpy/core/_methods.py", line 41, in _amax
+    return umr_maximum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation maximum which has no identity
+2023-08-15 14:38:05.711 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 463, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 402, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 294, in peak_analysis_module
+    res_df = pd.DataFrame({'Start':[spec_df.wavenumber[p] for p in start_points],
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/frame.py", line 709, in __init__
+    mgr = dict_to_mgr(data, index, columns, dtype=dtype, copy=copy, typ=manager)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/construction.py", line 481, in dict_to_mgr
+    return arrays_to_mgr(arrays, columns, index, dtype=dtype, typ=typ, consolidate=copy)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/construction.py", line 115, in arrays_to_mgr
+    index = _extract_index(arrays)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/internals/construction.py", line 655, in _extract_index
+    raise ValueError("All arrays must be of the same length")
+ValueError: All arrays must be of the same length
+2023-08-15 14:52:15.046 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 478, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 417, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 321, in peak_analysis_module
+    st.altair_chart(spec_line + peak_point, use_container_width=True)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/dataframe_selector.py", line 541, in altair_chart
+    return self.dg._arrow_altair_chart(altair_chart, use_container_width, theme)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 330, in _arrow_altair_chart
+    marshall(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/arrow_altair.py", line 610, in marshall
+    chart_dict = altair_chart.to_dict()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in _todict
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 78, in <listcomp>
+    return [_todict(v, validate, context) for v in obj]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 2020, in to_dict
+    return super().to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/api.py", line 384, in to_dict
+    dct = super(TopLevelMixin, copy).to_dict(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 346, in to_dict
+    result = _todict(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 80, in _todict
+    return {
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 81, in <dictcomp>
+    k: _todict(v, validate, context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/utils/schemapi.py", line 76, in _todict
+    return obj.to_dict(validate=validate, context=context)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/altair/vegalite/v4/schema/channels.py", line 40, in to_dict
+    raise ValueError("{} encoding field is specified without a type; "
+ValueError: wavenumber:.2Q encoding field is specified without a type; the type cannot be inferred because it does not match any column in the data.
+2023-08-15 15:07:17.496 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 462, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 401, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 257, in peak_analysis_module
+    height_threshold_ratio = st.slider('Select the height threshold of peaks', min_value=0.01, max_value=1, value=0.3)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/slider.py", line 338, in slider
+    return self._slider(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/slider.py", line 514, in _slider
+    raise StreamlitAPIException(
+streamlit.errors.StreamlitAPIException: Slider value arguments must be of matching types.
+`min_value` has float type.
+`max_value` has int type.
+`step` has float type.
+2023-08-15 15:07:54.541 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 462, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 401, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 257, in peak_analysis_module
+    height_threshold_ratio = st.slider('Select the height threshold of peaks', min_value=0.1, max_value=1, value=0.3)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/metrics_util.py", line 356, in wrapped_func
+    result = non_optional_func(*args, **kwargs)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/slider.py", line 338, in slider
+    return self._slider(
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/elements/slider.py", line 514, in _slider
+    raise StreamlitAPIException(
+streamlit.errors.StreamlitAPIException: Slider value arguments must be of matching types.
+`min_value` has float type.
+`max_value` has int type.
+`step` has float type.
+2023-08-15 15:19:59.546 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 470, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 409, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 300, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold,
+  File "/home/room/streamlit/denoise/denoise.py", line 106, in find_and_fit_peaks
+    raise ValueError('You must provide either both start and end points or neither.')
+ValueError: You must provide either both start and end points or neither.
+2023-08-15 15:20:08.499 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 470, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 409, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 300, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold,
+  File "/home/room/streamlit/denoise/denoise.py", line 106, in find_and_fit_peaks
+    raise ValueError('You must provide either both start and end points or neither.')
+ValueError: You must provide either both start and end points or neither.
+2023-08-15 15:20:12.026 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 470, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 409, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 300, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold,
+  File "/home/room/streamlit/denoise/denoise.py", line 106, in find_and_fit_peaks
+    raise ValueError('You must provide either both start and end points or neither.')
+ValueError: You must provide either both start and end points or neither.
+2023-08-15 15:20:13.035 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 470, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 409, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 300, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold,
+  File "/home/room/streamlit/denoise/denoise.py", line 106, in find_and_fit_peaks
+    raise ValueError('You must provide either both start and end points or neither.')
+ValueError: You must provide either both start and end points or neither.
+2023-08-15 15:21:12.699 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 471, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 410, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 301, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold,
+  File "/home/room/streamlit/denoise/denoise.py", line 107, in find_and_fit_peaks
+    raise ValueError('You must provide either both start and end points or neither.')
+ValueError: You must provide either both start and end points or neither.
+2023-08-15 15:21:34.337 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 471, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 410, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 301, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold,
+  File "/home/room/streamlit/denoise/denoise.py", line 107, in find_and_fit_peaks
+    raise ValueError('You must provide either both start and end points or neither.')
+ValueError: You must provide either both start and end points or neither.
+2023-08-15 15:27:06.748 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 471, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 423, in run
+    tmp_df = find_and_fit_peaks(res, *peak_analysis_args[1:], verbose=False)
+  File "/home/room/streamlit/denoise/denoise.py", line 119, in find_and_fit_peaks
+    x_peak = spec_df['wavenumber'][start_points[i]:end_points[i]].to_numpy()
+IndexError: list index out of range
+2023-08-15 15:27:56.687 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 471, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 423, in run
+    tmp_df = find_and_fit_peaks(res, *peak_analysis_args[1:], verbose=False)
+  File "/home/room/streamlit/denoise/denoise.py", line 128, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-15 15:28:18.484 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 471, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 423, in run
+    tmp_df = find_and_fit_peaks(res, *peak_analysis_args[1:], verbose=False)
+  File "/home/room/streamlit/denoise/denoise.py", line 128, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-15 15:28:39.520 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 471, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 423, in run
+    tmp_df = find_and_fit_peaks(res, *peak_analysis_args[1:], verbose=False)
+  File "/home/room/streamlit/denoise/denoise.py", line 128, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-15 15:29:45.119 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 472, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 424, in run
+    tmp_df = find_and_fit_peaks(res, *peak_analysis_args[1:], verbose=False)
+  File "/home/room/streamlit/denoise/denoise.py", line 129, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-15 15:30:29.955 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 472, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 424, in run
+    tmp_df = find_and_fit_peaks(res, *peak_analysis_args[1:], verbose=False)
+  File "/home/room/streamlit/denoise/denoise.py", line 129, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-15 15:31:10.711 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 472, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 424, in run
+    tmp_df = find_and_fit_peaks(res, *peak_analysis_args[1:], verbose=False)
+  File "/home/room/streamlit/denoise/denoise.py", line 129, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-15 15:31:16.022 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 472, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 424, in run
+    tmp_df = find_and_fit_peaks(res, *peak_analysis_args[1:], verbose=False)
+  File "/home/room/streamlit/denoise/denoise.py", line 129, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-15 15:31:21.043 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 472, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 424, in run
+    tmp_df = find_and_fit_peaks(res, *peak_analysis_args[1:], verbose=False)
+  File "/home/room/streamlit/denoise/denoise.py", line 129, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-15 15:31:41.178 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 472, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 411, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 268, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/denoise.py", line 129, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-15 18:05:42.261 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/denoise.py", line 472, in <module>
+    run()
+  File "/home/room/streamlit/denoise/denoise.py", line 411, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/denoise.py", line 302, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold,
+  File "/home/room/streamlit/denoise/denoise.py", line 125, in find_and_fit_peaks
+    initial_guess = [y_peak.max(), x_peak[np.argmax(y_peak)], 1.0]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/numpy/core/_methods.py", line 41, in _amax
+    return umr_maximum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation maximum which has no identity
+
+  You can now view your Streamlit app in your browser.
+
+  Network URL: http://10.26.50.228:8501
+  External URL: http://117.28.251.152:8501
+
+2023-08-17 19:21:24.717 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 511, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 450, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 331, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold,
+  File "/home/room/streamlit/denoise/app.py", line 134, in find_and_fit_peaks
+    initial_guess = [y_peak.max(), x_peak[np.argmax(y_peak)], 1.0]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/numpy/core/_methods.py", line 40, in _amax
+    return umr_maximum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation maximum which has no identity
+2023-08-17 19:21:31.665 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 511, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 450, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 331, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold,
+  File "/home/room/streamlit/denoise/app.py", line 134, in find_and_fit_peaks
+    initial_guess = [y_peak.max(), x_peak[np.argmax(y_peak)], 1.0]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/numpy/core/_methods.py", line 40, in _amax
+    return umr_maximum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation maximum which has no identity
+2023-08-17 19:21:37.922 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 511, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 450, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 331, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold,
+  File "/home/room/streamlit/denoise/app.py", line 134, in find_and_fit_peaks
+    initial_guess = [y_peak.max(), x_peak[np.argmax(y_peak)], 1.0]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/numpy/core/_methods.py", line 40, in _amax
+    return umr_maximum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation maximum which has no identity
+2023-08-17 19:21:41.422 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 511, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 450, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 331, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold,
+  File "/home/room/streamlit/denoise/app.py", line 138, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 864, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-08-17 19:22:07.350 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 511, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 450, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 331, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold,
+  File "/home/room/streamlit/denoise/app.py", line 134, in find_and_fit_peaks
+    initial_guess = [y_peak.max(), x_peak[np.argmax(y_peak)], 1.0]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/numpy/core/_methods.py", line 40, in _amax
+    return umr_maximum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation maximum which has no identity
+2023-08-22 18:10:08.192 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 511, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 450, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 284, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5935, in _raise_if_missing
+    raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+KeyError: "None of [Index([111], dtype='int64')] are in the [index]"
+2023-08-22 18:10:09.795 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 511, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 450, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 284, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5935, in _raise_if_missing
+    raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+KeyError: "None of [Index([111], dtype='int64')] are in the [index]"
+2023-08-22 18:10:27.974 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 511, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 450, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 284, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5935, in _raise_if_missing
+    raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+KeyError: "None of [Index([111], dtype='int64')] are in the [index]"
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+2023-08-28 11:16:52.256 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 523, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 516, in run
+    href = f'<a href="data:application/zip;base64,{encoded_zip}" download="{quoted_filename}">Download ZIP File</a>'
+UnboundLocalError: local variable 'encoded_zip' referenced before assignment
+2023-08-28 11:20:04.359 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 525, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 516, in run
+    encoded_txt = base64.b64encode(open(os.path.join(pre_dir, file_name_list[0]), 'rb').read()).decode()
+FileNotFoundError: [Errno 2] No such file or directory: '/home/room/flask/received/spectra/2023-08-28_11:20:04_54775ff0360742c78911b8993e560276/pre/pre_9--1_1v_01.txt'
+2023-08-28 11:22:43.318 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 518, in run
+    with open(os.path.join(pre_dir, file_name_list[0]), 'rb') as file:
+FileNotFoundError: [Errno 2] No such file or directory: '/home/room/flask/received/spectra/2023-08-28_11:22:43_a095bed800af4fdb92eaaaba48b27ede/pre/pre_9--1_1v_01.txt'
+2023-08-28 11:22:56.479 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 518, in run
+    with open(os.path.join(pre_dir, file_name_list[0]), 'rb') as file:
+FileNotFoundError: [Errno 2] No such file or directory: '/home/room/flask/received/spectra/2023-08-28_11:22:56_d20e1094c6ec473b83045fccddcd158b/pre/pre_9--1_1v_01.txt'
+2023-08-28 11:23:21.922 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 518, in run
+    with open(os.path.join(pre_dir, file_name_list[0]), 'rb') as file:
+FileNotFoundError: [Errno 2] No such file or directory: '/home/room/flask/received/spectra/2023-08-28_11:23:21_aa40220c2fbc4cf481024ec4d9fa6fcf/pre/pre_9--1_1v_01.txt'
+2023-08-28 11:26:17.262 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 532, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 520, in run
+    st.write(pre_dir, file_name_list[0])
+UnboundLocalError: local variable 'pre_dir' referenced before assignment
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+   wavenumber       raw    baseline
+0    -177.758 -3.889417  615.977084
+1    -177.403 -1.655661  616.236375
+2    -177.049 -0.814089  616.606232
+3    -176.694 -0.444455  617.030407
+4    -176.339  2.338916  617.484227
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+WARING max iteration reached!
+2023-08-28 16:42:56.059 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 528, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 474, in run
+    np.savetxt(f'{received_dir}/{dir_name}/pre/pre_{filenames[file_count]}', res[['wavenumer', 'raw']], fmt='%.4f', delimiter='\t')
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/frame.py", line 3767, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: "['wavenumer'] not in index"
+2023-08-28 16:46:14.234 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[81] not in index'
+2023-08-28 16:46:18.056 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[20] not in index'
+2023-08-28 16:46:19.839 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[20] not in index'
+2023-08-28 16:46:24.722 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[20] not in index'
+2023-08-28 16:46:30.939 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[20] not in index'
+2023-08-28 16:46:31.958 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[20] not in index'
+2023-08-28 16:46:35.529 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[81] not in index'
+2023-08-28 16:46:36.691 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[81] not in index'
+2023-08-28 16:46:38.135 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[81] not in index'
+2023-08-28 16:47:00.726 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[20] not in index'
+2023-08-28 16:47:02.711 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[20] not in index'
+2023-08-28 16:47:44.911 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:47:46.850 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:47:47.618 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:47:48.471 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:47:49.252 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:47:50.087 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:47:50.692 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:47:51.421 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:47:51.989 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:47:52.544 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:47:52.930 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:47:53.679 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:48:05.723 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:48:07.145 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:48:08.085 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[57] not in index'
+2023-08-28 16:48:09.143 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[45, 57] not in index'
+2023-08-28 16:48:09.928 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[45, 57] not in index'
+2023-08-28 16:48:11.910 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[45, 57] not in index'
+2023-08-28 16:48:13.460 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5938, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: '[57] not in index'
+2023-08-28 16:48:14.810 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:48:16.918 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:48:30.423 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3652, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas/_libs/index.pyx", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2606, in pandas._libs.hashtable.Int64HashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 2630, in pandas._libs.hashtable.Int64HashTable.get_item
+KeyError: 106
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 94, in find_and_fit_peaks
+    while left_edge > 0 and inp[left_edge] > edge_threshold:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1007, in __getitem__
+    return self._get_value(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1116, in _get_value
+    loc = self.index.get_loc(label)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3654, in get_loc
+    raise KeyError(key) from err
+KeyError: 106
+2023-08-28 16:50:47.135 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5935, in _raise_if_missing
+    raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+KeyError: "None of [Index([10], dtype='int64')] are in the [index]"
+2023-08-28 16:50:48.232 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5935, in _raise_if_missing
+    raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+KeyError: "None of [Index([10], dtype='int64')] are in the [index]"
+2023-08-28 16:50:49.103 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 461, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 285, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 81, in find_and_fit_peaks
+    peak_x = spec_df['wavenumber'][peaks]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1033, in __getitem__
+    return self._get_with(key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/series.py", line 1068, in _get_with
+    return self.loc[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1103, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1332, in _getitem_axis
+    return self._getitem_iterable(key, axis=axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1272, in _getitem_iterable
+    keyarr, indexer = self._get_listlike_indexer(key, axis)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexing.py", line 1462, in _get_listlike_indexer
+    keyarr, indexer = ax._get_indexer_strict(key, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5876, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 5935, in _raise_if_missing
+    raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+KeyError: "None of [Index([10], dtype='int64')] are in the [index]"
+2023-08-28 16:52:14.273 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 529, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 521, in run
+    filename = f"{start_time}_peak_analysis.csv"  # Replace with your desired filename
+UnboundLocalError: local variable 'start_time' referenced before assignment
+2023-08-28 16:55:49.154 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 532, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 518, in run
+    with open(os.path.join(pre_dir, f'baseline_{filename}'), "rb") as file:
+FileNotFoundError: [Errno 2] No such file or directory: '/home/room/flask/received/spectra/2023-08-28_16:55:48_18fddba9fe61486d87bbc085a4fe16c6/pre/baseline_baseline_circle-10s-0_1%--0_2v_05.txt'
+2023-08-28 17:02:48.753 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 532, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 474, in run
+    res = process(file, cut_args, smooth_args, baseline_args)
+  File "/home/room/streamlit/denoise/app.py", line 373, in process
+    res_df['raw'] = smooth(res_df['raw'], *smooth_args[1:]) if not smooth_args[0] else res_df['raw']
+  File "/home/room/streamlit/denoise/app.py", line 35, in smooth
+    x = sg(x, window, order)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/signal/_savitzky_golay.py", line 345, in savgol_filter
+    raise ValueError("If mode is 'interp', window_length must be less "
+ValueError: If mode is 'interp', window_length must be less than or equal to the size of x.
+2023-08-28 17:02:57.575 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 532, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 474, in run
+    res = process(file, cut_args, smooth_args, baseline_args)
+  File "/home/room/streamlit/denoise/app.py", line 373, in process
+    res_df['raw'] = smooth(res_df['raw'], *smooth_args[1:]) if not smooth_args[0] else res_df['raw']
+  File "/home/room/streamlit/denoise/app.py", line 35, in smooth
+    x = sg(x, window, order)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/signal/_savitzky_golay.py", line 345, in savgol_filter
+    raise ValueError("If mode is 'interp', window_length must be less "
+ValueError: If mode is 'interp', window_length must be less than or equal to the size of x.
+2023-08-28 17:03:30.863 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 532, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 474, in run
+    res = process(file, cut_args, smooth_args, baseline_args)
+  File "/home/room/streamlit/denoise/app.py", line 373, in process
+    res_df['raw'] = smooth(res_df['raw'], *smooth_args[1:]) if not smooth_args[0] else res_df['raw']
+  File "/home/room/streamlit/denoise/app.py", line 35, in smooth
+    x = sg(x, window, order)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/signal/_savitzky_golay.py", line 345, in savgol_filter
+    raise ValueError("If mode is 'interp', window_length must be less "
+ValueError: If mode is 'interp', window_length must be less than or equal to the size of x.
+2023-08-28 17:03:38.557 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 532, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 474, in run
+    res = process(file, cut_args, smooth_args, baseline_args)
+  File "/home/room/streamlit/denoise/app.py", line 373, in process
+    res_df['raw'] = smooth(res_df['raw'], *smooth_args[1:]) if not smooth_args[0] else res_df['raw']
+  File "/home/room/streamlit/denoise/app.py", line 35, in smooth
+    x = sg(x, window, order)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/signal/_savitzky_golay.py", line 345, in savgol_filter
+    raise ValueError("If mode is 'interp', window_length must be less "
+ValueError: If mode is 'interp', window_length must be less than or equal to the size of x.
+2023-08-28 17:11:15.743 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 5, in <module>
+    import plotly.figure_factory as ff
+ModuleNotFoundError: No module named 'plotly'
+
+  You can now view your Streamlit app in your browser.
+
+  Network URL: http://10.26.50.228:8501
+  External URL: http://117.28.251.253:8501
+
