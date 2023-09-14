@@ -8289,3 +8289,116 @@ ModuleNotFoundError: No module named 'plotly'
   Network URL: http://10.26.50.228:8501
   External URL: http://117.28.251.253:8501
 
+2023-08-29 16:53:46.891 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 497, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 427, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 284, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 137, in find_and_fit_peaks
+    popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/scipy/optimize/_minpack_py.py", line 857, in curve_fit
+    raise TypeError(f"The number of func parameters={n} must not"
+TypeError: The number of func parameters=3 must not exceed the number of data points=2
+2023-08-30 19:35:27.277 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/state/session_state.py", line 378, in __getitem__
+    return self._getitem(widget_id, key)
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/state/session_state.py", line 423, in _getitem
+    raise KeyError
+KeyError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 506, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 397, in run
+    if st.session_state['raw_spec'] is not None:
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/state/session_state_proxy.py", line 90, in __getitem__
+    return get_session_state()[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/state/safe_session_state.py", line 113, in __getitem__
+    return self._state[key]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/state/session_state.py", line 380, in __getitem__
+    raise KeyError(_missing_key_error_message(key))
+KeyError: 'st.session_state has no key "raw_spec". Did you forget to initialize it? More info: https://docs.streamlit.io/library/advanced-features/session-state#initialization'
+2023-08-30 19:36:45.429 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 506, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 413, in run
+    demo_spec, cut_args = cut_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 180, in cut_module
+    MIN, MAX = spec_df.wavenumber.min(), spec_df.wavenumber.max()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/generic.py", line 5989, in __getattr__
+    return object.__getattribute__(self, name)
+AttributeError: 'DataFrame' object has no attribute 'wavenumber'
+2023-08-30 19:36:47.550 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 506, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 413, in run
+    demo_spec, cut_args = cut_module(demo_spec)
+UnboundLocalError: local variable 'demo_spec' referenced before assignment
+2023-08-30 19:36:48.553 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 506, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 413, in run
+    demo_spec, cut_args = cut_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 180, in cut_module
+    MIN, MAX = spec_df.wavenumber.min(), spec_df.wavenumber.max()
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/pandas/core/generic.py", line 5989, in __getattr__
+    return object.__getattribute__(self, name)
+AttributeError: 'DataFrame' object has no attribute 'wavenumber'
+2023-08-30 19:37:36.193 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 508, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 415, in run
+    demo_spec, cut_args = cut_module(demo_spec)
+UnboundLocalError: local variable 'demo_spec' referenced before assignment
+2023-08-30 19:40:05.590 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 509, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 439, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 284, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 133, in find_and_fit_peaks
+    initial_guess = [y_peak.max(), x_peak[np.argmax(y_peak)], 1.0]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/numpy/core/_methods.py", line 40, in _amax
+    return umr_maximum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation maximum which has no identity
+2023-08-30 19:40:09.164 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 552, in _run_script
+    exec(code, module.__dict__)
+  File "/home/room/streamlit/denoise/app.py", line 509, in <module>
+    run()
+  File "/home/room/streamlit/denoise/app.py", line 439, in run
+    peak_analysis_args = peak_analysis_module(demo_spec)
+  File "/home/room/streamlit/denoise/app.py", line 284, in peak_analysis_module
+    peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+  File "/home/room/streamlit/denoise/app.py", line 133, in find_and_fit_peaks
+    initial_guess = [y_peak.max(), x_peak[np.argmax(y_peak)], 1.0]
+  File "/home/room/miniconda3/envs/pytorch1_11_cpu/lib/python3.10/site-packages/numpy/core/_methods.py", line 40, in _amax
+    return umr_maximum(a, axis, None, out, keepdims, initial, where)
+ValueError: zero-size array to reduction operation maximum which has no identity
