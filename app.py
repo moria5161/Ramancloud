@@ -390,6 +390,17 @@ def run():
 
     upload_file = st.file_uploader("Upload your files", accept_multiple_files=True)    
     
+    st.subheader('Or use demo data')
+    demo_data = st.selectbox(
+        'Select a demo data', ['-', 'Bacteria',])
+    if demo_data == 'Bacteria':
+            demo_spec = pd.read_csv('Bacteria.txt', delimiter='\t', header=None)
+            demo_spec.columns = ['wavenumber', 'raw']
+            st.session_state['raw_spec'] = demo_spec
+    else:
+        st.session_state['raw_spec'] = None
+    
+        
     if upload_file:
         os.mkdir(os.path.join(received_dir, dir_name))
         save_path = os.path.join(received_dir, dir_name)
@@ -401,6 +412,7 @@ def run():
         st.write('You selected:', demo_file)
         demo_spec = raw_specs[filenames.index(demo_file)]
         
+    if 'raw_spec' in st.session_state and st.session_state['raw_spec'] is not None:
         demo_spec, cut_args = cut_module(demo_spec)
         demo_spec, smooth_args = smooth_module(demo_spec)
         demo_spec, baseline_args = baseline_module(demo_spec)
