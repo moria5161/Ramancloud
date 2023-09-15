@@ -19,7 +19,9 @@ from scipy.signal import find_peaks
 from scipy.optimize import curve_fit
 
 # from streamlit_extras.switch_page_button import switch_page
-
+st.set_page_config(
+    initial_sidebar_state="collapsed",
+)
 def cut(x, values):
     return x[(x.wavenumber >= values[0])&(x.wavenumber <= values[1])]
 
@@ -394,7 +396,7 @@ def run():
     demo_data = st.selectbox(
         'Select a demo data', ['-', 'Bacteria',])
     if demo_data == 'Bacteria':
-            demo_spec = pd.read_csv('Bacteria.txt', delimiter='\t', header=None)
+            demo_spec = pd.read_csv('/home/room/streamlit/denoise/samples/Bacteria.txt', delimiter='\t', header=None)
             demo_spec.columns = ['wavenumber', 'raw']
             st.session_state['raw_spec'] = demo_spec
     else:
@@ -501,10 +503,29 @@ def run():
                     filename = f"{save_time}_peak_analysis.csv"  
                     generate_download_link(csv_file, filename)
                     
+    
+        
+if __name__ == "__main__":
+    try:
+        run()
+    except:
+        st.error('Opps! something went wrong, please check again or contact us.')
+
     # feedback
     st.subheader('Feedback')
     st.caption('If you have any questions or suggestions, please [contact us.](mailto:luxinyu@stu.xmu.edu.cn)')
-        
-if __name__ == "__main__":
-    run()
-    
+    # citation
+    st.subheader('Citation')
+    mdlit('''The baseline substrtction methods are refered to [airPLS]() and [auto-adaptive]().  
+          You can cite this web page if you find help in your research. ''')
+
+
+    st.code('''@misc{  
+author       = {Xinyu Lu},  
+title        = {Raman cloud},  
+howpublished = {Web Page},  
+url          = {https://124.222.26.24:8501},  
+year         = {2023},  
+note         = {Accessed on September 14, 2023}  
+}  ''', 
+language='markdown')
