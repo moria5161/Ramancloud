@@ -396,7 +396,7 @@ def run():
     demo_data = st.selectbox(
         'Select a demo data', ['-', 'Bacteria',])
     if demo_data == 'Bacteria':
-            demo_spec = pd.read_csv('/home/room/streamlit/denoise/samples/Bacteria.txt', delimiter='\t', header=None)
+            demo_spec = pd.read_csv('./samples/Bacteria.txt', delimiter='\t', header=None)
             demo_spec.columns = ['wavenumber', 'raw']
             st.session_state['raw_spec'] = demo_spec
     else:
@@ -516,12 +516,12 @@ if __name__ == "__main__":
     st.caption('If you have any questions or suggestions, please [contact us.](mailto:luxinyu@stu.xmu.edu.cn)')
     # citation
     st.subheader('Citation')
-    mdlit('''The baseline substrtction methods are refered to [airPLS]() and [auto-adaptive]().  
+    mdlit('''The baseline substrtction methods are refered to [airPLS]() and [123]().  
           You can cite this web page if you find help in your research. ''')
 
 
-    st.code('''@misc{  
-author       = {Xinyu Lu},  
+    st.code('''@misc{yourlastname2023,  
+author       = {...},  
 title        = {Raman cloud},  
 howpublished = {Web Page},  
 url          = {https://124.222.26.24:8501},  

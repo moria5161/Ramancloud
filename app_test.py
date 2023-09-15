@@ -18,10 +18,12 @@ from scipy.signal import savgol_filter as sg
 from scipy.signal import find_peaks
 from scipy.optimize import curve_fit
 
-# from streamlit_extras.switch_page_button import switch_page
+from streamlit_extras.switch_page_button import switch_page
+
 st.set_page_config(
     initial_sidebar_state="collapsed",
 )
+
 def cut(x, values):
     return x[(x.wavenumber >= values[0])&(x.wavenumber <= values[1])]
 
@@ -387,8 +389,11 @@ def run():
     
     raw_specs = st.session_state['raw_spec'] if 'raw_spec' in st.session_state else None
     
-    st.subheader('Upload spectrum')
+    want_to_contribute = st.button("I want to upload mapping/hper-spectral imaging!")
+    if want_to_contribute:
+        switch_page("mapping")
 
+    st.subheader('Upload spectrum')
 
     upload_file = st.file_uploader("Upload your files", accept_multiple_files=True)    
     
@@ -396,7 +401,7 @@ def run():
     demo_data = st.selectbox(
         'Select a demo data', ['-', 'Bacteria',])
     if demo_data == 'Bacteria':
-            demo_spec = pd.read_csv('/home/room/streamlit/denoise/samples/Bacteria.txt', delimiter='\t', header=None)
+            demo_spec = pd.read_csv('./samples/Bacteria.txt', delimiter='\t', header=None)
             demo_spec.columns = ['wavenumber', 'raw']
             st.session_state['raw_spec'] = demo_spec
     else:
@@ -506,22 +511,22 @@ def run():
     
         
 if __name__ == "__main__":
-    try:
-        run()
-    except:
-        st.error('Opps! something went wrong, please check again or contact us.')
+    # try:
+    run()
+    # except:
+    #     st.error('Opps! something went wrong, please check again or contact us.')
 
     # feedback
     st.subheader('Feedback')
     st.caption('If you have any questions or suggestions, please [contact us.](mailto:luxinyu@stu.xmu.edu.cn)')
     # citation
     st.subheader('Citation')
-    mdlit('''The baseline substrtction methods are refered to [airPLS]() and [auto-adaptive]().  
+    mdlit('''The baseline substrtction methods are refered to [airPLS]() and [123]().  
           You can cite this web page if you find help in your research. ''')
 
 
-    st.code('''@misc{  
-author       = {Xinyu Lu},  
+    st.code('''@misc{yourlastname2023,  
+author       = {...},  
 title        = {Raman cloud},  
 howpublished = {Web Page},  
 url          = {https://124.222.26.24:8501},  

@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from utils import lrma_denoise
+from utilsSVD.utils import lrma_denoise
 
 
 def alrma(x, mode='alrma', C=400):
