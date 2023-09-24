@@ -507,8 +507,6 @@ def run():
         
 if __name__ == "__main__":
     try:
-        visitor_ip = st.experimental_get_query_params()
-        print(visitor_ip)
         run()
     except:
         st.error('Opps! something went wrong, please check again or contact us.')
