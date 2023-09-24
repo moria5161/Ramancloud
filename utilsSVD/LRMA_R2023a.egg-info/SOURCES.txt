@@ -1,7 +1,0 @@
-setup.py
-LRMA/LRMA.ctf
-LRMA/__init__.py
-LRMA_R2023a.egg-info/PKG-INFO
-LRMA_R2023a.egg-info/SOURCES.txt
-LRMA_R2023a.egg-info/dependency_links.txt
-LRMA_R2023a.egg-info/top_level.txt
