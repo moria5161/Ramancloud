@@ -111,7 +111,7 @@ def run():
         demo_data = st.selectbox(
             'Select a demo data', ['-', 'Bacteria',])
         if demo_data == 'Bacteria':
-                raw_demo_spec = pd.read_csv('/home/room/streamlit/denoise/samples/Bacteria.txt', delimiter='\t', header=None)
+                raw_demo_spec = pd.read_csv('/home/room/streamlit/ramancloud_public/samples/Bacteria.txt', delimiter='\t', header=None)
                 raw_demo_spec.columns = ['wavenumber', 'raw']
                 st.session_state['raw_spec'] = raw_demo_spec
         else:
@@ -258,10 +258,11 @@ note         = {Accessed on September 14, 2023}
 language='markdown')
 
 if __name__ == "__main__":
-    # try:
-    run()
-    # except:
-    #     st.error('Opps! Something went wrong, please check again or contact us.')
+    try:
+        run()
+    except Exception as e:
+        print(e)
+        st.error('Opps! Something went wrong, please check again or contact us.')
 
     # feedback
     st.subheader('Feedback')
