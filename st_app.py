@@ -18,7 +18,7 @@ from scipy.signal import savgol_filter as sg
 from scipy.signal import find_peaks
 from scipy.optimize import curve_fit
 
-# from streamlit_extras.switch_page_button import switch_page
+
 st.set_page_config(
     initial_sidebar_state="collapsed",
 )
@@ -379,7 +379,7 @@ def generate_download_link(file, filename):
     st.markdown(href, unsafe_allow_html=True)
     
 def run():
-    received_dir = '/home/room/flask/received/spectra'
+    received_dir = '/data/received/spectra'
     startTime = time.time()
     startTime = time.strftime('%Y-%m-%d_%H:%M:%S', time.localtime(startTime))
 
@@ -507,6 +507,8 @@ def run():
         
 if __name__ == "__main__":
     try:
+        visitor_ip = st.experimental_get_query_params()
+        print(visitor_ip)
         run()
     except:
         st.error('Opps! something went wrong, please check again or contact us.')
