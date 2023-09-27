@@ -74,7 +74,9 @@ def cut_module(mapping_data, wavenumber):
     MIN, MAX = wavenumber.min(), wavenumber.max()
     values = st.slider('Select the range of wavenumber', min_value=MIN, max_value=MAX, value=(float(MIN), float(MAX)))
     new_array = cut(mapping_data, wavenumber, values)
-    return new_array , (values,)
+    start_idx = np.where(wavenumber >= values[0])[0][0]
+    end_idx = np.where(wavenumber <= values[1])[0][-1]+1
+    return new_array , (start_idx, end_idx)
 
 
 def smooth_module(mapping_data):
@@ -141,16 +143,8 @@ def baseline_module(mapping_data):
                 [red]The smaller the lambda, the greater the deduction of the baseline.[/red]
                 The order is the order of the polynomial used to fit the baseline, which must be less than the lambda.
                 """)
-    return mapping_data, (skip_baseline, lambda_, order_)
+    return mapping_data, skip_baseline, (lambda_, order_)
 
-
-# def process(file:pd.DataFrame, cut_args, smooth_args, baseline_args):
-#     res_df = cut(file, *cut_args)
-#     res_df['raw'] = smooth(res_df['raw'], *smooth_args[1:]) if not smooth_args[0] else res_df['raw']
-#     before_baseline = res_df['raw'].copy()
-#     res_df['raw'] = baseline(res_df['raw'], *baseline_args[1:]) if not baseline_args[0] else res_df['raw']
-#     if not baseline_args[0]: res_df['baseline'] = before_baseline - res_df['raw'] 
-#     return res_df
 
 
 def generate_download_link(file, filename):
@@ -171,9 +165,6 @@ def run():
     
     raw_mappings = st.session_state['raw_mapping'] if 'raw_mapping' in st.session_state else None
     
-    # want_to_contribute = st.button("I want to upload mapping/hper-spectral imaging!")
-    # if want_to_contribute:
-    #     switch_page("mapping")
 
     st.subheader('Upload mapping')
 
@@ -201,19 +192,18 @@ def run():
         
     if 'raw_mapping' in st.session_state and st.session_state['raw_mapping'] is not None:
         
-        demo_mapping, cut_args = cut_module(raw_mappings, wavenumber)
+        demo_mapping, (cut_start, cut_end) = cut_module(raw_mappings, wavenumber)
         with st.spinner("processing"):
             demo_mapping, smooth_args = smooth_module(demo_mapping)
         with st.spinner("processing"):
-            demo_mapping, baseline_args = baseline_module(demo_mapping)
+            demo_mapping, skip_baseline, _ = baseline_module(demo_mapping)
         
-
         # Create a subplot with shared x-axes
         fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.02)
-
+        
         # Create heatmap traces using go.Heatmap
-        heatmap1 = go.Heatmap(z=raw_mappings, x=wavenumber, colorbar=dict(y=0.75, len=0.5), name='raw')
-        heatmap2 = go.Heatmap(z=demo_mapping, x=wavenumber, colorbar=dict(y=0.25, len=0.5), name='processed')
+        heatmap1 = go.Heatmap(z=raw_mappings[:, cut_start:cut_end], x=wavenumber[cut_start:cut_end], colorbar=dict(y=0.75, len=0.5), name='raw')
+        heatmap2 = go.Heatmap(z=demo_mapping, x=wavenumber[cut_start:cut_end], colorbar=dict(y=0.25, len=0.5), name='processed')
 
 
         # Append the heatmap traces to the subplot
@@ -232,13 +222,23 @@ def run():
         'Select a index for demostration', np.arange(len(demo_mapping)-1)+1)
         col2.write(f'The index of row you selected is: {demo_index}', )
 
-        demo_spec = pd.DataFrame({'wavenumber': wavenumber, 'raw': raw_mappings[demo_index-1], 'processed': demo_mapping[demo_index-1]})
-        demo_spec_fig = demo_spec.melt('wavenumber', var_name='category', value_name='intensity')       
+        demo_spec = pd.DataFrame({'wavenumber': wavenumber[cut_start:cut_end], 
+                                  'raw': raw_mappings[demo_index-1][cut_start:cut_end], 
+                                  'processed': demo_mapping[demo_index-1]
+                                  })
         
         custom_colors = {
                 'raw': 'blue',
                 'processed': pre_color,
             }
+        
+        if not skip_baseline:
+            demo_spec['baseline'] = demo_spec['raw'] - demo_spec['processed']
+            custom_colors['baseline'] = '#00F122'
+
+        demo_spec_fig = demo_spec.melt('wavenumber', var_name='category', value_name='intensity')       
+        
+        
 
         fig = px.line(demo_spec_fig, x="wavenumber", y="intensity", color='category', color_discrete_map=custom_colors, )
         st.plotly_chart(fig, use_container_width=True)
@@ -248,17 +248,21 @@ def run():
         if download_button:
             with st.status('Running......', expanded=True) as status:
                 st.write('Processing data...')
-                res_df = np.c_[indexs, np.r_[wavenumber[None, :], demo_spec]]
+                time.sleep(1)
+                res_df = np.c_[indexs, np.r_[wavenumber[None, cut_start:cut_end], demo_mapping]]
                 res_df = pd.DataFrame(res_df)
                 st.write('Saving data...')
-                save_path = f'{received_dir}/{dir_name}/pre_{filename}'
-                res_df.to_csv(save_path, sep='\t', index=False, header=False)
-
+                time.sleep(1)
+                # save_path = f'{received_dir}/{dir_name}/pre_{filename}'
+                # res_df.to_csv(save_path, sep='\t', index=False, header=False)
+                file = res_df.to_csv(sep='\t', index=False, header=False)
                 st.write('Generating download URL...')
-                with open(save_path, 'rb') as f:
-                    file = f.read()
-                st.success('Done!')
-                generate_download_link(file, f'pre_{filename}')                                
+                time.sleep(1)
+                # with open(save_path, 'rb') as f:
+                #     file = f.read()
+                mdlit('[red]**Done!**[/red]')
+                time.sleep(1)
+                generate_download_link(file.encode('utf-8'), f'pre_{filename}')                                
                 status.update(label="Complete!", state="complete", expanded=True)
     
         
