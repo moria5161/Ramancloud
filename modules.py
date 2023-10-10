@@ -94,10 +94,10 @@ def baseline_module(spec_df):
         with col1:
             lambda_ = st.slider('lambda', 1, 200, 15)
         with col2:
-            order_ = st.slider('order', 1, 4, 2)
-        if order_ >= lambda_:
-            st.error('order must be less than lambda')
-            st.stop()
+            order_ = st.slider('order', 1, 35, 15)
+        # if order_ >= lambda_:
+        #     st.error('order must be less than lambda')
+        #     st.stop()
         baseline_args.update({'lambda_':lambda_, 'order_':order_})
         cache = spec_df['processed'].copy()
         spec_df['processed'] = airPLS(spec_df['processed'], lambda_, order_)

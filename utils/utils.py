@@ -15,7 +15,10 @@ def minmax(x):
 
 def airPLS(x, lambda_, order_):
     obj = br(x)
-    return obj.ZhangFit(lambda_=lambda_, porder=order_)
+    res = obj.ZhangFit(lambda_=lambda_, )
+    baseline = x - res
+    func = np.poly1d(np.polyfit(np.arange(len(x)), baseline, order_))
+    return x - func(np.arange(len(x)))
 
 def sg(x, window_size, order):
     x = savgol_filter(x, window_size, order)
