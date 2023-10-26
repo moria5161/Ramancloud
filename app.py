@@ -103,19 +103,26 @@ def run():
     st.subheader('Upload spectrum')
 
 
-    upload_file = st.file_uploader("Upload your files", accept_multiple_files=True)    
+    upload_file = st.file_uploader("Upload your files", accept_multiple_files=True, type=['txt'])    
     
     demo_data = '-'
     if not upload_file:
         st.subheader('Or use demo data')
         demo_data = st.selectbox(
-            'Select a demo data', ['-', 'Bacteria',])
-        if demo_data == 'Bacteria':
-                raw_demo_spec = pd.read_csv('/home/room/streamlit/ramancloud_public/samples/Bacteria.txt', delimiter='\t', header=None)
-                raw_demo_spec.columns = ['wavenumber', 'raw']
-                st.session_state['raw_spec'] = raw_demo_spec
-        else:
+            'Select a demo data', ['-', 'Bacteria','Ultra low frequence Raman'])
+        if demo_data == '-':
             st.session_state['raw_spec'] = None
+        elif demo_data == 'Bacteria':
+            raw_demo_spec = pd.read_csv('/home/room/streamlit/ramancloud_public/samples/Bacteria.txt', delimiter='\t', header=None)
+            st.session_state['raw_spec'] = raw_demo_spec
+            raw_demo_spec.columns = ['wavenumber', 'raw']
+        elif demo_data == 'Ultra low frequence Raman':
+            raw_demo_spec = pd.read_csv('/home/room/streamlit/ramancloud_public/samples/ULF.txt', delimiter='\t', header=None)
+            st.session_state['raw_spec'] = raw_demo_spec
+            raw_demo_spec.columns = ['wavenumber', 'raw']
+            
+            
+        
     
         
     if upload_file:
@@ -151,6 +158,11 @@ def run():
             custom_colors['baseline'] = baseline_color
 
         fig = px.line(demo_spec_fig, x="wavenumber", y="intensity", color='category', color_discrete_map=custom_colors)
+
+        if 'breakpoint_left' in baseline_args['args']:
+            # plot 2 vertical lines
+            fig.add_vline(x=demo_spec['wavenumber'].to_numpy()[baseline_args['args']['breakpoint_left']], line_width=1, line_dash="dash", line_color="black")
+            fig.add_vline(x=demo_spec['wavenumber'].to_numpy()[baseline_args['args']['breakpoint_right']], line_width=1, line_dash="dash", line_color="black")
         st.plotly_chart(fig, use_container_width=True)
 
         
@@ -219,7 +231,8 @@ def run():
             if file_count >= 1:
                 os.remove(zip_name)
             else:
-                os.remove(os.path.join(pre_dir, file_name_list[-1]))
+                for file_name in file_name_list:
+                    os.remove(os.path.join(pre_dir, file_name)) 
             os.rmdir(pre_dir)
 
             with open('/home/room/streamlit/ramancloud_public/AddData.sql', 'r') as f:
@@ -239,32 +252,42 @@ def run():
             exec_mysql(sql)
             
 
+
     # citation
-    st.subheader('Citation')
+    st.subheader('Reference')
     st.markdown('''
-          + The denoise methods are refered to [PEER](https://pubs.acs.org/doi/10.1021/acs.analchem.0c05391) and [Savitzky-Golay filter](https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter).  
-          + The baseline substrtction methods are refered to [airPLS](https://doi.org/10.1039/B922045C) and [auto-adaptive background subtraction](https://doi.org/10.1016/j.saa.2016.02.016).  
-          You can also cite this web page if you find help in your research. ''')
+          + The denoise methods are refered to [PEER](https://pubs.acs.org/doi/10.1021/acs.analchem.0c05391) 
+                and [Savitzky-Golay filter](https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter).  
+          + The baseline substrtction methods are refered to [airPLS](https://doi.org/10.1039/B922045C), 
+                [auto-adaptive background subtraction](https://doi.org/10.1016/j.saa.2016.02.016), 
+                [ModPoly](https://doi.org/10.1366/000370203322554518) and [IModPoly](https://doi.org/10.1366/000370207782597003) .  
+          ''')
 
 
-    st.code('''@misc{  
-author       = {Xinyu Lu},  
-title        = {Raman cloud},  
-howpublished = {Web Page},  
-url          = {https://124.222.26.24:8501},  
-year         = {2023},  
-note         = {Accessed on September 14, 2023}  
-}  ''', 
-language='markdown')
+#     st.code('''@misc{  
+# author       = {Xinyu Lu},  
+# title        = {Raman cloud},  
+# howpublished = {Web Page},  
+# url          = {https://ramancloud.luxinyu.site},  
+# year         = {2023},  
+# note         = {Accessed on September 14, 2023}  
+# }  ''', 
+# language='markdown')
 
 if __name__ == "__main__":
-    try:
+    # try:
         run()
-    except Exception as e:
-        print(e)
-        st.error('Opps! Something went wrong, please check again or contact us.')
+    # except Exception as e:
+    #     print(e)
+    #     st.error('Opps! Something went wrong, please check again or contact us.')
 
-    # feedback
-    st.subheader('Feedback')
-    st.caption('If you have any questions or suggestions, please [contact us.](mailto:luxinyu@stu.xmu.edu.cn)')
+    # # feedback
+    # st.subheader('Feedback')
+    # st.caption('If you have any questions or suggestions, please [contact us.](mailto:luxinyu@stu.xmu.edu.cn)')
+    # # add html
+    # st.markdown('''
+    #             ---
+    #             <p style="text-align: center">备案号：<a href="https://beian.miit.gov.cn"; >京ICP备2023012239号</a></p>
+    #             ''', unsafe_allow_html=True)
+
     

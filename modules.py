@@ -3,8 +3,9 @@ from markdownlit import mdlit
 
 from utils.utils import cut
 from utils.utils import sg
-from utils.utils import airPLS
+from utils.utils import airPLS, ModPoly, IModPoly, ULF
 from utils.utils import skip
+
 from utils.PEER import peer
 from utils.AABS import auto_adaptive
 
@@ -78,7 +79,7 @@ def smooth_module(spec_df):
 
 def baseline_module(spec_df):
     baseline_args = {}
-    baseline_method_dict = {'Auto-Adaptive': auto_adaptive, 'airPLS': airPLS, 'Skip': skip}
+    baseline_method_dict = {'airPLS': airPLS, 'Auto-Adaptive': auto_adaptive, 'ModPoly':ModPoly, 'IModPoly': IModPoly, 'ULF':ULF, 'Skip': skip}
     if 'processed' not in spec_df.columns:
         spec_df['processed'] = spec_df['raw'].copy()
     st.subheader('Baseline removal')
@@ -86,7 +87,7 @@ def baseline_module(spec_df):
     with col1:
         st.caption('The module is used to remove the baseline, please select a method to continue.')
     with col2:
-        baseline_method = st.selectbox('Select a method', ('Auto-Adaptive', 'airPLS', 'Skip'), key='baseline', label_visibility='collapsed')
+        baseline_method = st.selectbox('Select a method', baseline_method_dict.keys(), key='baseline', label_visibility='collapsed')
     
     lambda_, order_ = None, None
     if baseline_method == 'airPLS':
@@ -109,6 +110,51 @@ def baseline_module(spec_df):
                 [red]The smaller the lambda, the greater the deduction of the baseline.[/red]
                 The order is the order of the polynomial used to fit the baseline, which must be less than the lambda.
                 """)
+    elif baseline_method in ['ModPoly', 'IModPoly']:
+
+        order_ = st.slider('order', 1, 35, 15)
+        baseline_args.update({'order_':order_})
+        cache = spec_df['processed'].copy()
+        if baseline_method == 'ModPoly':
+            spec_df['processed'] = ModPoly(spec_df['processed'], order_)
+        else:
+            spec_df['processed'] = IModPoly(spec_df['processed'], order_)
+        spec_df['baseline'] = cache - spec_df['processed']
+        with st.expander("See explanation"):
+            mdlit(
+                """This method is based on [ModPoly](https://doi.org/10.1366/000370203322554518) and [IModPoly](https://doi.org/10.1366/000370207782597003) 
+                The parameters are the order of the polynomial used to fit the baseline. 
+                [red]The higher the order, the greater the deduction of the baseline.[/red]
+                """)
+    elif baseline_method == 'ULF':
+        import numpy as np
+        col1, col2, col3, col4, col5 = st.columns(5)
+        with col1:
+            breakpoint_left = st.slider('breakpoint left', spec_df['wavenumber'].min(), float(50), float(15))
+            # find the index of the breakpoint
+            breakpoint_left = np.argmin(abs(spec_df['wavenumber'] - breakpoint_left))
+        with col2:
+            breakpoint_right = st.slider('breakpoint right', spec_df['wavenumber'].min(), float(50), float(26))
+            breakpoint_right = np.argmin(abs(spec_df['wavenumber'] - breakpoint_right))
+        with col3:
+            order_left = st.slider('order left', 1, 10, 3)
+        with col4:
+            order_right = st.slider('order right', 1, 10, 3)
+        with col5:
+            order_whole = st.slider('order whole', 1, 30, 15)
+        if breakpoint_left >= breakpoint_right:
+            st.error('"breakpoint left" must be less than "breakpoint right"')
+            st.stop()
+        baseline_args.update({'breakpoint_left':int(breakpoint_left), 'breakpoint_right':int(breakpoint_right), 'order_left':order_left, 'order_right':order_right, 'order_whole':order_whole})
+        # st.write(baseline_args)
+        cache = spec_df['processed'].copy()
+        spec_df['processed'] = ULF(spec_df['processed'], **baseline_args)
+        spec_df['baseline'] = cache - spec_df['processed']
+        with st.expander("See explanation"):
+            mdlit(
+                """This method is homemade.
+                """)
+
     elif baseline_method == 'Auto-Adaptive':
         cache = spec_df['processed'].copy()
         spec_df['processed'] = auto_adaptive(spec_df[['processed']])

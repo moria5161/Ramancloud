@@ -18,7 +18,58 @@ def airPLS(x, lambda_, order_):
     res = obj.ZhangFit(lambda_=lambda_, )
     baseline = x - res
     func = np.poly1d(np.polyfit(np.arange(len(x)), baseline, order_))
-    return x - func(np.arange(len(x)))
+    res = x - func(np.arange(len(x)))
+    res = res - res.min()
+    return res
+
+def ModPoly(x, order_):
+    obj = br(x)
+    res = obj.ModPoly(order_)
+    res = res - res.min()
+    return res
+
+def IModPoly(x, order_):
+    obj = br(x)
+    res = obj.IModPoly(order_)
+    res = res - res.min()
+    return res 
+
+def ModPoly(x, order_, gradient=1e-3, repitition=9):
+    obj = br(x)
+    res = obj.ModPoly(order_, gradient=gradient, repitition=repitition)
+    res = res - res.min()
+    return res
+
+def IModPoly(x, order_, gradient=1e-3, repitition=9):
+    obj = br(x)
+    res = obj.IModPoly(order_, gradient=gradient, repitition=repitition)
+    res = res - res.min()
+    return res 
+
+def ULF(x, breakpoint_right, breakpoint_left, order_left, order_right, order_whole):
+    x = np.array(x)
+    left = ModPoly(x[:breakpoint_right], order_left, gradient=1e-3, repitition=9)
+    left -= left.min()
+    right = IModPoly(x[breakpoint_left:], order_right, gradient=1e-3, repitition=9)
+    right = right[breakpoint_right-breakpoint_left:]
+    # right -= right.min()
+
+    left_baseline = x[:breakpoint_right]- left
+    right_baseline = x[breakpoint_right:]- right
+    dif = left_baseline[-1]-right_baseline[0]   
+    right -= dif
+
+    tmp = np.concatenate((left, right))
+    target_baseline = (x - tmp)[:]
+    func = np.polyfit(np.arange(len(target_baseline)), target_baseline, order_whole)
+    target_baseline = np.polyval(func, np.arange(len(target_baseline)))
+    obj_baseline = x - tmp
+    obj_baseline[:] = target_baseline
+    tmp = x - obj_baseline
+    tmp = IModPoly(tmp, 1)
+    tmp = tmp - tmp.min()
+    return tmp
+
 
 def sg(x, window_size, order):
     x = savgol_filter(x, window_size, order)
