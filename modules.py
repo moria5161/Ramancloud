@@ -141,7 +141,7 @@ def baseline_module(spec_df):
         with col4:
             order_right = st.slider('order right', 1, 10, 3)
         with col5:
-            order_whole = st.slider('order whole', 1, 30, 15)
+            order_whole = st.slider('order whole', 0, 30, 15)
         if breakpoint_left >= breakpoint_right:
             st.error('"breakpoint left" must be less than "breakpoint right"')
             st.stop()

@@ -60,12 +60,13 @@ def ULF(x, breakpoint_right, breakpoint_left, order_left, order_right, order_who
     right -= dif
 
     tmp = np.concatenate((left, right))
-    target_baseline = (x - tmp)[:]
-    func = np.polyfit(np.arange(len(target_baseline)), target_baseline, order_whole)
-    target_baseline = np.polyval(func, np.arange(len(target_baseline)))
-    obj_baseline = x - tmp
-    obj_baseline[:] = target_baseline
-    tmp = x - obj_baseline
+    if order_whole:
+        target_baseline = (x - tmp)[:]
+        func = np.polyfit(np.arange(len(target_baseline)), target_baseline, order_whole)
+        target_baseline = np.polyval(func, np.arange(len(target_baseline)))
+        obj_baseline = x - tmp
+        obj_baseline[:] = target_baseline
+        tmp = x - obj_baseline
     tmp = IModPoly(tmp, 1)
     tmp = tmp - tmp.min()
     return tmp
