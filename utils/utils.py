@@ -67,8 +67,8 @@ def ULF(x, breakpoint_right, breakpoint_left, order_left, order_right, order_who
         obj_baseline = x - tmp
         obj_baseline[:] = target_baseline
         tmp = x - obj_baseline
-    tmp = IModPoly(tmp, 1)
-    tmp = tmp - tmp.min()
+    tmp = IModPoly(tmp, 2)
+    # tmp = tmp - tmp.min()
     return tmp
 
 
