@@ -168,7 +168,7 @@ def run():
 
     st.subheader('Upload mapping')
 
-    upload_file = st.file_uploader("Upload your files", accept_multiple_files=False)    
+    upload_file = st.file_uploader("Upload your files", accept_multiple_files=False, type=['txt',])    
     
     # st.subheader('Or use demo data')
     # demo_data = st.selectbox(

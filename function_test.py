@@ -7,7 +7,7 @@ import os
 import zipfile
 
 
-received_dir = '/home/room/flask/received/spectra'
+received_dir = '/data/received/spectra'
 startTime = time.time()
 startTime = time.strftime('%Y-%m-%d_%H:%M:%S', time.localtime(startTime))
 dir_name = f"{startTime}_{uuid.uuid4().hex}"

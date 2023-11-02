@@ -1,41 +1,46 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import savemat, loadmat
-import LRMA
+import ALRMA
 import matlab
 
 
-def lrma_denoise(x, mode='alrma', C=400, ref=None):
+def Alrma_denoise(x, mode='aAlrma', C=400, ref=None):
     
     
-    lrma = LRMA.initialize()
+    Alrma = ALRMA.initialize()
     mat_in = matlab.double(x.tolist())
 
-    if ref and mode =='clrma':
-        mat_ref = matlab.double(ref.tolist())
+    if mode =='cAlrma':
+        ref = matlab.double(ref.tolist())
 
-    if mode == 'alrma':
-        mat_res = lrma.ALRMA(mat_in, C,)
-    elif mode == 'clrma':
-        mat_res = lrma.CLRMA(mat_in, ref, C, )
+    img_region = np.arange(1, 3).astype(float).tolist()
+
+    if mode == 'aAlrma':
+        mat_res = Alrma.ALRMA(mat_in, C, matlab.double(img_region), 5, 10, 0.001, 0.01)
+    elif mode == 'cAlrma':
+        mat_res = Alrma.CLRMA(mat_in, ref, C, matlab.double(img_region), 5, 10, 0.001, 0.01)
 
     res = np.array(mat_res)
+    Alrma.terminate()
     return res
-
-
 
 
 if __name__ == "__main__":
     
     
-    data = loadmat('target_2s.mat')
+    data = loadmat('/home/room/streamlit/ramancloud_beta/samples/target_2s.mat')
+    ref = loadmat('/home/room/streamlit/ramancloud_beta/samples/ref1.mat')
     target = data['cube']
+    ref = ref['cube']
 
-    res = lrma_denoise(target, mode='alrma')
-
+    res = Alrma_denoise(target, mode='aAlrma')
+    res2 = Alrma_denoise(target, mode='cAlrma', ref=ref)
     plt.figure()
-    plt.subplot(1, 2, 1)
+    plt.subplot(1, 3, 1)
     plt.imshow(target.reshape(1337, -1, 400)[284])
-    plt.subplot(1, 2, 2)
+    plt.subplot(1, 3, 2)
     plt.imshow(res.reshape(1337, -1, 400)[284])
-    plt.savefig('test.png')
+    plt.subplot(1, 3, 3)
+    plt.imshow(res2.reshape(1337, -1, 400)[284])
+    plt.savefig('test2.png')

@@ -19,7 +19,7 @@ class _PathInitializer(object):
     SUPPORTED_PYTHON_VERSIONS = ['3_8', '3_9', '3_10']
     RUNTIME_VERSION_W_DOTS = '9.14'
     RUNTIME_VERSION_W_UNDERSCORES = '9_14'
-    PACKAGE_NAME = 'LRMA'
+    PACKAGE_NAME = 'ALRMA'
     
     def set_interpreter_version(self):    
         """Make sure the interpreter version is supported."""

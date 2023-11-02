@@ -57,16 +57,16 @@ else:
     
 if __name__ == '__main__':
     setup_dict = {
-        'name': 'LRMA-R2023a',
+        'name': 'ALRMA-R2023a',
         'version': '9.14',
-        'description': 'A Python interface to LRMA',
+        'description': 'A Python interface to ALRMA',
         'author': 'MathWorks',
         'url': 'https://www.mathworks.com/',
         'platforms': ['Linux', 'Windows', 'macOS'],
         'packages': [
-            'LRMA'
+            'ALRMA'
         ],
-        'package_data': {'LRMA': ['*.ctf']}
+        'package_data': {'ALRMA': ['*.ctf']}
     }
     
     if not 'bdist_wheel' in sys.argv[1:]:
