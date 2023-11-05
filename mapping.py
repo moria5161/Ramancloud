@@ -1,3 +1,4 @@
+import re 
 import os
 import uuid
 import time
@@ -16,7 +17,7 @@ import urllib.parse
 
 from BaselineRemoval import BaselineRemoval as br
 from scipy.signal import savgol_filter as sg
-
+from pyALRMA.utils import ALRMADenoise
 
 st.set_page_config(
     initial_sidebar_state="collapsed",
@@ -38,30 +39,68 @@ def smooth(x, window, order):
     x = np.array([sg(xx, window, order) for xx in x])
     return x
 
-def load_mapping(file, save_path=None):
+def skip(x):
+    return x
+
+def load_mapping(file, save_path=None, mode='Horiba'):
     if save_path:
         with open (os.path.join(save_path, file.name), 'wb') as f:
             f.write(file.getvalue())
-    # load data with delimiter '\t' and ',' automaticlly
-    mapping = pd.read_csv(os.path.join(save_path, file.name), delimiter='\t', header=None)
-    st.session_state['raw_mapping'] = mapping
 
-    # find the columns with nan
-    indexs = mapping.loc[:, mapping.isna().any()]
-    # find the rows without nan
-    wavenumber = mapping[mapping.isna().any()].iloc[0].to_numpy()
-    wavenumber = wavenumber[~np.isnan(wavenumber)]
+    if mode == 'Horiba':
+        mapping = pd.read_csv(os.path.join(save_path, file.name), delimiter='\t', header=None)
+        # find the columns with nan
+        indexs = mapping.loc[:, mapping.isna().any()]
+        # find the rows without nan
+        wavenumber = mapping[mapping.isna().any()].iloc[0].to_numpy()
+        wavenumber = wavenumber[~np.isnan(wavenumber)]
+        
+        data = mapping.loc[:, mapping.isna().any() == False].iloc[1:].to_numpy()
+
+    elif mode == 'Renishaw':
+        mapping = pd.read_csv(os.path.join(save_path, file.name), delimiter='\t', header=None)
+        if mapping.shape[1] != 3:
+            st.error('We can just process time series data with 3 columns in Renishaw, please check your files.')
+        mapping.columns = ['time', 'wavenumber', 'intensity']
+        pivot_mapping = mapping.pivot_table(index='wavenumber', 
+                                            columns='time', 
+                                            values='intensity',
+                                            aggfunc='first').reset_index().T
+        indexs = [np.nan] + list(pivot_mapping.index)[1:]
+        wavenumber = pivot_mapping.iloc[0].to_numpy()
+        data = pivot_mapping.iloc[1:].to_numpy()
     
-    data = mapping.loc[:, mapping.isna().any() == False].iloc[1:].to_numpy()
+    elif mode == 'Nanophoton':
+        mapping = pd.read_csv(os.path.join(save_path, file.name), delimiter='\t')
+        wavenumber = mapping.Wavenumber.to_numpy()
+        data = mapping.iloc[:, 1:-1].to_numpy().T
+        
+        def extract_xy(string, key):
+            pattern = 'x(?P<x>\d+)_y(?P<y>\d+)'
+            tmp = re.match(pattern, string).group(key)
+            if type(tmp) == str:
+                tmp = eval(tmp)
+            return tmp
+
+        col = mapping.columns[1:-1]
+        indexs = [(np.nan, np.nan)] + [(extract_xy(c, 'x'), extract_xy(c, 'y')) for c in col]
+    
+    st.session_state['raw_mapping'] = mapping
     return indexs, wavenumber, data
 
 def upload_module(upload_file, save_path):
 
-
-    indexs, wavenumber, mapping = load_mapping(upload_file, save_path)
-        
+    mode = st.radio(
+    "Which instrument is this mapping from?",
+    ["**select one**:point_right:", "Horiba", "Renishaw", "Nanophoton"],
+    horizontal=True,)
+    if mode == "**select one**:point_right:":
+        st.stop()
+    else:
+        # try:
+        indexs, wavenumber, mapping = load_mapping(upload_file, save_path, mode=mode)
     # except:
-    #     st.error('Please check your files, upload error')
+    #     st.error('Your file and the instrument setting must be matched, please check again.')
     # else:
     return indexs, wavenumber, mapping, upload_file.name
     
@@ -80,17 +119,16 @@ def cut_module(mapping_data, wavenumber):
 
 
 def smooth_module(mapping_data):
-    # if 'processed' not in mapping_data.columns:
-    #     mapping_data['processed'] = mapping_data['raw'].copy()
+    smooth_method_dict = {'Savitzky-Golay filter': smooth, 'ALRMA': ALRMADenoise,'**Skip**': skip}
     st.subheader('Smooth')
     col1, col2 = st.columns(2)
     with col1:
-        st.caption('The module is used to smooth the spectrum, please drag the slider or click `skip button`.')
+        st.caption('The module is used to smooth the spectrum, please Select a method to continue.')
     with col2:
-        skip_smooth = st.toggle('Skip', key='smooth')
+        smooth_method = st.selectbox('Select a method', smooth_method_dict.keys(), key='smooth', label_visibility='collapsed')
 
-    window_size, order = None, None
-    if not skip_smooth:
+    if smooth_method == 'Savitzky-Golay filter':
+        window_size, order = None, None
         col1, col2 = st.columns(2)
         with col1:
             window_size = st.slider('smooth window size', 3, 13, 7)
@@ -110,8 +148,20 @@ def smooth_module(mapping_data):
                 then approximated by a polynomial function. [red]The higher the polynomial order, the smoother the signal
                 will be.[/red] The Savitzky-Golay is a type of low-pass filter, which may affect the intensity of raw spectra.
                 """)
-        
-    return mapping_data, (skip_smooth, window_size, order)
+    elif smooth_method == 'ALRMA':
+        col1, col2 = st.columns(2)
+        with col1:
+            img_columns = st.number_input('Image columns', min_value=1, max_value=1000, value=None, placeholder="Input the column of your mapping...")
+        with col2:
+            count = st.number_input('SVD count', min_value=1, max_value=100, value=5, placeholder="How many principle componets for denoising?")
+        spec_region = st.slider('Select the optical spectral range for imaging', min_value=1, max_value=mapping_data.shape[1], value=(1, mapping_data.shape[1]))
+        if img_columns:
+            mapping_data = ALRMADenoise(mapping_data.T, spec_region=spec_region, 
+                                        count=count, img_columns=img_columns).T
+        else:
+            st.warning('Please input the column of your mapping...')
+            st.stop()
+    return mapping_data
 
 
 def baseline_module(mapping_data):
@@ -194,7 +244,7 @@ def run():
         
         demo_mapping, (cut_start, cut_end) = cut_module(raw_mappings, wavenumber)
         with st.spinner("processing"):
-            demo_mapping, smooth_args = smooth_module(demo_mapping)
+            demo_mapping = smooth_module(demo_mapping)
         with st.spinner("processing"):
             demo_mapping, skip_baseline, _ = baseline_module(demo_mapping)
         
@@ -243,7 +293,6 @@ def run():
         fig = px.line(demo_spec_fig, x="wavenumber", y="intensity", color='category', color_discrete_map=custom_colors, )
         st.plotly_chart(fig, use_container_width=True)
 
-
         download_button = st.button('process and download')
         if download_button:
             with st.status('Running......', expanded=True) as status:
@@ -262,10 +311,11 @@ def run():
                 #     file = f.read()
                 mdlit('[red]**Done!**[/red]')
                 time.sleep(1)
-                generate_download_link(file.encode('utf-8'), f'pre_{filename}')                                
+                generate_download_link(file.encode('utf-8'), f'pre_{filename}')  
                 status.update(label="Complete!", state="complete", expanded=True)
-    
         
+
+
 if __name__ == "__main__":
     # try:
     run()
@@ -274,8 +324,15 @@ if __name__ == "__main__":
 
     # feedback
     st.subheader('Feedback')
+    col1, col2, _ = st.columns(3)
+    with col1:
+        star = st.button(':red[Give us a star]:+1:')
+    with col2:
+        feedback = st.button(':blue[Tell me your feelings]:love_letter:') 
+    if star:
+        st.write('Thanks for your support!')
+        st.balloons()
+    if feedback:
+        st.text_area('Your feedback', height=100)
+        st.button('Submit')
     st.caption('If you have any questions or suggestions, please [contact us.](mailto:luxinyu@stu.xmu.edu.cn)')
-    # citation
-    st.subheader('Citation')
-    mdlit('''
-          此版本为测试版，仅供内部使用。20230922''')
