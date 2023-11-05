@@ -1,1 +1,1 @@
-本仓库旨在保存RamanCloud测试版本的代码，具体更新日志见[Tower 文档: Raman cloud 运维与迭代](https://tower.im/teams/802030/documents/5380)
+本仓库旨在保存RamanCloud正式版本的代码，具体更新日志见[Tower 文档: Raman cloud 运维与迭代](https://tower.im/teams/802030/documents/5380)
