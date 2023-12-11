@@ -275,11 +275,11 @@ def run():
 # language='markdown')
 
 if __name__ == "__main__":
-    # try:
+    try:
         run()
-    # except Exception as e:
-    #     print(e)
-    #     st.error('Opps! Something went wrong, please check again or contact us.')
+    except Exception as e:
+        print(e)
+        st.error('Opps! Something went wrong, please check again or contact us.')
 
     # # feedback
     # st.subheader('Feedback')

@@ -134,7 +134,7 @@ def baseline_module(spec_df):
             # find the index of the breakpoint
             breakpoint_left = np.argmin(abs(spec_df['wavenumber'] - breakpoint_left))
         with col2:
-            breakpoint_right = st.slider('breakpoint right', spec_df['wavenumber'].min(), float(50), float(26))
+            breakpoint_right = st.slider('breakpoint right', spec_df['wavenumber'].min(), float(150), float(26))
             breakpoint_right = np.argmin(abs(spec_df['wavenumber'] - breakpoint_right))
         with col3:
             order_left = st.slider('order left', 1, 10, 3)
