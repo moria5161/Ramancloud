@@ -110,7 +110,7 @@ def exec_mysql(sql):
     "host": "10.26.50.228",  # Use Docker container hostname or IP address if needed
     "user": "root",
     "password": "123456",
-    "db": "streamlit_database",  # Use your database name
+    "db": "ramancloud_database",  # Use your database name
     "port": 3306,  # This should match the port mapping you used when running the container
     }
 
