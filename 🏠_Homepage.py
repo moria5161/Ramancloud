@@ -19,7 +19,7 @@ st.set_page_config(
 
 def data_processing_and_mining():
 
-    st.subheader("Data processing and mining",)
+    st.subheader("Get started")
     tab1, tab2, tab3, tab4 = st.tabs(['process spectra', 'process imaging', 'predict molecular spectra', 'other useful tools'])
     with tab1:
         img_col, text_col = st.columns([0.3, 0.7])
@@ -65,8 +65,8 @@ def data_processing_and_mining():
     with st.expander(":rainbow[**About user agreement and privacy policy**]"):
         st.warning("By initiating the use of our application, you are indicating your agreement with our [user agreement and privacy policy](privacy_policy).")
 def get_to_know_us():
-    st.subheader("Get to know us")
-    col1, col2, col3 = st.tabs(['key features', 'updates', 'community'])
+    st.subheader("Documentations")
+    col1, col2, col3 = st.tabs(['key features', 'updates', 'roadmap'])
     col1.markdown('''**Discover our unique features for advanced research and analysis by Raman spectroscopy.**  
                 :one: Advanced pre-processing  
                 :two: Accurate Peak Identification  
@@ -81,12 +81,10 @@ def get_to_know_us():
                     :new: [:red[read our changelog]](changelog)
                     ''')
     col3.markdown('''**Say sth.**  
-                    :one: ...  
-                :two: ...  
-                :three: ...  
-                :four: ...  
+                :one: Upcoming Features:  
+                :two: Improvements and Enhancements:  
+                :three: Milestones and Achievements:  
                 :globe_with_meridians: [:red[visit our github]](https://github.com/X1nyuLu)''')
-    
 
 def our_recent_research():
     
@@ -202,8 +200,7 @@ def feedback():
 
 if __name__ == "__main__":
 
-    st.image('/media/ramancloud/static/logo.png',  use_column_width=True)
-
+    st.image('/media/ramancloud/static/logo2.png',  use_column_width=True)
     
     # Set the font size for st.tabs using HTML styling
     css = '''
