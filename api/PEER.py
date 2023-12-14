@@ -247,9 +247,10 @@ def peer(data, loops=1, hlaf_k_threshold=2):
 
 # ————————test————————#
 if __name__ == "__main__":
-    data = np.loadtxt('/home/room/streamlit/denoise/samples/Bacteria.txt')
+    data = np.loadtxt('/media/ramancloud/samples/Bacteria.txt')
     spec = data[:, -1]
-    import matplotlib.pyplot as plt
-    plt.plot(spec)
-    plt.plot(peer(spec))
-    plt.savefig('peer.png')
+    print(peer(spec))
+    # import matplotlib.pyplot as plt
+    # plt.plot(spec)
+    # plt.plot(peer(spec))
+    # plt.savefig('peer.png')

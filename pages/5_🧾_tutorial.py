@@ -1,5 +1,5 @@
 import streamlit as st
-from streamlit_extras.app_logo import add_logo
+# from streamlit_extras.app_logo import add_logo
 from streamlit_extras.switch_page_button import switch_page
 
 
@@ -182,7 +182,7 @@ def sidebar_content():
 
 if __name__ == "__main__":
     
-    add_logo("static/icon.png", height=10)
+    # add_logo("static/icon.png", height=10)
 
     main_content()
     sidebar_content()

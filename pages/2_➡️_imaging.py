@@ -15,32 +15,8 @@ import pandas as pd
 import base64
 import urllib.parse
 
-from BaselineRemoval import BaselineRemoval as br
-from scipy.signal import savgol_filter as sg
-from utils.utils import ALRMADenoise
+from utils.modules import imaging_denoise_module
 
-st.set_page_config(
-    initial_sidebar_state="auto",
-)
-
-def cut(x:np.array, wavenumber, values):
-    return x[:, (wavenumber >= values[0])&(wavenumber <= values[1])]
-
-def minmax(x):
-    return (x - x.min()) / (x.max() - x.min())
-
-def baseline(x, lambda_, order_):
-    def func(x):
-        obj = br(x)
-        return obj.ZhangFit(lambda_=lambda_, porder=order_)
-    return np.array([func(xx) for xx in x])
-
-def smooth(x, window, order):
-    x = np.array([sg(xx, window, order) for xx in x])
-    return x
-
-def skip(x):
-    return x
 
 def load_mapping(file, save_path=None, mode='Horiba'):
     if save_path:
@@ -118,16 +94,16 @@ def cut_module(mapping_data, wavenumber):
     return new_array , (start_idx, end_idx)
 
 
-def smooth_module(mapping_data):
-    smooth_method_dict = {'Savitzky-Golay filter': smooth, 'ALRMA': ALRMADenoise,'**Skip**': skip}
+def denoise_module(mapping_data):
+    denoise_method_dict = {'Savitzky-Golay filter': smooth, 'ALRMA': ALRMADenoise,'**Skip**': skip}
     st.subheader('Smooth')
     col1, col2 = st.columns(2)
     with col1:
         st.caption('The module is used to smooth the spectrum, please Select a method to continue.')
     with col2:
-        smooth_method = st.selectbox('Select a method', smooth_method_dict.keys(), key='smooth', label_visibility='collapsed')
+        denoise_method = st.selectbox('Select a method', denoise_method_dict.keys(), key='smooth', label_visibility='collapsed')
 
-    if smooth_method == 'Savitzky-Golay filter':
+    if denoise_method == 'Savitzky-Golay filter':
         window_size, order = None, None
         col1, col2 = st.columns(2)
         with col1:
@@ -148,7 +124,7 @@ def smooth_module(mapping_data):
                 then approximated by a polynomial function. [red]The higher the polynomial order, the smoother the signal
                 will be.[/red] The Savitzky-Golay is a type of low-pass filter, which may affect the intensity of raw spectra.
                 """)
-    elif smooth_method == 'ALRMA':
+    elif denoise_method == 'ALRMA':
         col1, col2 = st.columns(2)
         with col1:
             img_columns = st.number_input('Image columns', min_value=1, max_value=1000, value=None, placeholder="Input the column of your mapping...")
@@ -244,7 +220,7 @@ def run():
         
         demo_mapping, (cut_start, cut_end) = cut_module(raw_mappings, wavenumber)
         with st.spinner("processing"):
-            demo_mapping = smooth_module(demo_mapping)
+            demo_mapping = denoise_module(demo_mapping)
         with st.spinner("processing"):
             demo_mapping, skip_baseline, _ = baseline_module(demo_mapping)
         
