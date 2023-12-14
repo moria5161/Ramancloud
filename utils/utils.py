@@ -14,8 +14,12 @@ def generate_download_link(file, filename):
     # check the file type
     file_type = filename.split('.')[-1]
     download_string = file_type.upper() if 'baseline_' not in filename else 'baseline'
-    encoded = base64.b64encode(file).decode()
     quoted_filename = urllib.parse.quote(filename)
+    if file_type == 'zip':
+        file_content = file.getvalue()
+        encoded = base64.b64encode(file_content).decode()
+    else:
+        encoded = base64.b64encode(file).decode()
     href = f'<a href="data:application/{file_type};base64, {encoded}" download="{quoted_filename}">Download {download_string} File</a>'
     return href
 

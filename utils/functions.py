@@ -5,6 +5,7 @@ This file contains the functions and algorithms used in the modules.
 import numpy as np
 from BaselineRemoval import BaselineRemoval as br
 from scipy.signal import savgol_filter
+from api.PEER import weight_resultX2
 # import pywt
 import pymysql
 
@@ -17,6 +18,7 @@ def cut(x, values):
 def minmax(x):
     return (x - x.min()) / (x.max() - x.min())
 
+# ==================== Baseline Correction ==================== #
 def airPLS(x, lambda_, order_):
     obj = br(x)
     res = obj.ZhangFit(lambda_=lambda_, )
@@ -25,6 +27,9 @@ def airPLS(x, lambda_, order_):
     res = x - func(np.arange(len(x)))
     res = res - res.min()
     return res
+
+def auto_adaptive(x):
+    return x 
 
 
 def ModPoly(x, order_, gradient=1e-3, repitition=9):
@@ -39,7 +44,7 @@ def IModPoly(x, order_, gradient=1e-3, repitition=9):
     res = res - res.min()
     return res 
 
-def ULF(x, breakpoint_right, breakpoint_left, order_left, order_right, order_whole):
+def piecewiseFitting(x, breakpoint_right, breakpoint_left, order_left, order_right, order_whole):
     x = np.array(x)
     left = ModPoly(x[:breakpoint_right], order_left, gradient=1e-3, repitition=9)
     left -= left.min()
@@ -64,11 +69,23 @@ def ULF(x, breakpoint_right, breakpoint_left, order_left, order_right, order_who
     # tmp = tmp - tmp.min()
     return tmp
 
-
+# ==================== Denoise ==================== #
 def sg(x, window_size, order):
     x = savgol_filter(x, window_size, order)
     return x
 
+def PEER(x, loops:int =1, hlaf_k_threshold:int =2):
+    
+    if type(x) != np.ndarray:
+        x = np.array(x)
+    if type(loops) != int:
+        loops = int(loops)
+    if type(hlaf_k_threshold) != int:
+        hlaf_k_threshold = int(hlaf_k_threshold)
+
+    for _ in range(loops):
+        x = weight_resultX2(x, hlaf_k_threshold)
+    return x
 
 # def wavelet(data):
 #     # 小波去燥
@@ -85,7 +102,6 @@ def sg(x, window_size, order):
 
 
 def ALRMADenoise():
-
     pass 
 
 def generate_download_link(file, filename):
