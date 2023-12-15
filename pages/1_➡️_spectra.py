@@ -11,9 +11,8 @@ import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 
 import plotly.express  as px
-from markdownlit import mdlit
 
-from utils.modules import spectra_cut_module, spectra_denoise_module, baseline_module
+from utils.modules import spectra_cut_module, spectra_denoise_module, spectra_baseline_module
 from utils.utils import generate_download_link, exec_mysql
 
 
@@ -84,7 +83,7 @@ def run():
     
     raw_specs = st.session_state['raw_spec'] if 'raw_spec' in st.session_state else None
     
-    # data input container
+    # ==============================================data input container=============================================== #
     with st.container(border=True):
         st.subheader('Import data', divider='gray')
 
@@ -129,7 +128,7 @@ def run():
             st.subheader('Data processing', divider='gray')
             demo_spec, cut_args = spectra_cut_module(raw_demo_spec)
             demo_spec, smooth_args = spectra_denoise_module(demo_spec)
-            demo_spec, baseline_args = baseline_module(demo_spec)
+            demo_spec, baseline_args = spectra_baseline_module(demo_spec)
             demo_spec_fig = demo_spec.melt('wavenumber', var_name='category', value_name='intensity')
         
         # ================data visualization container================ #
@@ -253,13 +252,12 @@ def run():
 
 
 if __name__ == "__main__":
+    import traceback
     _, main_col, _ = st.columns([0.1, 0.8, 0.1])
     with main_col:
         try:
             run()
         except Exception as e:
-            print(e)
+            print(traceback.format_exc())
             st.error('Opps! Something went wrong, please check again or contact us.')
-
-        # run()
     

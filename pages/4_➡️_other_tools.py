@@ -1,14 +1,13 @@
 import io
-import re
+import time
 import numpy as np
 import pandas as pd
+import zipfile
 import streamlit as st
-import base64
-import urllib
 
 from utils.utils import generate_download_link
 
-
+st.image("https://img.shields.io/badge/Ramancloud-other%20tools-blue?style=for-the-badge", )
 
 mode = st.radio(
     "Which tool would you like to use?",
@@ -22,7 +21,7 @@ elif mode == "merge files into a mapping":
     upload = st.file_uploader("Upload files to merge", 
                               type=["txt", "asc"], accept_multiple_files=True)
     
-    pattern = b'\d+\.\d+[,][-]?\d+\.\d+\s'
+
     if len(upload):
         mapping = []
         for i, file in enumerate(upload):
@@ -39,46 +38,57 @@ elif mode == "merge files into a mapping":
         file = mapping.to_csv(sep='\t', index=False, header=False).encode('utf-8')
                 
         if st.button('merge'):
-            herf = generate_download_link(file, 'merge.txt') 
-            st.markdown(herf, unsafe_allow_html=True)  
+            with st.status('Running......', expanded=True) as status:
+                st.write('Merging data...')
+                time.sleep(2)
+                st.write('Generating download URL...')
+                herf = generate_download_link(file, 'merge.txt') 
+                time.sleep(2)
+                st.markdown(':red[**Done!**]')
+                st.markdown(herf, unsafe_allow_html=True)  
+                status.update(label="Complete!", state="complete", expanded=True)
+                    
+
 elif mode == "split mapping into spectra":
-    st.error('not implemented yet')
-    # upload = st.file_uploader("Upload a file", type="txt")
+    # st.error('not implemented yet')
+    upload = st.file_uploader("Upload a file", type="txt")
 
-    # if upload is not None:
-    #     os.mkdir(os.path.join(received_dir, dir_name))
-    #     save_path = os.path.join(received_dir, dir_name)
-    #     st.write('upload success')
-    #     df = pd.read_csv(upload, delimiter='\t', header=None)
-    #     filename = upload.name
+    if upload is not None:
         
-    #     wave = df.iloc[:, 0].to_numpy()
-    #     data = df.iloc[:, 1:].to_numpy()
-    #     files = [np.c_[wave, data[:, i]] for i in range(data.shape[1])]
+        st.write('upload success')
+        df = pd.read_csv(upload, delimiter='\t', header=None)
+        filename = upload.name
+        
+        wave = df.iloc[:, 0].to_numpy()
+        data = df.iloc[:, 1:].to_numpy()
+        files = [np.c_[wave, data[:, i]] for i in range(data.shape[1])]
 
-    #     zip_name = os.path.join(save_path, 'split.zip')
-    #     zip_file = zipfile.ZipFile(zip_name,'w')
 
-    #     for i, file in enumerate(files):
-    #         np.savetxt(os.path.join(save_path, f'{i}.txt'), file, delimiter='\t')
-    #         zip_file.write(os.path.join(save_path, f'{i}.txt'), f'{i}.txt')
-    #     zip_file.close()
 
-    # def generate_download_link(file, filename):
-    #     import base64
-    #     import urllib
-    #     # check the file type
-    #     file_type = filename.split('.')[-1]
-    #     download_string = file_type.upper() if 'baseline_' not in filename else 'baseline'
-    #     encoded = base64.b64encode(file).decode()
-    #     quoted_filename = urllib.parse.quote(filename)
-    #     href = f'<a href="data:application/{file_type};base64, {encoded}" download="{quoted_filename}">Download {download_string} File</a>'
-    #     st.markdown(href, unsafe_allow_html=True)
+        with io.BytesIO() as zip_buffer: # Create an in-memory zip file
+            with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_file:
+                for i, arr in enumerate(files):
+                    # Convert the ndarray to bytes
+                    arr_bytes = arr.tobytes()
 
-    # if st.button('split'):
-    #     with open(zip_name, "rb") as file:
-    #         zip_contents = file.read()
-    #         generate_download_link(zip_contents, 'split.zip') 
+                    # Create an in-memory file-like object for each array
+                    arr_file = io.BytesIO(arr_bytes)
+
+                    # Add the in-memory file to the zip file
+                    zip_file.writestr(f'{filename}_split_{i}.dat', arr_file.getvalue())
+                print(zip_file)
+            href = generate_download_link(zip_buffer, 'split.zip')
+            
+
+    if st.button('split'):
+        with st.status('Running......', expanded=True) as status:
+            st.write('Spliting data...')
+            time.sleep(2)
+            st.write('Generating download URL...')
+            time.sleep(2)
+            st.markdown(':red[**Done!**]')
+            st.markdown(href, unsafe_allow_html=True)  
+            status.update(label="Complete!", state="complete", expanded=True)
 
 # if __name__ == "__main__":
 #     pass
