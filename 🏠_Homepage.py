@@ -26,7 +26,9 @@ def data_processing_and_mining():
         img_col.image("static/spectra.png", )
         text_col.markdown('''
                         **process spectra**  
-                        introduction about our spectral processing tools.  
+                        Simple, compact online Raman spectral data processing app, 
+                        features several handy data processing operations and real time data visualization. 
+
                         ''')
         if text_col.button(':point_right: :red[try our spectral processing app]', 
                            help='denoising debaseline and so on', use_container_width=True, key='spectra'):
@@ -37,7 +39,9 @@ def data_processing_and_mining():
         img_col.image("static/imaging.png", )
         text_col.markdown('''
                         **process imaging**  
-                        introduction about our processing tools for hyper-spectral imaging ''')
+                        Brother app of spectral data processing app for imaging processing. 
+                        
+                        ''')
         if text_col.button(':point_right: :red[try our hyper-spectral imaging processing app]', 
                            help='denoising debaseline and so on', use_container_width=True, key='imaging'):
             switch_page('imaging')
@@ -47,7 +51,10 @@ def data_processing_and_mining():
         img_col.image("static/mol.png")
         text_col.markdown('''
                         **predict spectra from molecule**  
-                        introduction about our spectral prediction algorithms''')
+                        Features the latest deep learning model for predicting molecular spectral properties. 
+                        Predict corresponding IR, Raman, UV-vis, and NMR spectra based on the molecule file you upload.  
+                        Coming soon...
+                        ''')
         if text_col.button(':point_right: :red[try our spectral prediction app]', 
                            help='find help?', use_container_width=True, key='spectral_prediction'):
             switch_page('spectral_prediction')
@@ -57,7 +64,8 @@ def data_processing_and_mining():
         img_col.image("static/analysis.png", )
         text_col.markdown('''
                         **other tools**  
-                        introduction about other tools''')
+                        Features splitting mapping into spectra and vise verse, merging spectra files into one mapping file, for now.
+                        ''')
         if text_col.button(':point_right: :red[try other useful tools]', 
                            help='find help?', use_container_width=True, key='other_tools'):
             switch_page('other_tools')
@@ -67,24 +75,26 @@ def data_processing_and_mining():
 def get_to_know_us():
     st.subheader("Documentations")
     col1, col2, col3 = st.tabs(['key features', 'updates', 'roadmap'])
-    col1.markdown('''**Discover our unique features for advanced research and analysis by Raman spectroscopy.**  
-                :one: Advanced pre-processing  
-                :two: Accurate Peak Identification  
-                :three: Customization  
-                :four: User-Friendly Interface  
-                :bookmark_tabs: [:red[start with tutorial]](tutorial)'''
+    col1.markdown('''
+                  **Discover our unique features for advanced research and analysis by Raman spectroscopy.**  
+                - Advanced pre-processing  
+                - Customization  
+                - User-Friendly Interface  
+                - :bookmark_tabs: [:red[start with tutorial]](tutorial)'''
                 )
-    col2.markdown('''**Catch up on the latest technical insights and tools from the RamanCloud community.**  
-                    :one: Update P2P for denoising  
-                    :two: Update debaseline for ULF  
-                    :three: Optimize interaction  
-                    :new: [:red[read our changelog]](changelog)
+    col2.markdown('''
+                  **Catch up on the latest technical insights and tools from the RamanCloud community.**  
+                    - Update debaseline for ULF  
+                    - Optimize interaction  
+                    - Add new tools for spliting and merging spectra
+                    - :new: [:red[read our changelog]](changelog)
                     ''')
-    col3.markdown('''**Say sth.**  
-                :one: Upcoming Features:  
-                :two: Improvements and Enhancements:  
-                :three: Milestones and Achievements:  
-                :globe_with_meridians: [:red[visit our github]](https://github.com/X1nyuLu)''')
+    col3.markdown('''
+                **Upcoming Features**  
+                - Add noise2noise-based method for denoising  
+                - Add auto adaptive debaseline algorithm
+                - Add deep learning-based method for molecular spectral prediction
+                - :globe_with_meridians: [:red[visit our github]](https://github.com/X1nyuLu)''')
 
 def our_recent_research():
     
