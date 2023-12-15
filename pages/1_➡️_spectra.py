@@ -7,9 +7,10 @@ import time
 import zipfile
 import pandas as pd
 import numpy as np
-
+                
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
+from streamlit_extras.row import row
 
 import plotly.express  as px
 
@@ -176,12 +177,28 @@ def run():
         # ================download container================ #
         with st.container(border=True):
             st.subheader('Download', divider='gray')
-            col1, col2 = st.columns(2)
-            with col2:
-                download_baseline = st.toggle('Download baseline', key='show_peak_analysis')
-            with col1:
-                download_button =  st.button(':+1: :blue[process and download]')
-            if download_button:
+            download_button = False
+            domain = st.radio(' ',
+                                  [':red[Please select the domain of your sample]:point_down:',
+                                   'electro chemistry:battery:', 
+                                   'TERS:rotating_light:',
+                                '2D materials:large_yellow_square:',
+                                'bacteria:worm:', 
+                                'biology:stethoscope:', 
+                                'drug:radioactive_sign:',
+                                'inorganic materials:coin:',
+                                'organic materials:pill:',
+                                'plant:seedling:', 
+                                'food:rice_ball:',
+                                ],
+                                label_visibility='collapsed',
+                                horizontal=False,)
+
+            if domain != ':red[Please select the domain of your sample]:point_down:':
+                col1, col2 = st.columns(2)
+                download_button =  col1.button(':+1: :blue[process and download]')
+                download_baseline = col2.toggle('Download baseline', key='show_peak_analysis')
+            if download_button:            
                 if demo_data != '-':
                     st.error('Downloading demo data is not supported. Please upload your own data.')
                     st.stop()
@@ -245,6 +262,7 @@ def run():
                     smooth_args['args'],
                     baseline_args['method'].__name__,
                     baseline_args['args'],
+                    domain
                     )
                 exec_mysql(sql)
 
@@ -272,12 +290,12 @@ if __name__ == "__main__":
     import traceback
     _, main_col, _ = st.columns([0.1, 0.8, 0.1])
     with main_col:
-        # try:
-        #     run()
-        # except Exception as e:
-        #     print(traceback.format_exc())
-        #     st.error('Opps! Something went wrong, please check again or contact us.')
+        try:
+            run()
+        except Exception as e:
+            print(traceback.format_exc())
+            st.error('Opps! Something went wrong, please check again or contact us.')
     
-        run()
+        # run()
 
         # st.write('<script>....</script>')

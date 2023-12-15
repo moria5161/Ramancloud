@@ -159,8 +159,26 @@ def run():
         # ================download container================ #
         with st.container(border=True):
             st.subheader('Download', divider='gray')
-            st.warning('It may cost a few minutes, please be patient.')
-            download_button = st.button(':+1: :blue[process and download]')
+            download_button = False
+            domain = st.radio(' ',
+                                  [':red[Please select the domain of your sample]:point_down:',
+                                   'electro chemistry:battery:', 
+                                   'TERS:rotating_light:',
+                                '2D materials:large_yellow_square:',
+                                'bacteria:worm:', 
+                                'biology:stethoscope:', 
+                                'drug:radioactive_sign:',
+                                'inorganic materials:coin:',
+                                'organic materials:pill:',
+                                'plant:seedling:', 
+                                'food:rice_ball:',
+                                ],
+                                label_visibility='collapsed',
+                                horizontal=False,)
+            
+            if domain != ':red[Please select the domain of your sample]:point_down:':
+                st.warning('It may cost a few minutes, please be patient.')            
+                download_button = st.button(':+1: :blue[process and download]')
             
             if download_button:
                 if demo_data != '-':
