@@ -17,8 +17,8 @@ def main_content():
     ### Team Members
     - **[Xinyu Lu](https://x1nyulu.github.io/):** Lead Developer, responsible for the core functionality and management of the project.
     - **Dr. Hao Ma:** UI/UX Designer, designed the user interface.
-    - **Siheng Luo, Chenyue Wang, Jia Li:** Functional Developers, responsible for the development of algorithms and tools.
     - **Zhengyan Pan:** Functional Validator, responsible for the validation of algorithms and writing of documentation.
+    - **Siheng Luo, Chenyue Wang, Jia Li:** Functional Developers, responsible for the development of algorithms and tools.
 
     ### Mentors and Advisors
     Special thanks to **[Prof. Bin Ren](https://chem.xmu.edu.cn/en/info/1010/1352.htm)**, 
