@@ -52,7 +52,7 @@ def ZhangFit(x, lambda_=100, porder=1, repitition=15):
         d=yorig-corrected
         dssn=np.abs(d[d<0].sum())
         if(dssn<0.001*(abs(yorig)).sum() or i==repitition):
-            if(i==repitition): print('WARING max iteration reached!')
+            # if(i==repitition): print('WARING max iteration reached!')
             break
         w[d>=0]=0 # d>0 means that this point is part of a peak, so its weight is set to 0 in order to ignore it
         w[d<0]=np.exp(i*np.abs(d[d<0])/dssn)
