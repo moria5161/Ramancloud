@@ -1,49 +1,67 @@
 '''
 This file contains the functions and algorithms used in the modules.
 '''
-
 import numpy as np
 from BaselineRemoval import BaselineRemoval as br
 from scipy.signal import savgol_filter
 from api.PEER import weight_resultX2
+from api.airPLS import ZhangFit
 # import pywt
+
+import streamlit as st
 import pymysql
 
 def skip(x):
     return x
 
-def cut(x, values):
-    return x[(x.wavenumber >= values[0])&(x.wavenumber <= values[1])]
+@st.cache_data
+def cut(x, values, wavenumber=[]):
+    if len(wavenumber):
+        if type(x) != np.ndarray:
+            x = np.array(x)
+        return x[:, (wavenumber >= values[0])&(wavenumber <= values[1])]
+    else:
+        return x[(x.wavenumber >= values[0])&(x.wavenumber <= values[1])]
 
 def minmax(x):
     return (x - x.min()) / (x.max() - x.min())
 
 # ==================== Baseline Correction ==================== #
-def airPLS(x, lambda_, order_):
-    obj = br(x)
-    res = obj.ZhangFit(lambda_=lambda_, )
-    baseline = x - res
-    func = np.poly1d(np.polyfit(np.arange(len(x)), baseline, order_))
-    res = x - func(np.arange(len(x)))
-    res = res - res.min()
-    return res
+
+@st.cache_data
+def airPLS(x, lambda_, order_, imaging=False):
+    def func(inp):
+        res = ZhangFit(inp, lambda_=lambda_, porder=order_)
+        # baseline = inp - res
+        # func = np.poly1d(np.polyfit(np.arange(len(inp)), baseline, order_))
+        # res = inp - func(np.arange(len(inp)))
+        # res = res - res.min()
+        return res
+    if imaging:
+        res = np.apply_along_axis(func, 1, x)
+        return res
+    else:
+        res = func(x)
+        return res
 
 def auto_adaptive(x):
     return x 
 
-
+@st.cache_data
 def ModPoly(x, order_, gradient=1e-3, repitition=9):
     obj = br(x)
     res = obj.ModPoly(order_, gradient=gradient, repitition=repitition)
     res = res - res.min()
     return res
 
+@st.cache_data
 def IModPoly(x, order_, gradient=1e-3, repitition=9):
     obj = br(x)
     res = obj.IModPoly(order_, gradient=gradient, repitition=repitition)
     res = res - res.min()
     return res 
 
+@st.cache_data
 def piecewiseFitting(x, breakpoint_right, breakpoint_left, order_left, order_right, order_whole):
     x = np.array(x)
     left = ModPoly(x[:breakpoint_right], order_left, gradient=1e-3, repitition=9)
@@ -70,11 +88,16 @@ def piecewiseFitting(x, breakpoint_right, breakpoint_left, order_left, order_rig
     return tmp
 
 # ==================== Denoise ==================== #
-def sg(x, window_size, order):
-    x = savgol_filter(x, window_size, order)
+@st.cache_data
+def sg(x, window_size, order, imaging=False):
+    if imaging:
+        x = np.apply_along_axis(savgol_filter, 1, x, window_size, order)
+    else:
+        x = savgol_filter(x, window_size, order)
     return x
 
-def PEER(x, loops:int =1, hlaf_k_threshold:int =2):
+@st.cache_data
+def PEER(x, loops:int =1, hlaf_k_threshold:int =2, imaging:bool=False):
     
     if type(x) != np.ndarray:
         x = np.array(x)
@@ -84,7 +107,11 @@ def PEER(x, loops:int =1, hlaf_k_threshold:int =2):
         hlaf_k_threshold = int(hlaf_k_threshold)
 
     for _ in range(loops):
-        x = weight_resultX2(x, hlaf_k_threshold)
+        if imaging:
+            x = np.apply_along_axis(weight_resultX2, 1, x, hlaf_k_threshold)
+        else:
+            x = weight_resultX2(x, hlaf_k_threshold)
+
     return x
 
 # def wavelet(data):
@@ -104,6 +131,8 @@ def PEER(x, loops:int =1, hlaf_k_threshold:int =2):
 def ALRMADenoise():
     pass 
 
+
+@st.cache_data
 def generate_download_link(file, filename):
     import base64
     import urllib.parse
@@ -115,7 +144,7 @@ def generate_download_link(file, filename):
     href = f'<a href="data:application/{file_type};base64, {encoded}" download="{quoted_filename}">Download {download_string} File</a>'
     return href
 
-
+@st.cache_data
 def exec_mysql(sql):
 
     # Define the database connection parameters

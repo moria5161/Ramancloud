@@ -2,13 +2,56 @@
 This file contains some general and useful tools, except for the functions and algorithms used in the modules.
 '''
 
-
+import io
+import re
+import streamlit as st
 import numpy as np
+import pandas as pd
 import pymysql
 import base64
 import urllib.parse
 
 
+def load_mapping_files(content, mode='Horiba'):
+    if mode == 'Horiba':
+        mapping = pd.read_csv(io.BytesIO(content), delimiter='\t', header=None)
+        # find the columns with nan
+        indexs = mapping.loc[:, mapping.isna().any()]
+        # find the rows without nan
+        wavenumber = mapping[mapping.isna().any()].iloc[0].to_numpy()
+        wavenumber = wavenumber[~np.isnan(wavenumber)]
+        
+        data = mapping.loc[:, mapping.isna().any() == False].iloc[1:].to_numpy()
+
+    elif mode == 'Renishaw':
+        mapping = pd.read_csv(io.BytesIO(content), delimiter='\t', header=None)
+        if mapping.shape[1] != 3:
+            st.error('We can just process time series data with 3 columns in Renishaw, please check your files.')
+        mapping.columns = ['time', 'wavenumber', 'intensity']
+        pivot_mapping = mapping.pivot_table(index='wavenumber', 
+                                            columns='time', 
+                                            values='intensity',
+                                            aggfunc='first').reset_index().T
+        indexs = [np.nan] + list(pivot_mapping.index)[1:]
+        wavenumber = pivot_mapping.iloc[0].to_numpy()
+        data = pivot_mapping.iloc[1:].to_numpy()
+    
+    elif mode == 'Nanophoton':
+        mapping = pd.read_csv(io.BytesIO(content), delimiter='\t')
+        wavenumber = mapping.Wavenumber.to_numpy()
+        data = mapping.iloc[:, 1:-1].to_numpy().T
+        
+        def extract_xy(string, key):
+            pattern = 'x(?P<x>\d+)_y(?P<y>\d+)'
+            tmp = re.match(pattern, string).group(key)
+            if type(tmp) == str:
+                tmp = eval(tmp)
+            return tmp
+
+        col = mapping.columns[1:-1]
+        indexs = [(np.nan, np.nan)] + [(extract_xy(c, 'x'), extract_xy(c, 'y')) for c in col]
+
+    return mapping, indexs, wavenumber, data
 def generate_download_link(file, filename):
 
     # check the file type

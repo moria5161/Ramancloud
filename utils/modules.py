@@ -2,6 +2,8 @@
 This file contains modules used in the app. They are more advanced and complicated than the functions and algorithms in utils/functions.py.
 '''
 
+import numpy as np
+import pandas as pd
 import streamlit as st
 from markdownlit import mdlit
 
@@ -9,6 +11,100 @@ from utils.functions import cut
 from utils.functions import skip
 from utils.functions import sg, PEER, auto_adaptive
 from utils.functions import airPLS, ModPoly, IModPoly, piecewiseFitting
+
+
+#====================general submodules====================#
+
+def PEER_submodule(denoise_use_sidebar=False, imaging=False):
+
+    if denoise_use_sidebar:
+        with st.sidebar:
+            col1, col2 = st.columns(2)
+            loops = col1.slider('loop times', 1, 5, 1, key='sidebar_loop')
+            hlaf_k_threshold = col2.slider('peak seaking', 0, 7, 1, key='sidebar_hlaf_k_threshold')
+    else:
+        col1, col2 = st.columns(2)
+        loops = col1.slider('loop times', 1, 5, 1)
+        hlaf_k_threshold = col2.slider('peak seaking parameter', 0, 7, 1)
+    
+    with st.expander("See explanation"):
+        st.write(
+            """
+
+            **Loop times:** the number of times to repeat denoising.  
+            **Peak seaking parameter:** key parameter for peak identification, which can be set according to the level of noise.  
+            The greater the noise level, the smaller the value.   
+            This is Peak Extraction and Retention Algorithm [(PEER)](https://pubs.acs.org/doi/10.1021/acs.analchem.0c05391). You can find more details in [tutorial](/tutorial).
+            
+            """)
+
+        return {'loops':loops, 'hlaf_k_threshold':hlaf_k_threshold, 'imaging':imaging}
+
+
+def sg_submodule(denoise_use_sidebar=False, imaging=False):
+    if denoise_use_sidebar:
+        with st.sidebar:
+            col1, col2 = st.columns(2)
+            window_size = col1.slider('smooth window size', 3, 13, 7, key='sidebar_window_size')
+            order = col2.slider('smooth order', 1, 5, 3, key='sidebar_order')
+    else:
+        col1, col2 = st.columns(2)
+        window_size = col1.slider('smooth window size', 3, 13, 7)
+        order = col2.slider('smooth order', 1, 5, 3)
+    if order >= window_size:
+        st.error('order must be less than window size')
+        st.stop()
+    
+    with st.expander("See explanation"):
+        st.markdown(
+            """  
+            The parameters are the window size of filter and the order of the polynomial used to fit the samples. It is noteable that
+            the window size must be a :red[positive odd integer], and the order must be less than the window size.  
+            The signal is smoothed by convolution with a window function. The data within the window is
+            then approximated by a polynomial function. :red[The higher the polynomial order, the smoother the signal
+            will be.] This method is based on [Savitzky-Golay filter](https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter). 
+            You can find more details in [tutorial](/tutorial).
+            """)
+    return {'window_size':window_size, 'order':order, 'imaging':imaging}     
+
+
+def airPLS_submodule(baseline_use_sidebar=False, imaging=False):
+    if baseline_use_sidebar:
+        with st.sidebar:
+            col1, col2 = st.columns(2)
+            lambda_ = col1.slider('lambda', 1, 200, 100, key='sidebar_lambda')
+            order_ = col2.slider('order', 1, 35, 15, key='sidebar_order')
+    else:
+        col1, col2 = st.columns(2)
+        lambda_ = col1.slider('lambda', 1, 200, 100)
+        order_ = col2.slider('order', 1, 35, 15)
+    # if order_ >= lambda_:
+    #     st.error('order must be less than lambda')
+    #     st.stop()
+    with st.expander("See explanation"):
+        st.markdown(
+            """
+            The parameters are the lambda and the order of the polynomial used to fit the baseline.
+            :red[The smaller the lambda, the greater the deduction of the baseline.]
+            The order is the order of the polynomial used to fit the baseline, which must be less than the lambda.
+            This method is based on [airPLS](https://doi.org/10.1039/B922045C) developed by Zhi-Min Zhang et. al. in Central South University.
+            You can find more details in [tutorial](/tutorial).
+            """)
+    return {'lambda_':lambda_, 'order_':order_, 'imaging':imaging}
+
+def ModPoly_submodule(baseline_use_sidebar=False, imaging=False):
+    if baseline_use_sidebar:
+        with st.sidebar:
+            order_ = st.slider('order', 1, 35, 15, key='sidebar_order')
+    else:
+        order_ = st.slider('order', 1, 35, 15)
+    with st.expander("See explanation"):
+        mdlit(
+            """This method is based on [ModPoly](https://doi.org/10.1366/000370203322554518) and [IModPoly](https://doi.org/10.1366/000370207782597003) 
+            The parameters are the order of the polynomial used to fit the baseline. 
+            [red]The higher the order, the greater the deduction of the baseline.[/red]
+            """)
+    return {'order_':order_, 'imaging':imaging}
 
 
 #====================modules for spectra====================#
@@ -27,13 +123,13 @@ def spectra_cut_module(spec_df):
             values = st.slider(label=' ',label_visibility='collapsed', min_value=MIN, max_value=MAX, value=(float(MIN), float(MAX)))
     else:
         values = st.slider(label=' ', label_visibility='collapsed', min_value=MIN, max_value=MAX, value=(float(MIN), float(MAX)))
-    new_df = cut(spec_df, values)
+    new_df = cut(x=spec_df, values=values)
     return new_df, {'method':cut, 'args':{'values':values}}
 
 
 def spectra_denoise_module(spec_df):
     denoise_method_dict = {'PEER': PEER, 'Savitzky-Golay filter': sg, 'skip': skip}
-    denoise_args = {}
+
     if 'processed' not in spec_df.columns:
         spec_df['processed'] = spec_df['raw'].copy()
         
@@ -47,54 +143,11 @@ def spectra_denoise_module(spec_df):
         st.sidebar.subheader('**smooth parameters**', divider='gray')
     
     if denoise_method == 'PEER':
-        if denoise_use_sidebar:
-            with st.sidebar:
-                col1, col2 = st.columns(2)
-                loops = col1.slider('loop times', 1, 5, 1, key='sidebar_loop')
-                hlaf_k_threshold = col2.slider('peak seaking', 0, 7, 1, key='sidebar_hlaf_k_threshold')
-        else:
-            col1, col2 = st.columns(2)
-            loops = col1.slider('loop times', 1, 5, 1)
-            hlaf_k_threshold = col2.slider('peak seaking parameter', 0, 7, 1)
-        denoise_args.update({'loops':loops, 'hlaf_k_threshold':hlaf_k_threshold})
-        
-        with st.expander("See explanation"):
-            st.write(
-                """
-
-                **Loop times:** the number of times to repeat denoising.  
-                **Peak seaking parameter:** key parameter for peak identification, which can be set according to the level of noise.  
-                The greater the noise level, the smaller the value.   
-                This is Peak Extraction and Retention Algorithm [(PEER)](https://pubs.acs.org/doi/10.1021/acs.analchem.0c05391). You can find more details in [tutorial](/tutorial).
-                
-                """)
-        
+        denoise_args = PEER_submodule(denoise_use_sidebar=denoise_use_sidebar, imaging=False)
 
     elif denoise_method == 'Savitzky-Golay filter':
-        if denoise_use_sidebar:
-            with st.sidebar:
-                col1, col2 = st.columns(2)
-                window_size = col1.slider('smooth window size', 3, 13, 7, key='sidebar_window_size')
-                order = col2.slider('smooth order', 1, 5, 3, key='sidebar_order')
-        else:
-            col1, col2 = st.columns(2)
-            window_size = col1.slider('smooth window size', 3, 13, 7)
-            order = col2.slider('smooth order', 1, 5, 3)
-        if order >= window_size:
-            st.error('order must be less than window size')
-            st.stop()
-        
-        denoise_args.update({'window_size':window_size, 'order':order})
-        with st.expander("See explanation"):
-            st.markdown(
-                """  
-                The parameters are the window size of filter and the order of the polynomial used to fit the samples. It is noteable that
-                the window size must be a :red[positive odd integer], and the order must be less than the window size.  
-                The signal is smoothed by convolution with a window function. The data within the window is
-                then approximated by a polynomial function. :red[The higher the polynomial order, the smoother the signal
-                will be.] This method is based on [Savitzky-Golay filter](https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter). 
-                You can find more details in [tutorial](/tutorial).
-                """)
+        denoise_args = sg_submodule(denoise_use_sidebar=denoise_use_sidebar, imaging=False)
+
     # elif denoise_method == 'Wavelet':
     #     spec_df['processed'] = wavelet(spec_df['processed'])
     spec_df['processed'] = denoise_method_dict[denoise_method](spec_df['processed'], **denoise_args)
@@ -103,7 +156,7 @@ def spectra_denoise_module(spec_df):
     return spec_df, {'method':denoise_method_dict[denoise_method], 'args':denoise_args}
 
 
-def baseline_module(spec_df):
+def spectra_baseline_module(spec_df):
     st.markdown('''<font size=5>**Step 3: baseline removal**</font>''', unsafe_allow_html=True)
 
     baseline_args = {}
@@ -120,38 +173,10 @@ def baseline_module(spec_df):
         st.sidebar.subheader('**baseline parameters**', divider='gray')
     
     if baseline_method == 'airPLS':
-        if baseline_use_sidebar:
-            with st.sidebar:
-                col1, col2 = st.columns(2)
-                lambda_ = col1.slider('lambda', 1, 200, 15, key='sidebar_lambda')
-                order_ = col2.slider('order', 1, 35, 15, key='sidebar_order')
-        else:
-            col1, col2 = st.columns(2)
-            lambda_ = col1.slider('lambda', 1, 200, 15)
-            order_ = col2.slider('order', 1, 35, 15)
-        baseline_args.update({'lambda_':lambda_, 'order_':order_})   
-        
-        with st.expander("See explanation"):
-            st.markdown(
-                """
-                The parameters are the lambda and the order of the polynomial used to fit the baseline.
-                :red[The smaller the lambda, the greater the deduction of the baseline.]
-                The order is the order of the polynomial used to fit the baseline, which must be less than the lambda.
-                This method is based on [airPLS](https://doi.org/10.1039/B922045C) developed by Zhi-Min Zhang et. al. in Central South University.
-                You can find more details in [tutorial](/tutorial).
-                """)
+        baseline_args = airPLS_submodule(baseline_use_sidebar=baseline_use_sidebar, imaging=False)
     
-
     elif baseline_method in ['ModPoly', 'IModPoly']:
-        order_ = st.slider('order', 1, 35, 15)
-        baseline_args.update({'order_':order_})
-        
-        with st.expander("See explanation"):
-            mdlit(
-                """This method is based on [ModPoly](https://doi.org/10.1366/000370203322554518) and [IModPoly](https://doi.org/10.1366/000370207782597003) 
-                The parameters are the order of the polynomial used to fit the baseline. 
-                [red]The higher the order, the greater the deduction of the baseline.[/red]
-                """)
+        baseline_args = ModPoly_submodule(baseline_use_sidebar=baseline_use_sidebar, imaging=False)   
             
     elif baseline_method == 'piecewiseFitting':
         import numpy as np
@@ -198,5 +223,63 @@ def baseline_module(spec_df):
 
 
 #====================modules for mapping====================#
-def imaging_denoise_module():
-    pass
+def imaging_cut_module(mapping_data, wavenumber):
+
+    st.subheader('Cut')
+    st.caption("The module is used to cut the range of wavenumber, please drag the slider.")
+
+    MIN, MAX = wavenumber.min(), wavenumber.max()
+    values = st.slider('Select the range of wavenumber', min_value=MIN, max_value=MAX, value=(float(MIN), float(MAX)))
+    new_array = cut(x=mapping_data, values=values, wavenumber=wavenumber)
+    start_idx = np.where(wavenumber >= values[0])[0][0]
+    end_idx = np.where(wavenumber <= values[1])[0][-1]+1
+    return new_array , (start_idx, end_idx)
+
+
+def imaging_denoise_module(mapping_data):
+    denoise_method_dict = {'Savitzky-Golay filter': sg, 'PEER':PEER, 'skip': skip}
+    denoise_args = {}
+    st.subheader('Smooth')
+    col1, col2 = st.columns(2)
+    with col1:
+        st.caption('The module is used to smooth the spectrum, please Select a method to continue.')
+    with col2:
+        denoise_method = st.selectbox('Select a method', denoise_method_dict.keys(), key='smooth', label_visibility='collapsed')
+
+    if denoise_method == 'Savitzky-Golay filter':
+        denoise_args = sg_submodule(denoise_use_sidebar=False, imaging=True)
+    
+    elif denoise_method == 'PEER':
+        denoise_args = PEER_submodule(denoise_use_sidebar=False, imaging=True)
+
+    elif denoise_method == 'ALRMA':
+        col1, col2 = st.columns(2)
+        with col1:
+            img_columns = st.number_input('Image columns', min_value=1, max_value=1000, value=None, placeholder="Input the column of your mapping...")
+        with col2:
+            count = st.number_input('SVD count', min_value=1, max_value=100, value=5, placeholder="How many principle componets for denoising?")
+        spec_region = st.slider('Select the optical spectral range for imaging', min_value=1, max_value=mapping_data.shape[1], value=(1, mapping_data.shape[1]))
+        if not img_columns:
+            st.warning('Please input the column of your mapping...')
+            st.stop()
+        denoise_args.update({'spec_region':spec_region, 'count':count, 'img_columns':img_columns})
+
+        with st.expander("See explanation"):
+            st.markdown(
+                """ This method is based on [Collaborative Low-Rank Matrix Approximation-Assisted Fast Hyperspectral Raman Imaging and Tip-Enhanced Raman Spectroscopic Imaging](https://doi.org/10.1021/acs.analchem.1c02071).
+                """)
+            
+    mapping_data = denoise_method_dict[denoise_method](mapping_data, **denoise_args)
+    return mapping_data
+
+
+def imaging_baseline_module(mapping_data):
+    st.subheader('Baseline removal')
+    col1, col2 = st.columns(2)
+    col1.caption('The module is used to remove the baseline, please drag the slider or click `skip button`.')
+    skip_baseline = col2.toggle('skip', key='skip_baseline', value=True)
+
+    if not skip_baseline:
+        baseline_args = airPLS_submodule(baseline_use_sidebar=False, imaging=True)
+        mapping_data = airPLS(mapping_data, **baseline_args)
+    return mapping_data, skip_baseline
