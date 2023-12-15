@@ -3,6 +3,7 @@ This page is used to process the spectra.
 '''
 
 import io
+import time
 import zipfile
 import pandas as pd
 import numpy as np
@@ -22,9 +23,9 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+startTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-
-
+@st.cache_data
 def load_data(file):
 
     # load data and convert to string
@@ -65,8 +66,21 @@ def upload_module(files):
 
     return specs, names
 
+@st.cache_resource()
+def save_unlabeled_spectra_to_mysql(raw_specs):
+    
+    sql_template = open('/media/ramancloud/utils/add_unlabeled_spectra.sql', 'r').read()
+    for item in raw_specs:
+        raw_wavenumber = item.wavenumber.to_list()
+        raw_spectrum = item.raw.to_list()
+        sql = sql_template.format(
+                    startTime, 
+                    raw_wavenumber, 
+                    raw_spectrum, 
+                    )
+        exec_mysql(sql)
 
-
+        
 def process(file:pd.DataFrame, cut_args, smooth_args, baseline_args):
     res_df = cut_args['method'](file, **cut_args['args'])
     res_df['raw'] = smooth_args['method'](res_df['raw'], **smooth_args['args']) if smooth_args['args'] else res_df['raw']
@@ -86,7 +100,6 @@ def run():
     # ==============================================data input container=============================================== #
     with st.container(border=True):
         st.subheader('Import data', divider='gray')
-
         st.markdown('<font size=5>**Upload your spectra**</font>', unsafe_allow_html=True)
 
         upload_file = st.file_uploader(label=' ', accept_multiple_files=True, type=['txt', 'asc'], label_visibility='collapsed')    
@@ -108,9 +121,12 @@ def run():
                 raw_demo_spec.columns = ['wavenumber', 'raw']
 
         
-        if upload_file:
+        else:
 
             raw_specs, filenames = upload_module(upload_file)
+            time.sleep(1)
+            st.error('Here is our [user item and privacy policy.](privacy_policy)')
+            save_unlabeled_spectra_to_mysql(raw_specs)
 
             if len(raw_specs) > 1:
                 demo_file = st.selectbox(
@@ -209,28 +225,29 @@ def run():
 
                                 # Add the in-memory file to the zip file
                                 zip_file.writestr(f'pre_{filenames[i]}.txt', df_file.getvalue())
-                            print(zip_file)
                         href = generate_download_link(zip_buffer, 'pre.zip')
                         st.markdown(href, unsafe_allow_html=True)  
 
     
-    #=================save data to mysql================ #
-    # if download_button:
-    #     with open('/home/room/streamlit/ramancloud_public/AddData.sql', 'r') as f:
-    #         sql = f.read()
-    #     sql = sql.format(startTime, 
-    #                     str(raw_demo_spec.wavenumber.to_list()), 
-    #                     raw_demo_spec.raw.to_list(), 
-    #                     demo_spec.processed.to_list(),
-    #                     cut_args,
-    #                     True if smooth_args['method'] != skip else True,
-    #                     smooth_args['method'].__name__,
-    #                     smooth_args['args'],
-    #                     True if baseline_args['args'] != skip else True,
-    #                     baseline_args['method'].__name__,
-    #                     baseline_args['args'])
-    #     exec_mysql(sql)
-            
+            #=================save data to mysql================ #
+                sql = open('/media/ramancloud/utils/add_labeled_spectra.sql', 'r').read()
+    
+                raw_wavenumber = raw_demo_spec.wavenumber.to_list()
+                raw_spectrum = raw_demo_spec.raw.to_list()
+                pre_spectrum = demo_spec.processed.to_list()
+                sql = sql.format(
+                    startTime, 
+                    raw_wavenumber, 
+                    raw_spectrum, 
+                    pre_spectrum,
+                    cut_args['args'],
+                    smooth_args['method'].__name__,
+                    smooth_args['args'],
+                    baseline_args['method'].__name__,
+                    baseline_args['args'],
+                    )
+                exec_mysql(sql)
+
 
 
     #=================reference================ #
@@ -255,9 +272,12 @@ if __name__ == "__main__":
     import traceback
     _, main_col, _ = st.columns([0.1, 0.8, 0.1])
     with main_col:
-        try:
-            run()
-        except Exception as e:
-            print(traceback.format_exc())
-            st.error('Opps! Something went wrong, please check again or contact us.')
+        # try:
+        #     run()
+        # except Exception as e:
+        #     print(traceback.format_exc())
+        #     st.error('Opps! Something went wrong, please check again or contact us.')
     
+        run()
+
+        # st.write('<script>....</script>')

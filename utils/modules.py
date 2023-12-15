@@ -241,10 +241,8 @@ def imaging_denoise_module(mapping_data):
     denoise_args = {}
     st.subheader('Smooth')
     col1, col2 = st.columns(2)
-    with col1:
-        st.caption('The module is used to smooth the spectrum, please Select a method to continue.')
-    with col2:
-        denoise_method = st.selectbox('Select a method', denoise_method_dict.keys(), key='smooth', label_visibility='collapsed')
+    col1.caption('The module is used to smooth the spectrum, please Select a method to continue.')
+    denoise_method = col2.selectbox('Select a method', denoise_method_dict.keys(), key='smooth', label_visibility='collapsed')
 
     if denoise_method == 'Savitzky-Golay filter':
         denoise_args = sg_submodule(denoise_use_sidebar=False, imaging=True)
@@ -270,16 +268,19 @@ def imaging_denoise_module(mapping_data):
                 """)
             
     mapping_data = denoise_method_dict[denoise_method](mapping_data, **denoise_args)
-    return mapping_data
+    return mapping_data, {'method':denoise_method_dict[denoise_method], 'args':denoise_args}
 
 
 def imaging_baseline_module(mapping_data):
+    baseline_method_dict = {'airPLS': airPLS, 'skip': skip}
+    baseline_args = {}
     st.subheader('Baseline removal')
     col1, col2 = st.columns(2)
     col1.caption('The module is used to remove the baseline, please drag the slider or click `skip button`.')
-    skip_baseline = col2.toggle('skip', key='skip_baseline', value=True)
+    baseline_method = col2.selectbox('Select a method', baseline_method_dict.keys(), key='baseline', label_visibility='collapsed')
 
-    if not skip_baseline:
+    if baseline_method == 'airPLS':
         baseline_args = airPLS_submodule(baseline_use_sidebar=False, imaging=True)
-        mapping_data = airPLS(mapping_data, **baseline_args)
-    return mapping_data, skip_baseline
+    
+    mapping_data = baseline_method_dict[baseline_method](mapping_data, **baseline_args)
+    return mapping_data, {'method':baseline_method_dict[baseline_method], 'args':baseline_args}
