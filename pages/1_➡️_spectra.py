@@ -52,9 +52,11 @@ def load_data(file):
 
     # load string with delimiter '\t' and ',' automaticlly to DataFrame
     spec = pd.read_csv(io.BytesIO(content), delimiter=delimiter, header=None)
-    spec.columns = ['wavenumber', 'raw']
-    st.session_state['raw_spec'] = spec
-    return spec 
+    # delete the columns without numbers
+    res = pd.DataFrame({'wavenumber':spec.iloc[:, 0], 'raw':spec.iloc[:, -1]})
+    # spec.columns = []
+    st.session_state['raw_spec'] = res
+    return res 
 
 def upload_module(files):
     specs = []
