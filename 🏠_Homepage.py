@@ -210,7 +210,7 @@ def feedback():
 
 if __name__ == "__main__":
 
-    st.image('/media/ramancloud/static/logo2.png',  use_column_width=True)
+    st.image('/media/ramancloud/static/logo.png',  use_column_width=True)
     
     # Set the font size for st.tabs using HTML styling
     css = '''
