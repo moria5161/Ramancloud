@@ -6,6 +6,7 @@ from BaselineRemoval import BaselineRemoval as br
 from scipy.signal import savgol_filter
 from api.PEER import weight_resultX2
 from api.airPLS import ZhangFit
+from api.modpoly import mod_poly, imod_poly
 # import pywt
 
 import streamlit as st
@@ -31,12 +32,12 @@ def minmax(x):
 @st.cache_data
 def airPLS(x, lambda_, order_, imaging=False):
     def func(inp):
-        res = ZhangFit(inp, lambda_=lambda_, porder=order_)
+        out = ZhangFit(inp, lambda_=lambda_, porder=order_)
         # baseline = inp - res
         # func = np.poly1d(np.polyfit(np.arange(len(inp)), baseline, order_))
         # res = inp - func(np.arange(len(inp)))
         # res = res - res.min()
-        return res
+        return out
     if imaging:
         res = np.apply_along_axis(func, 1, x)
         return res
@@ -48,18 +49,27 @@ def auto_adaptive(x):
     return x 
 
 @st.cache_data
-def ModPoly(x, order_, gradient=1e-3, repitition=9):
-    obj = br(x)
-    res = obj.ModPoly(order_, gradient=gradient, repitition=repitition)
-    res = res - res.min()
-    return res
+def ModPoly(x, order_, gradient=1e-3, repitition=9, imaging=False):
+    def func(inp):
+        out = mod_poly(inp, order_, gradient=gradient, repitition=repitition)
+        return out
+    if imaging:
+        res = np.apply_along_axis(func, 1, x)
+        return res
+    else:
+        res = func(x)
+        return res
 
 @st.cache_data
-def IModPoly(x, order_, gradient=1e-3, repitition=9):
-    obj = br(x)
-    res = obj.IModPoly(order_, gradient=gradient, repitition=repitition)
-    res = res - res.min()
-    return res 
+def IModPoly(x, order_, gradient=1e-3, repitition=9, imaging=False):
+    def func(inp):
+        out = imod_poly(inp, order_, gradient=gradient, repitition=repitition)
+        return out
+    if imaging:
+        res = np.apply_along_axis(func, 1, x)
+    else:
+        res = func(x)
+        return res 
 
 @st.cache_data
 def piecewiseFitting(x, breakpoint_right, breakpoint_left, order_left, order_right, order_whole):
