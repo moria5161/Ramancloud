@@ -129,7 +129,7 @@ def spectra_cut_module(spec_df):
 
 def spectra_denoise_module(spec_df):
     denoise_method_dict = {'PEER': PEER, 'Savitzky-Golay filter': sg, 'skip': skip}
-
+    denoise_args = {}
     if 'processed' not in spec_df.columns:
         spec_df['processed'] = spec_df['raw'].copy()
         
