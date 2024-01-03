@@ -26,7 +26,7 @@ st.set_page_config(
 )
 startTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-@st.cache_data
+# @st.cache_data
 def load_data(file):
 
     # load data and convert to string
