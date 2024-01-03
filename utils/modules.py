@@ -120,9 +120,9 @@ def spectra_cut_module(spec_df):
     if cut_use_sidebar:
         with st.sidebar:
             st.subheader('**spectral range**', divider='gray')
-            values = st.slider(label=' ',label_visibility='collapsed', min_value=MIN, max_value=MAX, value=(float(MIN), float(MAX)))
+            values = st.slider(label=' ',label_visibility='collapsed', min_value=float(MIN), max_value=float(MAX), value=(float(MIN), float(MAX)))
     else:
-        values = st.slider(label=' ', label_visibility='collapsed', min_value=MIN, max_value=MAX, value=(float(MIN), float(MAX)))
+        values = st.slider(label=' ', label_visibility='collapsed', min_value=float(MIN), max_value=float(MAX), value=(float(MIN), float(MAX)))
     new_df = cut(x=spec_df, values=values)
     return new_df, {'method':cut, 'args':{'values':values}}
 
