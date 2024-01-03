@@ -46,7 +46,7 @@ def main_content():
                 On this module, you will be able to select the range of wavenumber via dragging the both ends of wavenumber data.  
                 #### smooth module
                 This module features several algorithms for custom data processing experience: 
-                [Savitzky-Golay](https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter), 
+                [Savitzky-Golay](https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter), [What Is a Savitzky-Golay Filter?](https://ieeexplore.ieee.org/document/5888646),
                 [PEER](https://www.sciencedirect.com/science/article/abs/pii/S0169743905003006),
                 and [P2P]().  
                 
