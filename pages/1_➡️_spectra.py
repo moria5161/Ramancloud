@@ -223,14 +223,14 @@ def run():
 
                 if file_count == 0: # only one file
                     cache_file = io.BytesIO()
-                    res_list[0].to_csv(cache_file, sep='\t', index=False)
+                    res_list[0].to_csv(cache_file, sep='\t', index=False, header=False)
                     href = generate_download_link(cache_file.getvalue(), filenames[-1])
                     st.markdown(href, unsafe_allow_html=True)  
 
                     if download_baseline:
                         cache_file.seek(0)
                         cache_file.truncate(0)
-                        baseline_list[0].to_csv(cache_file, sep='\t', index=False)
+                        baseline_list[0].to_csv(cache_file, sep='\t', index=False, header=False)
                         href = generate_download_link(cache_file.getvalue(), filenames[0])
                         st.markdown(href, unsafe_allow_html=True)  
                 
@@ -240,7 +240,7 @@ def run():
                         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_file:
                             for i, df in enumerate(res_list):
                                 # Convert the pandas DataFrame to bytes
-                                df_bytes = df.to_csv(sep='\t', index=False).encode()
+                                df_bytes = df.to_csv(sep='\t', index=False, header=False).encode()
 
                                 # Create an in-memory file-like object for each array
                                 df_file = io.BytesIO(df_bytes)
