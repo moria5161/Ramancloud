@@ -2,15 +2,28 @@
 This file contains the functions and algorithms used in the modules.
 '''
 import numpy as np
-from BaselineRemoval import BaselineRemoval as br
 from scipy.signal import savgol_filter
 from api.PEER import weight_resultX2
 from api.airPLS import ZhangFit
 from api.modpoly import mod_poly, imod_poly
-# import pywt
-
+from api.p2p import normalization, data_process, train, test, adjust_learning_rate
 import streamlit as st
 import pymysql
+
+import torch
+import torch.nn as nn
+import torch.nn.parallel
+import torch.optim
+import torch.utils.data
+import torch.utils.data.distributed
+from torch.autograd import Variable
+import os
+import matplotlib.pyplot as plt
+from api.model.Simple_FCN import F_CN
+import random
+from scipy.stats import norm
+import time
+
 
 def skip(x):
     return x
@@ -107,7 +120,7 @@ def sg(x, window_size, order, imaging=False):
     return x
 
 @st.cache_data
-def PEER(x, loops:int =1, hlaf_k_threshold:int =2, imaging:bool=False):
+def PEER(x, loops: int = 1, hlaf_k_threshold: int = 2, imaging: bool = False):
     
     if type(x) != np.ndarray:
         x = np.array(x)
@@ -123,6 +136,38 @@ def PEER(x, loops:int =1, hlaf_k_threshold:int =2, imaging:bool=False):
             x = weight_resultX2(x, hlaf_k_threshold)
 
     return x
+
+
+def p2p(x, epochs, imaging: bool = False):
+    if imaging:
+        print('该方法不适用于图像处理')
+    else:
+        modellr = 1e-3
+        model = F_CN()
+        DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        model.to(DEVICE)
+        optimizer = torch.optim.Adam(model.parameters(), lr=modellr, weight_decay=1)
+
+        DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        spectrum, spectrum_true_raw = data_process(x)
+        spectrum_raw = spectrum
+        spectrum_raw = normalization(spectrum_raw)
+        spectrum = normalization(spectrum) * 2
+        spectrum = torch.tensor(spectrum)
+        spectrum = spectrum.reshape(1, spectrum.shape[0])
+        spectrum = spectrum.reshape(1, spectrum.shape[0],
+                                spectrum.shape[1])
+        spectrum = torch.as_tensor(spectrum, dtype=torch.float32)
+        spectrum = spectrum.permute(1, 0, 2)
+        for epoch in range(1, epochs + 1):
+            adjust_learning_rate(optimizer, epoch)
+            train(model, DEVICE, optimizer, spectrum_raw)
+        test(model, DEVICE, spectrum)
+        x = test(model, DEVICE, spectrum)
+        del model
+
+        return x
+
 
 # def wavelet(data):
 #     # 小波去燥

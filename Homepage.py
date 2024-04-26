@@ -80,8 +80,8 @@ def get_to_know_us():
                 - Advanced pre-processing  
                 - Customization  
                 - User-Friendly Interface  
-                - :bookmark_tabs: [:red[start with tutorial]](tutorial)'''
-                )
+                - :bookmark_tabs: [:red[start with tutorial]](tutorial)
+                ''')
     col2.markdown('''
                   **Catch up on the latest technical insights and tools from the RamanCloud community.**  
                     - Update debaseline for ULF  
@@ -95,6 +95,7 @@ def get_to_know_us():
                 - Add auto adaptive debaseline algorithm
                 - Add deep learning-based method for molecular spectral prediction
                 - :globe_with_meridians: [:red[visit our github]](https://github.com/X1nyuLu)''')
+
 
 def our_recent_research():
     
@@ -112,7 +113,7 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.3c01101)
                 '''
             )
-            col2.image('/media/ramancloud/static/spec_cls1.jpeg')
+            col2.image('./static/spec_cls1.jpeg')
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -123,7 +124,7 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.2c02226)
                 '''
             )
-            col2.image('/media/ramancloud/static/spec_cls2.jpeg')
+            col2.image('./static/spec_cls2.jpeg')
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -134,7 +135,7 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.2c01450)
                 '''
             )
-            col2.image('/media/ramancloud/static/spec_cls3.jpeg')
+            col2.image('./static/spec_cls3.jpeg')
         
 
     with tab2:
@@ -148,7 +149,7 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.0c05391)
                 '''
             )
-            col2.image('/media/ramancloud/static/deno_sr1.jpeg')
+            col2.image('./static/deno_sr1.jpeg')
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -158,7 +159,7 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.1c02071)
                 '''
             )
-            col2.image('/media/ramancloud/static/deno_sr2.jpeg')
+            col2.image('./static/deno_sr2.jpeg')
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -169,7 +170,7 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.0c04671)
                 '''
             )
-            col2.image('/media/ramancloud/static/review1.gif')
+            col2.image('./static/review1.gif')
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -180,7 +181,7 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.8b05962)
                 '''
             )
-            col2.image('/media/ramancloud/static/deno_sr3.jpeg')
+            col2.image('./static/deno_sr3.jpeg')
         
         
     with tab3:
@@ -194,7 +195,7 @@ def our_recent_research():
                 [Learn more about it...](https://www.science.org/doi/10.1126/sciadv.adh8362)
                 '''
             )
-            col2.image('/media/ramancloud/static/spec2str.png')
+            col2.image('./static/spec2str.png')
         
 
 
@@ -210,7 +211,7 @@ def feedback():
 
 if __name__ == "__main__":
 
-    st.image('/media/ramancloud/static/logo.png',  use_column_width=True)
+    st.image('./static/logo.png',  use_column_width=True)
     
     # Set the font size for st.tabs using HTML styling
     css = '''

@@ -1,11 +1,8 @@
 import time
-
 import numpy as np
 import pandas as pd
-
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
-
 from plotly.subplots import make_subplots
 import plotly.express as px
 import plotly.graph_objs as go
