@@ -101,6 +101,7 @@ def get_to_know_us():
                 - :globe_with_meridians: [:red[visit our github]](https://github.com/X1nyuLu/ramancloud)''')
 
 
+
 def our_recent_research():
 
     st.subheader("Our recent research")
@@ -140,7 +141,7 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.2c02226)
                 '''
             )
-            col2.image('/media/ramancloud/static/spec_cls2.jpeg')
+            col2.image('./static/spec_cls2.jpeg')
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -210,7 +211,7 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.1c02071)
                 '''
             )
-            col2.image('/media/ramancloud/static/deno_sr2.jpeg')
+            col2.image('./static/deno_sr2.jpeg')
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -221,7 +222,7 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.0c04671)
                 '''
             )
-            col2.image('/media/ramancloud/static/review1.gif')
+            col2.image('./static/review1.gif')
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
