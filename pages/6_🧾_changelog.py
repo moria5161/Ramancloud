@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit_extras.app_logo import add_logo
 from streamlit_extras.switch_page_button import switch_page
 
 # Set the page configuration
@@ -15,6 +14,10 @@ def main_content():
   st.title('Changelog')
   st.markdown(
       """
+#### 20240506
+- Update the publications and some descriptions
+- Optimize the interface
+
 #### 20231212
 - Fixed some bugs
 - Optimized certain algorithms
@@ -54,6 +57,7 @@ def sidebar_content():
         st.markdown('''
 
                     ### Changelog  
+                    - [20240506](#20240506)
                     - [20231212](#20231212)  
                     - [20231105](#20231105)  
                     - [20231026](#20231026)  
@@ -74,7 +78,7 @@ def feedback():
                 ''', unsafe_allow_html=True)
         go_back_to_homepage = st.button('Go back to the homepage', use_container_width=True, help='Thank you for reading this')
         if go_back_to_homepage:
-            switch_page("homepage")
+            st.switch_page("🏠_Homepage.py")
     with col2:
         from streamlit.components.v1 import html
         return html(
@@ -85,9 +89,6 @@ def feedback():
                 )
 
 if __name__ == "__main__":
-    
-    add_logo("static/icon.png", height=10)
-
     main_content()
     sidebar_content()
     feedback()
