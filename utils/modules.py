@@ -272,7 +272,7 @@ def imaging_denoise_module(mapping_data):
 
 
 def imaging_baseline_module(mapping_data):
-    baseline_method_dict = {'airPLS': airPLS, 'skip': skip}
+    baseline_method_dict = {'airPLS': airPLS, 'ModPoly':ModPoly, 'IModPoly': IModPoly, 'skip': skip}
     baseline_args = {}
     st.subheader('Baseline removal')
     col1, col2 = st.columns(2)
@@ -281,6 +281,8 @@ def imaging_baseline_module(mapping_data):
 
     if baseline_method == 'airPLS':
         baseline_args = airPLS_submodule(baseline_use_sidebar=False, imaging=True)
-    
+    elif baseline_method in ['ModPoly', 'IModPoly']:
+        baseline_args = ModPoly_submodule(baseline_use_sidebar=False, imaging=True)   
+
     mapping_data = baseline_method_dict[baseline_method](mapping_data, **baseline_args)
     return mapping_data, {'method':baseline_method_dict[baseline_method], 'args':baseline_args}
