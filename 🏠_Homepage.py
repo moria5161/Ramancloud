@@ -158,6 +158,30 @@ def our_recent_research():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
                 '''
+                ##### Signal2signal: Pushing the Spatiotemporal Resolution to the Limit by Single Chemical Hyperspectral Imaging  
+
+                *Anal. Chem. 2024, 96, 17, 6550–6557*  
+                [Learn more about it...](https://pubs.acs.org/doi/10.1021/acs.analchem.3c04609)
+                '''
+            )
+            col2.image('/media/ramancloud/static/deno_sr6.jpeg')
+        
+        with st.container():
+            col1, col2 = st.columns([0.6, 0.4])
+            col1.markdown(
+                '''
+                ##### Revealing the Denoising Principle of Zero-Shot N2N-Based Algorithm from 1D Spectrum to 2D Image  
+
+                *Anal. Chem. 2024, 96, 10, 4086–4092*  
+                [Learn more about it...](https://pubs.acs.org/doi/10.1021/acs.analchem.3c04608)
+                '''
+            )
+            col2.image('/media/ramancloud/static/deno_sr5.jpeg')
+        
+        with st.container():
+            col1, col2 = st.columns([0.6, 0.4])
+            col1.markdown(
+                '''
                 ##### Noise learning of instruments for high-contrast, high-resolution and fast hyperspectral microscopy and nanoscopy  
 
                 *Nat Commun 15, 754 (2024)*  
