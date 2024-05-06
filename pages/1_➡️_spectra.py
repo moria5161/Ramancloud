@@ -9,9 +9,6 @@ import pandas as pd
 import numpy as np
                 
 import streamlit as st
-from streamlit_extras.switch_page_button import switch_page
-from streamlit_extras.row import row
-
 import plotly.express  as px
 
 from utils.modules import spectra_cut_module, spectra_denoise_module, spectra_baseline_module
@@ -288,7 +285,7 @@ def run():
     
     go_back_to_homepage = st.button('Go back to the homepage', use_container_width=True, help='Thank you for using **RamanCloud!**')
     if go_back_to_homepage:
-        switch_page("homepage")
+        st.switch_page("🏠_Homepage.py")
 
 
 if __name__ == "__main__":
