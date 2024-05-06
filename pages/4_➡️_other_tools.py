@@ -50,32 +50,47 @@ elif mode == "merge files into a mapping":
                     
 
 elif mode == "split mapping into spectra":
-    # st.error('not implemented yet')
+    # select the instrument
+    instrument = st.radio(
+    "Which instrument are these data from?",
+    ["**select one**:point_right:", "Renishaw", "Horiba"],
+    horizontal=True,)
+
+    if instrument == "**select one**:point_right:": st.stop()
+
     upload = st.file_uploader("Upload a file", type="txt")
-
     if upload is not None:
-        
-        st.write('upload success')
-        df = pd.read_csv(upload, delimiter='\t', header=None)
-        filename = upload.name
-        
-        wave = df.iloc[:, 0].to_numpy()
-        data = df.iloc[:, 1:].to_numpy()
-        files = [np.c_[wave, data[:, i]] for i in range(data.shape[1])]
+        st.warning('upload success')
+        if instrument == "Horiba":
+            df = pd.read_csv(upload, delimiter='\t', header=None)
+            filename = upload.name
+            
+            wave = df.iloc[:, 0].to_numpy()
+            data = df.iloc[:, 1:].to_numpy()
+            files = [np.c_[wave, data[:, i]] for i in range(data.shape[1])]
 
+        elif instrument == "Renishaw":
+            df = pd.read_csv(upload, delimiter='\t', header=None)
+            filename = upload.name
+
+            ts = df.iloc[:, 0].to_numpy()
+            batch = np.unique(ts).shape[0]
+            wave = df.iloc[:, 1].to_numpy().reshape(batch, -1)
+            data = df.iloc[:, -1].to_numpy().reshape(batch, -1)
+            
+            files = [np.c_[wave[i], data[i]] for i in range(batch)]
 
 
         with io.BytesIO() as zip_buffer: # Create an in-memory zip file
             with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_file:
                 for i, arr in enumerate(files):
                     # Convert the ndarray to bytes
-                    arr_bytes = arr.tobytes()
-
+                    arr_bytes = io.BytesIO()
                     # Create an in-memory file-like object for each array
-                    arr_file = io.BytesIO(arr_bytes)
-
+                    np.savetxt(arr_bytes, arr, delimiter=',', fmt='%s')
+                    arr_bytes.seek(0)
                     # Add the in-memory file to the zip file
-                    zip_file.writestr(f'{filename}_split_{i}.dat', arr_file.getvalue())
+                    zip_file.writestr(f'{filename}_split_{i+1}.txt', arr_bytes.getvalue())
                 print(zip_file)
             href = generate_download_link(zip_buffer, 'split.zip')
             
