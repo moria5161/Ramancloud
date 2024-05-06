@@ -20,14 +20,14 @@ st.set_page_config(
 def data_processing_and_mining():
 
     st.subheader("Get started")
-    tab1, tab2, tab3, tab4 = st.tabs(['process spectra', 'process imaging', 'predict molecular spectra', 'other useful tools'])
+    tab1, tab2, tab3, tab4 = st.tabs(['process spectra', 'process imaging/time series', 'predict molecular spectra', 'other useful tools'])
     with tab1:
         img_col, text_col = st.columns([0.3, 0.7])
         img_col.image("static/spectra.png", )
         text_col.markdown('''
                         **process spectra**  
-                        Simple, compact online Raman spectral data processing app, 
-                        features several handy data processing operations and real time data visualization. 
+                        Compact and intuitive online Raman spectral processing application, 
+                        offering a range of convenient data processing functionalities and real-time data visualization capabilities.
 
                         ''')
         if text_col.button(':point_right: :red[try our spectral processing app]', 
@@ -38,11 +38,12 @@ def data_processing_and_mining():
         img_col, text_col = st.columns([0.3, 0.7])
         img_col.image("static/imaging.png", )
         text_col.markdown('''
-                        **process imaging**  
-                        Brother app of spectral data processing app for imaging processing. 
+                        **process imaging/time series**  
+                        Extented app for processing spectral imaging or time series. Extended app for processing spectral imaging or time series. 
+                        Moreover, it includes algorithms specifically tailored for this kind of applications.
                         
                         ''')
-        if text_col.button(':point_right: :red[try our hyper-spectral imaging processing app]', 
+        if text_col.button(':point_right: :red[try our spectral imaging/time series processing app]', 
                            help='denoising debaseline and so on', use_container_width=True, key='imaging'):
             switch_page('imaging')
 
