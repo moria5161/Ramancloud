@@ -42,7 +42,6 @@ def PEER_submodule(denoise_use_sidebar=False, imaging=False):
 
 
 def p2p_submodule(denoise_use_sidebar=False, imaging=False):
-    # 这里设置用户可以自定义的参数
     if denoise_use_sidebar:
         with st.sidebar:
             epochs = st.slider('number of epochs', 10, 50, 20, key='sidebar_epochs')
@@ -53,8 +52,8 @@ def p2p_submodule(denoise_use_sidebar=False, imaging=False):
         st.write(
             """
 
-            **Epochs:** the number of epochs for training.  
-            This is Algorithm [(p2p)](https://pubs.acs.org/doi/10.1021/acs.analchem.3c04608). You can find more details in [tutorial](/tutorial).
+            **Epochs:** the number of epochs for training. It may cost 1.7s per epoch.    
+            This is [Peak2Peak](https://pubs.acs.org/doi/10.1021/acs.analchem.3c04608). You can find more details in [tutorial](/tutorial).
             """)
 
         return {'epochs': epochs, 'imaging': imaging}

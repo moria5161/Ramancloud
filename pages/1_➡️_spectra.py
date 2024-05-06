@@ -281,36 +281,35 @@ def run():
                         st.markdown(href, unsafe_allow_html=True)
 
                         # =================save data to mysql================ #
-                # sql = open('/media/ramancloud/utils/add_labeled_spectra.sql', 'r').read()
-                #
-                # raw_wavenumber = raw_demo_spec.wavenumber.to_list()
-                # raw_spectrum = raw_demo_spec.raw.to_list()
-                # pre_spectrum = demo_spec.processed.to_list()
-                # sql = sql.format(
-                #     startTime,
-                #     raw_wavenumber,
-                #     raw_spectrum,
-                #     pre_spectrum,
-                #     cut_args['args'],
-                #     smooth_args['method'].__name__,
-                #     smooth_args['args'],
-                #     baseline_args['method'].__name__,
-                #     baseline_args['args'],
-                #     domain
-                #     )
-                # exec_mysql(sql)
+                sql = open('/media/ramancloud/utils/add_labeled_spectra.sql', 'r').read()
+                
+                raw_wavenumber = raw_demo_spec.wavenumber.to_list()
+                raw_spectrum = raw_demo_spec.raw.to_list()
+                pre_spectrum = demo_spec.processed.to_list()
+                sql = sql.format(
+                    startTime,
+                    raw_wavenumber,
+                    raw_spectrum,
+                    pre_spectrum,
+                    cut_args['args'],
+                    smooth_args['method'].__name__,
+                    smooth_args['args'],
+                    baseline_args['method'].__name__,
+                    baseline_args['args'],
+                    domain
+                    )
+                exec_mysql(sql)
 
     # =================reference================ #
-    # 显示参考资料
     st.markdown('''
         ### Reference
         ##### Denoise
         - [Savitzky-Golay filter](https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter)  
-        - [PEER](https://pubs.acs.org/doi/10.1021/acs.analchem.0c05391): Developing a Peak Extraction and Retention (PEER) Algorithm for Improving the Temporal Resolution of Raman Spectroscopy, Anal. Chem. 2021, 93, 24, 8408–8413 
-        - [p2p](https://pubs.acs.org/doi/10.1021/acs.analchem.3c04608): Peak2Peak algorithm (p2p) Algorithm for Improving the Temporal Resolution of Raman Spectroscopy, Anal. Chem. 2024, 96, 10, 4086–4092 
+        - [PEER](https://pubs.acs.org/doi/10.1021/acs.analchem.0c05391): Developing a Peak Extraction and Retention (PEER) Algorithm for Improving the Temporal Resolution of Raman Spectroscopy, *Anal. Chem. 2021, 93, 24, 8408–8413* 
+        - [p2p](https://pubs.acs.org/doi/10.1021/acs.analchem.3c04608): Revealing the Denoising Principle of Zero-Shot N2N-Based Algorithm from 1D Spectrum to 2D Image, *Anal. Chem. 2024, 96, 10, 4086–4092* 
         ##### Baseline correction
         - [auto-adaptive](https://doi.org/10.1016/j.saa.2016.02.016): An auto-adaptive background subtraction method for Raman spectra 
-        - [airPLS](https://doi.org/10.1039/B922045C): Baseline correction using adaptive iteratively reweighted penalized least squares, Analyst, 2010,135, 1138-1146 
+        - [airPLS](https://doi.org/10.1039/B922045C): Baseline correction using adaptive iteratively reweighted penalized least squares, *Analyst, 2010,135, 1138-1146* 
         - [ModPoly](https://doi.org/10.1366/000370203322554518): Automated Method for Subtraction of Fluorescence from Biological Raman Spectra 
         - [IModPoly](https://doi.org/10.1366/000370207782597003): Automated Autofluorescence Background Subtraction Algorithm for Biomedical Raman Spectroscopy
           ''')
