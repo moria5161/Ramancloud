@@ -1,7 +1,7 @@
 import streamlit as st
 # from streamlit_extras.app_logo import add_logo
 from streamlit_extras.switch_page_button import switch_page
-
+from utils.utils import stream_data
 
 # Set the page configuration
 st.set_page_config(
@@ -29,6 +29,49 @@ def main_content():
                 After processing, you can download the processed data and the baseline data if you want.  
                 It is noteable that all the download links are **temporary** and will be expired when you leave the page. 
                 ''')
+    
+    st.divider()
+    st.markdown('''If you are interested in the ***application of deep learning in Raman spectroscopy***, these two papers may be helpful to you.''')
+
+    tab1, tab2 = st.tabs(['Spectral preprocessing and identification', 'Establishment of spectrum-structure correlation'])
+
+    with tab1:
+        with st.container(border=True):
+            col1, col2 = st.columns([0.6, 0.4])
+            col1.markdown(
+                '''
+                ##### [Deep Learning for Biospectroscopy and Biospectral Imaging: State-of-the-Art and Perspectives](https://doi.org/10.1021/acs.analchem.0c04671)  
+                With the advances in instrumentation and sampling techniques, there is an explosive growth of data from molecular and cellular samples. 
+                The call to extract more information from the large data sets has greatly challenged the conventional chemometrics method. 
+                Deep learning, which utilizes very large data sets for finding hidden features therein and for making accurate predictions for a wide range of applications, 
+                has been applied in an unbelievable pace in biospectroscopy and biospectral imaging in the recent 3 years. 
+                In this Feature, we first introduce the background and basic knowledge of deep learning. 
+                We then focus on the emerging applications of deep learning in the data preprocessing, feature detection, and modeling of the biological samples for spectral analysis and spectroscopic imaging. 
+                Finally, we highlight the challenges and limitations in deep learning and the outlook for future directions.  
+                '''
+            )
+            col2.image('/media/ramancloud/static/review1.gif')
+
+    with tab2:
+        with st.container(border=True):
+            col1, col2 = st.columns([6, 4])
+            col1.markdown(
+                '''
+                ##### [Deep Learning-Assisted Spectrum–Structure Correlation: State-of-the-Art and Perspectives](https://pubs.acs.org/doi/10.1021/acs.analchem.4c01639)  
+                In spectral analysis,   spectrum-structure correlation is increasingly vital, evolving significantly in recent decades. 
+                With spectrometer advancements, high-throughput detection fuels a surge in spectral data, 
+                extending research from small to biomolecules across vast chemical space. Traditional chemometrics struggles to adapt to this changing landscape, 
+                leading to the rapid emergence of deep learning-assisted chemometrics. 
+                This approach excels at extracting latent features and making precise predictions. 
+                This review introduces molecular and spectral representations alongside fundamental deep learning concepts. 
+                We then outline how deep learning aids in establishing spectrum-structure correlation over the past five years, 
+                facilitating spectral prediction and enabling library matching and de novo molecular generation. 
+                Lastly, we address persistent challenges and potential solutions, foreseeing deep learning's rapid progress leading to definitive solutions in spectrum-structure correlation, 
+                spurring advancements across disciplines.  
+                '''
+            )
+            col2.image('/media/ramancloud/static/spec_str2.jpeg')
+
     
     st.subheader("Process the spectra", divider='blue')
     st.markdown('''
