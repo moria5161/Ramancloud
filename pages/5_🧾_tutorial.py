@@ -29,11 +29,12 @@ def main_content():
                 After processing, you can download the processed data and the baseline data if you want.  
                 It is noteable that all the download links are **temporary** and will be expired when you leave the page. 
                 ''')
-    
+
     st.divider()
     st.markdown('''If you are interested in the ***application of deep learning in Raman spectroscopy***, these two papers may be helpful to you.''')
 
-    tab1, tab2 = st.tabs(['Spectral preprocessing and identification', 'Establishment of spectrum-structure correlation'])
+    tab1, tab2 = st.tabs(['Spectral preprocessing and identification',
+                         'Establishment of spectrum-structure correlation'])
 
     with tab1:
         with st.container(border=True):
@@ -72,7 +73,6 @@ def main_content():
             )
             col2.image('/media/ramancloud/static/spec_str2.jpeg')
 
-    
     st.subheader("Process the spectra", divider='blue')
     st.markdown('''
                 This page is designed for custom spectral processing. It features several common data processing tasks, including
@@ -164,7 +164,7 @@ def main_content():
                 ##### Example
                 ''')
 
-    st.subheader('Other useful tools',divider=True)
+    st.subheader('Other useful tools', divider=True)
     st.markdown('''
                 This page is designed for several useful tools that can speed up your research, including
                 - [split mapping to individual spectra](#split-mapping-to-individual-spectra)
@@ -178,6 +178,7 @@ def main_content():
                 This tool is designed for merging multiple spectra to one matrix.
                 ''')
 
+
 def feedback():
     st.subheader('Feedback', divider='blue')
     col1, col2 = st.columns([0.7, 0.3])
@@ -187,17 +188,18 @@ def feedback():
                 If you still feel confused about the usage of our platform, please feel free to contact us 
                 via :email:[email](mailto:xinyulu@stu.xmu.edu.cn) or submit [Github issues](https://github.com/X1nyuLu) <a href="https://github.com/X1nyulu/ramancloud" target="_blank"><img alt="Static Badge" src="https://img.shields.io/github/stars/X1nyulu/ramancloud.svg?style=social&label=Star&maxAge=2592000"></a> 
                 ''', unsafe_allow_html=True)
-        go_back_to_homepage = st.button('Go back to the homepage', use_container_width=True, help='Thank you for reading this')
+        go_back_to_homepage = st.button(
+            'Go back to the homepage', use_container_width=True, help='Thank you for reading this')
         if go_back_to_homepage:
             switch_page("homepage")
     with col2:
         from streamlit.components.v1 import html
         return html(
-                    '''<a href="https://clustrmaps.com/site/1bxqy"  title="Visit tracker"><img src="//www.clustrmaps.com/map_v2.png?d=IYobjN-Mu1pChSxslZv7Z5QG-hGiH_WbPUJNPPml1q0&cl=ffffff" /></a>'''
-                    ,
-                # height=600,
-                # scrolling=True,
-                )
+            '''<a href="https://clustrmaps.com/site/1bxqy"  title="Visit tracker"><img src="//www.clustrmaps.com/map_v2.png?d=IYobjN-Mu1pChSxslZv7Z5QG-hGiH_WbPUJNPPml1q0&cl=ffffff" /></a>''',
+            # height=600,
+            # scrolling=True,
+        )
+
 
 def sidebar_content():
     with st.sidebar:
@@ -224,11 +226,9 @@ def sidebar_content():
 
 
 if __name__ == "__main__":
-    
+
     # add_logo("static/icon.png", height=10)
 
     main_content()
     sidebar_content()
     feedback()
-
-    
