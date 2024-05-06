@@ -3,24 +3,25 @@ import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 
 
-
 st.set_page_config(
     page_title="RamanCloud",
     page_icon=":cloud:",
     # layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
-    'Get Help': 'https://ramancloud.xmu.edu.cn/tutorial',
-    'Report a bug': 'https://github.com/X1nyulu/ramancloud/issues',
-    'About': '''Immerse yourself in the captivating realm of spectral analysis and witness the magic of Raman spectra.  
+        'Get Help': 'https://ramancloud.xmu.edu.cn/tutorial',
+        'Report a bug': 'https://github.com/X1nyulu/ramancloud/issues',
+        'About': '''Immerse yourself in the captivating realm of spectral analysis and witness the magic of Raman spectra.  
                 **Contributors:** Xinyu Lu, Dr. Hao Ma, et. al.''',
     }
 )
 
+
 def data_processing_and_mining():
 
     st.subheader("Get started")
-    tab1, tab2, tab3, tab4 = st.tabs(['process spectra', 'process imaging/time series', 'predict molecular spectra', 'other useful tools'])
+    tab1, tab2, tab3, tab4 = st.tabs(
+        ['process spectra', 'process imaging/time series', 'predict molecular spectra', 'other useful tools'])
     with tab1:
         img_col, text_col = st.columns([0.3, 0.7])
         img_col.image("static/spectra.png", )
@@ -30,10 +31,10 @@ def data_processing_and_mining():
                         offering a range of convenient data processing functionalities and real-time data visualization capabilities.
 
                         ''')
-        if text_col.button(':point_right: :red[try our spectral processing app]', 
+        if text_col.button(':point_right: :red[try our spectral processing app]',
                            help='denoising debaseline and so on', use_container_width=True, key='spectra'):
             switch_page('spectra')
-        
+
     with tab2:
         img_col, text_col = st.columns([0.3, 0.7])
         img_col.image("static/imaging.png", )
@@ -43,7 +44,7 @@ def data_processing_and_mining():
                         Moreover, it includes algorithms specifically tailored for this kind of applications.
                         
                         ''')
-        if text_col.button(':point_right: :red[try our spectral imaging/time series processing app]', 
+        if text_col.button(':point_right: :red[try our spectral imaging/time series processing app]',
                            help='denoising debaseline and so on', use_container_width=True, key='imaging'):
             switch_page('imaging')
 
@@ -56,10 +57,10 @@ def data_processing_and_mining():
                         Predict corresponding IR, Raman, UV-vis, and NMR spectra based on the molecule file you upload.  
                         Coming soon...
                         ''')
-        if text_col.button(':point_right: :red[try our spectral prediction app]', 
+        if text_col.button(':point_right: :red[try our spectral prediction app]',
                            help='find help?', use_container_width=True, key='spectral_prediction'):
             switch_page('spectral_prediction')
-            
+
     with tab4:
         img_col, text_col = st.columns([0.3, 0.7])
         img_col.image("static/analysis.png", )
@@ -67,12 +68,15 @@ def data_processing_and_mining():
                         **other tools**  
                         Features splitting mapping into spectra and vise verse, merging spectra files into one mapping file, for now.
                         ''')
-        if text_col.button(':point_right: :red[try other useful tools]', 
+        if text_col.button(':point_right: :red[try other useful tools]',
                            help='find help?', use_container_width=True, key='other_tools'):
             switch_page('other_tools')
 
     with st.expander(":rainbow[**About user agreement and privacy policy**]"):
-        st.warning("By initiating the use of our application, you are indicating your agreement with our [user agreement and privacy policy](privacy_policy).")
+        st.warning(
+            "By initiating the use of our application, you are indicating your agreement with our [user agreement and privacy policy](privacy_policy).")
+
+
 def get_to_know_us():
     st.subheader("Documentations")
     col1, col2, col3 = st.tabs(['key features', 'updates', 'roadmap'])
@@ -82,7 +86,7 @@ def get_to_know_us():
                 - Customization  
                 - User-Friendly Interface  
                 - :bookmark_tabs: [:red[start with tutorial]](tutorial)'''
-                )
+                  )
     col2.markdown('''
                   **Catch up on the latest technical insights and tools from the RamanCloud community.**  
                     - Update debaseline for ULF  
@@ -97,11 +101,13 @@ def get_to_know_us():
                 - Add deep learning-based method for molecular spectral prediction
                 - :globe_with_meridians: [:red[visit our github]](https://github.com/X1nyuLu)''')
 
+
 def our_recent_research():
-    
+
     st.subheader("Our recent research")
-    
-    tab1, tab2, tab3 = st.tabs(['Spectral classification', 'Denoising and super resolution', 'Spectra and structure'])
+
+    tab1, tab2, tab3 = st.tabs(
+        ['Spectral classification', 'Denoising and super resolution', 'Spectra and structure'])
     with tab1:
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
@@ -147,7 +153,6 @@ def our_recent_research():
                 '''
             )
             col2.image('/media/ramancloud/static/spec_cls1.jpeg')
-        
 
     with tab2:
         with st.container():
@@ -205,8 +210,7 @@ def our_recent_research():
                 '''
             )
             col2.image('/media/ramancloud/static/deno_sr1.jpeg')
-        
-        
+
     with tab3:
         with st.container():
             col1, col2 = st.columns([6, 4])
@@ -231,11 +235,10 @@ def our_recent_research():
                 '''
             )
             col2.image('/media/ramancloud/static/spec_str1.png')
-        
 
 
 def feedback():
-    
+
     st.write('''
             This app is developed by <a href="https://bren.xmu.edu.cn" target="_blank"><img alt="Static Badge" src="https://img.shields.io/badge/Ren_Research_Group-Xiamen%20University-n?style=social&color=abcdef"></a>  
             Thanks for all [contributors](contributors)!  
@@ -244,10 +247,11 @@ def feedback():
 
     st.write('''''', unsafe_allow_html=True)
 
+
 if __name__ == "__main__":
 
     st.image('/media/ramancloud/static/logo.png',  use_column_width=True)
-    
+
     # Set the font size for st.tabs using HTML styling
     css = '''
     <style>
@@ -257,7 +261,7 @@ if __name__ == "__main__":
     </style>
     '''
     st.markdown(css, unsafe_allow_html=True)
-    
+
     with st.container(border=True):
         data_processing_and_mining()
 
