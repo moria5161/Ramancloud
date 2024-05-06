@@ -106,13 +106,24 @@ def our_recent_research():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
                 '''
+                ##### Patch-Based Convolutional Encoder: A Deep Learning Algorithm for Spectral Classification Balancing the Local and Global Information
+
+                *Anal. Chem. 2024, 96, 7, 2866–2873*  
+                [Learn more about it...](https://pubs.acs.org/doi/10.1021/acs.analchem.3c03889)
+                '''
+            )
+            col2.image('/media/ramancloud/static/spec_cls4.jpeg')
+        with st.container():
+            col1, col2 = st.columns([0.6, 0.4])
+            col1.markdown(
+                '''
                 ##### 1D Gradient-Weighted Class Activation Mapping, Visualizing Decision Process of Convolutional Neural Network-Based Models in Spectroscopy Analysis
 
                 *Anal. Chem. 2023, 95, 26, 9959–9966*  
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.3c01101)
                 '''
             )
-            col2.image('/media/ramancloud/static/spec_cls1.jpeg')
+            col2.image('/media/ramancloud/static/spec_cls3.jpeg')
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -134,10 +145,22 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.2c01450)
                 '''
             )
-            col2.image('/media/ramancloud/static/spec_cls3.jpeg')
+            col2.image('/media/ramancloud/static/spec_cls1.jpeg')
         
 
     with tab2:
+        with st.container():
+            col1, col2 = st.columns([0.6, 0.4])
+            col1.markdown(
+                '''
+                ##### Noise learning of instruments for high-contrast, high-resolution and fast hyperspectral microscopy and nanoscopy  
+
+                *Nat Commun 15, 754 (2024)*  
+                [Learn more about it...](https://www.nature.com/articles/s41467-024-44864-5)
+                '''
+            )
+            col2.image('/media/ramancloud/static/deno_sr4.jpeg')
+
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -148,7 +171,7 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.0c05391)
                 '''
             )
-            col2.image('/media/ramancloud/static/deno_sr1.jpeg')
+            col2.image('/media/ramancloud/static/deno_sr3.jpeg')
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -180,10 +203,22 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.8b05962)
                 '''
             )
-            col2.image('/media/ramancloud/static/deno_sr3.jpeg')
+            col2.image('/media/ramancloud/static/deno_sr1.jpeg')
         
         
     with tab3:
+        with st.container():
+            col1, col2 = st.columns([6, 4])
+            col1.markdown(
+                '''
+                ##### Deep Learning-Assisted Spectrum–Structure Correlation: State-of-the-Art and Perspectives  
+
+                *Anal. Chem. 2024, XXXX, XXX, XXX-XXX*  
+                [Learn more about it...](https://pubs.acs.org/doi/10.1021/acs.analchem.4c01639)
+                '''
+            )
+            col2.image('/media/ramancloud/static/spec_str2.jpeg')
+
         with st.container():
             col1, col2 = st.columns([6, 4])
             col1.markdown(
@@ -194,7 +229,7 @@ def our_recent_research():
                 [Learn more about it...](https://www.science.org/doi/10.1126/sciadv.adh8362)
                 '''
             )
-            col2.image('/media/ramancloud/static/spec2str.png')
+            col2.image('/media/ramancloud/static/spec_str1.png')
         
 
 
