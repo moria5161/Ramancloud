@@ -48,6 +48,7 @@ def p2p_submodule(denoise_use_sidebar=False, imaging=False):
     else:
         epochs = st.slider('loop times', 10, 50, 20, key='sidebar_epochs')
 
+    st.info('This method was deployed latest, and the performance is not stable :smirk:')
     with st.expander("See explanation"):
         st.write(
             """
@@ -134,7 +135,7 @@ def AABS_submodule(baseline_use_sidebar=False, imaging=False):
         col1, col2 = st.columns(2)
         Ln = col1.slider('Ln', 1, 12, 6)
         Lb = col2.slider('Lb', 50, 200, 140)
-        
+    st.info('This method was deployed latest, which can correct the baseline automatically.')
     with st.expander("See explanation"):
         mdlit(
             """This method is based on [An auto-adaptive background subtraction method for Raman spectra](https://www.sciencedirect.com/science/article/pii/S1386142516300713) 
