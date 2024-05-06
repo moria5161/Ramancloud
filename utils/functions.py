@@ -7,6 +7,7 @@ from scipy.signal import savgol_filter
 from api.PEER import weight_resultX2
 from api.airPLS import ZhangFit
 from api.modpoly import mod_poly, imod_poly
+from api.AABS import aabs
 # import pywt
 
 import streamlit as st
@@ -45,8 +46,8 @@ def airPLS(x, lambda_, order_, imaging=False):
         res = func(x)
         return res
 
-def auto_adaptive(x):
-    return x 
+def auto_adaptive(x, Ln, Lb, imaging=False):
+    return aabs(x, Ln, Lb) 
 
 @st.cache_data
 def ModPoly(x, order_, gradient=1e-3, repitition=9, imaging=False):

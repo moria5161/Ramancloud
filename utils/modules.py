@@ -9,8 +9,8 @@ from markdownlit import mdlit
 
 from utils.functions import cut
 from utils.functions import skip
-from utils.functions import sg, PEER, auto_adaptive
-from utils.functions import airPLS, ModPoly, IModPoly, piecewiseFitting
+from utils.functions import sg, PEER
+from utils.functions import airPLS, ModPoly, IModPoly, piecewiseFitting, auto_adaptive
 
 
 #====================general submodules====================#
@@ -106,6 +106,22 @@ def ModPoly_submodule(baseline_use_sidebar=False, imaging=False):
             """)
     return {'order_':order_, 'imaging':imaging}
 
+def AABS_submodule(baseline_use_sidebar=False, imaging=False):
+    if baseline_use_sidebar:
+        with st.sidebar:
+            col1, col2 = st.columns(2)
+            Ln = col1.slider('Ln', 1, 12, 6, key='sidebar_Ln')
+            Lb = col2.slider('Lb', 50, 200, 140, key='sidebar_Lb')
+    else:
+        col1, col2 = st.columns(2)
+        Ln = col1.slider('Ln', 1, 12, 6)
+        Lb = col2.slider('Lb', 50, 200, 140)
+        
+    with st.expander("See explanation"):
+        mdlit(
+            """This method is based on [An auto-adaptive background subtraction method for Raman spectra](https://www.sciencedirect.com/science/article/pii/S1386142516300713) 
+            """)
+    return {'Ln':Ln, 'Lb':Lb, 'imaging':imaging}
 
 #====================modules for spectra====================#
 def spectra_cut_module(spec_df):
@@ -160,7 +176,7 @@ def spectra_baseline_module(spec_df):
     st.markdown('''<font size=5>**Step 3: baseline removal**</font>''', unsafe_allow_html=True)
 
     baseline_args = {}
-    baseline_method_dict = {'airPLS': airPLS, 'ModPoly':ModPoly, 'IModPoly': IModPoly, 'piecewiseFitting':piecewiseFitting, 'skip': skip}
+    baseline_method_dict = {'auto-adaptive':auto_adaptive, 'airPLS': airPLS, 'ModPoly':ModPoly, 'IModPoly': IModPoly, 'piecewiseFitting':piecewiseFitting, 'skip': skip}
     if 'processed' not in spec_df.columns:
         spec_df['processed'] = spec_df['raw'].copy()
 
@@ -177,7 +193,10 @@ def spectra_baseline_module(spec_df):
     
     elif baseline_method in ['ModPoly', 'IModPoly']:
         baseline_args = ModPoly_submodule(baseline_use_sidebar=baseline_use_sidebar, imaging=False)   
-            
+    
+    elif baseline_method == 'auto-adaptive':
+        baseline_args = AABS_submodule(baseline_use_sidebar=baseline_use_sidebar, imaging=False)   
+
     elif baseline_method == 'piecewiseFitting':
         import numpy as np
         col1, col2, col3, col4, col5 = st.columns(5)
