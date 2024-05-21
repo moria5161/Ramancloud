@@ -2,7 +2,7 @@ import time
 import numpy as np
 import pandas as pd
 import streamlit as st
-from streamlit_extras.switch_page_button import switch_page
+
 from plotly.subplots import make_subplots
 import plotly.express as px
 import plotly.graph_objs as go
@@ -20,7 +20,7 @@ st.set_page_config(
 startTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 
-@st.cache_data
+# @st.cache_data
 def load_mapping(file, mode='Horiba'):
     
     content = file.getvalue()
@@ -233,7 +233,7 @@ def run():
 
     go_back_to_homepage = st.button('Go back to the homepage', use_container_width=True, help='Thank you for using **RamanCloud!**')
     if go_back_to_homepage:
-        switch_page("homepage")
+        st.switch_page("🏠_Homepage.py")
 
 
 if __name__ == "__main__":

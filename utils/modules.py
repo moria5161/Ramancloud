@@ -9,8 +9,8 @@ from markdownlit import mdlit
 
 from utils.functions import cut
 from utils.functions import skip
-from utils.functions import sg, PEER, auto_adaptive, p2p
-from utils.functions import airPLS, ModPoly, IModPoly, piecewiseFitting
+from utils.functions import sg, PEER, p2p
+from utils.functions import airPLS, ModPoly, IModPoly, piecewiseFitting, auto_adaptive
 
 
 #====================general submodules====================#
@@ -42,19 +42,19 @@ def PEER_submodule(denoise_use_sidebar=False, imaging=False):
 
 
 def p2p_submodule(denoise_use_sidebar=False, imaging=False):
-    # 这里设置用户可以自定义的参数
     if denoise_use_sidebar:
         with st.sidebar:
             epochs = st.slider('number of epochs', 10, 50, 20, key='sidebar_epochs')
     else:
         epochs = st.slider('loop times', 10, 50, 20, key='sidebar_epochs')
 
+    st.info('This method was deployed latest, and the performance is not stable :smirk:')
     with st.expander("See explanation"):
         st.write(
             """
 
-            **Epochs:** the number of epochs for training.  
-            This is Algorithm [(p2p)](https://pubs.acs.org/doi/10.1021/acs.analchem.3c04608). You can find more details in [tutorial](/tutorial).
+            **Epochs:** the number of epochs for training. It may cost 1.7s per epoch.    
+            This is [Peak2Peak](https://pubs.acs.org/doi/10.1021/acs.analchem.3c04608). You can find more details in [tutorial](/tutorial).
             """)
 
         return {'epochs': epochs, 'imaging': imaging}
@@ -125,6 +125,22 @@ def ModPoly_submodule(baseline_use_sidebar=False, imaging=False):
             """)
     return {'order_':order_, 'imaging':imaging}
 
+def AABS_submodule(baseline_use_sidebar=False, imaging=False):
+    if baseline_use_sidebar:
+        with st.sidebar:
+            col1, col2 = st.columns(2)
+            Ln = col1.slider('Ln', 1, 12, 6, key='sidebar_Ln')
+            Lb = col2.slider('Lb', 50, 200, 140, key='sidebar_Lb')
+    else:
+        col1, col2 = st.columns(2)
+        Ln = col1.slider('Ln', 1, 12, 6)
+        Lb = col2.slider('Lb', 50, 200, 140)
+    st.info('This method was deployed latest, which can correct the baseline automatically.')
+    with st.expander("See explanation"):
+        mdlit(
+            """This method is based on [An auto-adaptive background subtraction method for Raman spectra](https://www.sciencedirect.com/science/article/pii/S1386142516300713) 
+            """)
+    return {'Ln':Ln, 'Lb':Lb, 'imaging':imaging}
 
 #====================modules for spectra====================#
 def spectra_cut_module(spec_df):
@@ -196,7 +212,7 @@ def spectra_baseline_module(spec_df):
     st.markdown('''<font size=5>**Step 3: baseline removal**</font>''', unsafe_allow_html=True)
 
     baseline_args = {}
-    baseline_method_dict = {'airPLS': airPLS, 'ModPoly':ModPoly, 'IModPoly': IModPoly, 'piecewiseFitting':piecewiseFitting, 'skip': skip}
+    baseline_method_dict = {'auto-adaptive':auto_adaptive, 'airPLS': airPLS, 'ModPoly':ModPoly, 'IModPoly': IModPoly, 'piecewiseFitting':piecewiseFitting, 'skip': skip}
     if 'processed' not in spec_df.columns:
         spec_df['processed'] = spec_df['raw'].copy()
 
@@ -213,7 +229,10 @@ def spectra_baseline_module(spec_df):
     
     elif baseline_method in ['ModPoly', 'IModPoly']:
         baseline_args = ModPoly_submodule(baseline_use_sidebar=baseline_use_sidebar, imaging=False)   
-            
+    
+    elif baseline_method == 'auto-adaptive':
+        baseline_args = AABS_submodule(baseline_use_sidebar=baseline_use_sidebar, imaging=False)   
+
     elif baseline_method == 'piecewiseFitting':
         import numpy as np
         col1, col2, col3, col4, col5 = st.columns(5)
@@ -308,7 +327,7 @@ def imaging_denoise_module(mapping_data):
 
 
 def imaging_baseline_module(mapping_data):
-    baseline_method_dict = {'airPLS': airPLS, 'skip': skip}
+    baseline_method_dict = {'airPLS': airPLS, 'ModPoly':ModPoly, 'IModPoly': IModPoly, 'skip': skip}
     baseline_args = {}
     st.subheader('Baseline removal')
     col1, col2 = st.columns(2)
@@ -317,6 +336,8 @@ def imaging_baseline_module(mapping_data):
 
     if baseline_method == 'airPLS':
         baseline_args = airPLS_submodule(baseline_use_sidebar=False, imaging=True)
-    
+    elif baseline_method in ['ModPoly', 'IModPoly']:
+        baseline_args = ModPoly_submodule(baseline_use_sidebar=False, imaging=True)   
+
     mapping_data = baseline_method_dict[baseline_method](mapping_data, **baseline_args)
     return mapping_data, {'method':baseline_method_dict[baseline_method], 'args':baseline_args}

@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit_extras.app_logo import add_logo
 from streamlit_extras.switch_page_button import switch_page
 
 # Set the page configuration
@@ -15,38 +14,40 @@ def main_content():
   st.title('Changelog')
   st.markdown(
       """
+#### 20240506
+- Update the publications and some descriptions
+- Optimize the interface
+
 #### 20231212
-- 修复了部分bug
-- 优化了部分算法
+- Fixed some bugs
+- Optimized certain algorithms
 
 #### 20231105
-- 新增了ALRMA去噪方法
-- 新增了对Renishaw时间序列和Nanophoton成像数据的适配
-- 优化了反馈窗口，新增了反馈文本框
+- Added ALRMA denoising method
+- Added support for Renishaw time series and Nanophoton imaging data
+- Optimized feedback window, added feedback textbox
 
 #### 20231026
-- 新建了了网页界面，用于整合目前所有的云服务
-- 新增了针对超低波数去基线的算法
-- 新增了基于多项式拟合的两种去基线算法
-- 修复了保存基线数据出错的bug
+- Created a web interface for integrating all current cloud services
+- Added algorithms for baseline correction at ultra-low wavenumbers
+- Added two baseline correction algorithms based on polynomial fitting
+- Fixed bug when saving baseline data
 
 #### 20231011
-- 优化了airPLS方法，【拟合阶数】参数现将直接影响基线的平滑程度
-- 增加了新的访问地址(https://ramancloud.xmu.edu.cn)
-- 优化了生产环境，现有的conda环境改为streamlit
-- 分流了外部和内测服务
-- 新建了MySql数据库
-- 新增了数据埋点，用以记录用户最终使用的参数  
+- Optimized airPLS method, where the "fitting order" parameter now directly affects the smoothness of the baseline
+- Added new access address (https://ramancloud.xmu.edu.cn)
 
 #### 20230920
-- 增加了不同的去噪/去基线方法    
-- 去噪算法更新了PEER   
-- 去基线算法更新了auto-adaptive background subtraction    
-- 增加了citations    
-- 增设了网页二维码   
+- Added different denoising/baseline correction methods
+- Updated denoising algorithm PEER
+- Updated baseline correction algorithm auto-adaptive background subtraction
+- Added citations
+- Added webpage QR code
+
+![](https://raw.githubusercontent.com/X1nyuLu/ramancloud/main/ramancloud.png)
 
 #### 20230914  
-- 增加了课题组网页内的访问入口  
+- Added access entry within the research group's webpage (https://bren.xmu.edu.cn/Links.htm)
 
   """)
 
@@ -56,6 +57,7 @@ def sidebar_content():
         st.markdown('''
 
                     ### Changelog  
+                    - [20240506](#20240506)
                     - [20231212](#20231212)  
                     - [20231105](#20231105)  
                     - [20231026](#20231026)  
@@ -76,7 +78,7 @@ def feedback():
                 ''', unsafe_allow_html=True)
         go_back_to_homepage = st.button('Go back to the homepage', use_container_width=True, help='Thank you for reading this')
         if go_back_to_homepage:
-            switch_page("homepage")
+            st.switch_page("🏠_Homepage.py")
     with col2:
         from streamlit.components.v1 import html
         return html(
@@ -87,9 +89,6 @@ def feedback():
                 )
 
 if __name__ == "__main__":
-    
-    add_logo("static/icon.png", height=10)
-
     main_content()
     sidebar_content()
     feedback()

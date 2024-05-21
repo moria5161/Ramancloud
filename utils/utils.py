@@ -10,6 +10,7 @@ import pandas as pd
 import pymysql
 import base64
 import urllib.parse
+import time
 
 
 def load_mapping_files(content, mode='Horiba'):
@@ -94,3 +95,8 @@ def exec_mysql(sql):
             cursor.close()
         if 'connection' in locals() and connection.open:
             connection.close()
+
+def stream_data(words):
+    for word in words.split(" "):
+        yield word + " "
+        time.sleep(0.02)

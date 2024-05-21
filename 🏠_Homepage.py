@@ -1,7 +1,5 @@
 from PIL import Image as Image
 import streamlit as st
-from streamlit_extras.switch_page_button import switch_page
-
 
 
 st.set_page_config(
@@ -10,41 +8,44 @@ st.set_page_config(
     # layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
-    'Get Help': 'https://ramancloud.xmu.edu.cn/tutorial',
-    'Report a bug': 'https://github.com/X1nyulu/ramancloud/issues',
-    'About': '''Immerse yourself in the captivating realm of spectral analysis and witness the magic of Raman spectra.  
+        'Get Help': 'https://ramancloud.xmu.edu.cn/tutorial',
+        'Report a bug': 'https://github.com/X1nyulu/ramancloud/issues',
+        'About': '''Immerse yourself in the captivating realm of spectral analysis and witness the magic of Raman spectra.  
                 **Contributors:** Xinyu Lu, Dr. Hao Ma, et. al.''',
     }
 )
 
+
 def data_processing_and_mining():
 
     st.subheader("Get started")
-    tab1, tab2, tab3, tab4 = st.tabs(['process spectra', 'process imaging', 'predict molecular spectra', 'other useful tools'])
+    tab1, tab2, tab3, tab4 = st.tabs(
+        ['process spectra', 'process imaging/time series', 'predict molecular spectra', 'other useful tools'])
     with tab1:
         img_col, text_col = st.columns([0.3, 0.7])
         img_col.image("static/spectra.png", )
         text_col.markdown('''
                         **process spectra**  
-                        Simple, compact online Raman spectral data processing app, 
-                        features several handy data processing operations and real time data visualization. 
+                        Compact and intuitive online Raman spectral processing application, 
+                        offering a range of convenient data processing functionalities and real-time data visualization capabilities.
 
                         ''')
-        if text_col.button(':point_right: :red[try our spectral processing app]', 
+        if text_col.button(':point_right: :red[try our spectral processing app]',
                            help='denoising debaseline and so on', use_container_width=True, key='spectra'):
-            switch_page('spectra')
-        
+            st.switch_page('pages/1_➡️_spectra.py')
+
     with tab2:
         img_col, text_col = st.columns([0.3, 0.7])
         img_col.image("static/imaging.png", )
         text_col.markdown('''
-                        **process imaging**  
-                        Brother app of spectral data processing app for imaging processing. 
+                        **process imaging/time series**  
+                        Extented app for processing spectral imaging or time series. Extended app for processing spectral imaging or time series. 
+                        Moreover, it includes algorithms specifically tailored for this kind of applications.
                         
                         ''')
-        if text_col.button(':point_right: :red[try our hyper-spectral imaging processing app]', 
+        if text_col.button(':point_right: :red[try our spectral imaging/time series processing app]',
                            help='denoising debaseline and so on', use_container_width=True, key='imaging'):
-            switch_page('imaging')
+            st.switch_page('pages/2_➡️_imaging.py')
 
     with tab3:
         img_col, text_col = st.columns([0.3, 0.7])
@@ -55,10 +56,10 @@ def data_processing_and_mining():
                         Predict corresponding IR, Raman, UV-vis, and NMR spectra based on the molecule file you upload.  
                         Coming soon...
                         ''')
-        if text_col.button(':point_right: :red[try our spectral prediction app]', 
+        if text_col.button(':point_right: :red[try our spectral prediction app]',
                            help='find help?', use_container_width=True, key='spectral_prediction'):
-            switch_page('spectral_prediction')
-            
+            st.switch_page('pages/3_➡️_spectral_prediction.py')
+
     with tab4:
         img_col, text_col = st.columns([0.3, 0.7])
         img_col.image("static/analysis.png", )
@@ -66,12 +67,15 @@ def data_processing_and_mining():
                         **other tools**  
                         Features splitting mapping into spectra and vise verse, merging spectra files into one mapping file, for now.
                         ''')
-        if text_col.button(':point_right: :red[try other useful tools]', 
+        if text_col.button(':point_right: :red[try other useful tools]',
                            help='find help?', use_container_width=True, key='other_tools'):
-            switch_page('other_tools')
+            st.switch_page('pages/4_➡️_other_tools.py')
 
     with st.expander(":rainbow[**About user agreement and privacy policy**]"):
-        st.warning("By initiating the use of our application, you are indicating your agreement with our [user agreement and privacy policy](privacy_policy).")
+        st.warning(
+            "By initiating the use of our application, you are indicating your agreement with our [user agreement and privacy policy](privacy_policy).")
+
+
 def get_to_know_us():
     st.subheader("Documentations")
     col1, col2, col3 = st.tabs(['key features', 'updates', 'roadmap'])
@@ -80,8 +84,8 @@ def get_to_know_us():
                 - Advanced pre-processing  
                 - Customization  
                 - User-Friendly Interface  
-                - :bookmark_tabs: [:red[start with tutorial]](tutorial)
-                ''')
+                - :bookmark_tabs: [:red[start with tutorial]](tutorial)'''
+                  )
     col2.markdown('''
                   **Catch up on the latest technical insights and tools from the RamanCloud community.**  
                     - Update debaseline for ULF  
@@ -98,11 +102,23 @@ def get_to_know_us():
 
 
 def our_recent_research():
-    
+
     st.subheader("Our recent research")
-    
-    tab1, tab2, tab3 = st.tabs(['Spectral classification', 'Denoising and super resolution', 'Spectra and structure'])
+
+    tab1, tab2, tab3 = st.tabs(
+        ['Spectral classification', 'Denoising and super resolution', 'Spectra and structure'])
     with tab1:
+        with st.container():
+            col1, col2 = st.columns([0.6, 0.4])
+            col1.markdown(
+                '''
+                ##### Patch-Based Convolutional Encoder: A Deep Learning Algorithm for Spectral Classification Balancing the Local and Global Information
+
+                *Anal. Chem. 2024, 96, 7, 2866–2873*  
+                [Learn more about it...](https://pubs.acs.org/doi/10.1021/acs.analchem.3c03889)
+                '''
+            )
+            col2.image('/media/ramancloud/static/spec_cls4.jpeg')
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -113,7 +129,7 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.3c01101)
                 '''
             )
-            col2.image('./static/spec_cls1.jpeg')
+            col2.image('/media/ramancloud/static/spec_cls3.jpeg')
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -124,7 +140,7 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.2c02226)
                 '''
             )
-            col2.image('./static/spec_cls2.jpeg')
+            col2.image('/media/ramancloud/static/spec_cls2.jpeg')
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -135,10 +151,45 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.2c01450)
                 '''
             )
-            col2.image('./static/spec_cls3.jpeg')
-        
+            col2.image('/media/ramancloud/static/spec_cls1.jpeg')
 
     with tab2:
+        with st.container():
+            col1, col2 = st.columns([0.6, 0.4])
+            col1.markdown(
+                '''
+                ##### Signal2signal: Pushing the Spatiotemporal Resolution to the Limit by Single Chemical Hyperspectral Imaging  
+
+                *Anal. Chem. 2024, 96, 17, 6550–6557*  
+                [Learn more about it...](https://pubs.acs.org/doi/10.1021/acs.analchem.3c04609)
+                '''
+            )
+            col2.image('/media/ramancloud/static/deno_sr6.jpeg')
+        
+        with st.container():
+            col1, col2 = st.columns([0.6, 0.4])
+            col1.markdown(
+                '''
+                ##### Revealing the Denoising Principle of Zero-Shot N2N-Based Algorithm from 1D Spectrum to 2D Image  
+
+                *Anal. Chem. 2024, 96, 10, 4086–4092*  
+                [Learn more about it...](https://pubs.acs.org/doi/10.1021/acs.analchem.3c04608)
+                '''
+            )
+            col2.image('/media/ramancloud/static/deno_sr5.jpeg')
+        
+        with st.container():
+            col1, col2 = st.columns([0.6, 0.4])
+            col1.markdown(
+                '''
+                ##### Noise learning of instruments for high-contrast, high-resolution and fast hyperspectral microscopy and nanoscopy  
+
+                *Nat Commun 15, 754 (2024)*  
+                [Learn more about it...](https://www.nature.com/articles/s41467-024-44864-5)
+                '''
+            )
+            col2.image('/media/ramancloud/static/deno_sr4.jpeg')
+
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -149,7 +200,7 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.0c05391)
                 '''
             )
-            col2.image('./static/deno_sr1.jpeg')
+            col2.image('/media/ramancloud/static/deno_sr3.jpeg')
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -159,7 +210,7 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.1c02071)
                 '''
             )
-            col2.image('./static/deno_sr2.jpeg')
+            col2.image('/media/ramancloud/static/deno_sr2.jpeg')
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -170,7 +221,7 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.0c04671)
                 '''
             )
-            col2.image('./static/review1.gif')
+            col2.image('/media/ramancloud/static/review1.gif')
         with st.container():
             col1, col2 = st.columns([0.6, 0.4])
             col1.markdown(
@@ -181,10 +232,21 @@ def our_recent_research():
                 [Learn more about it...](https://doi.org/10.1021/acs.analchem.8b05962)
                 '''
             )
-            col2.image('./static/deno_sr3.jpeg')
-        
-        
+            col2.image('/media/ramancloud/static/deno_sr1.jpeg')
+
     with tab3:
+        with st.container():
+            col1, col2 = st.columns([6, 4])
+            col1.markdown(
+                '''
+                ##### Deep Learning-Assisted Spectrum–Structure Correlation: State-of-the-Art and Perspectives  
+
+                *Anal. Chem. 2024, XXXX, XXX, XXX-XXX*  
+                [Learn more about it...](https://pubs.acs.org/doi/10.1021/acs.analchem.4c01639)
+                '''
+            )
+            col2.image('/media/ramancloud/static/spec_str2.jpeg')
+
         with st.container():
             col1, col2 = st.columns([6, 4])
             col1.markdown(
@@ -195,12 +257,11 @@ def our_recent_research():
                 [Learn more about it...](https://www.science.org/doi/10.1126/sciadv.adh8362)
                 '''
             )
-            col2.image('./static/spec2str.png')
-        
+            col2.image('/media/ramancloud/static/spec_str1.png')
 
 
 def feedback():
-    
+
     st.write('''
             This app is developed by <a href="https://bren.xmu.edu.cn" target="_blank"><img alt="Static Badge" src="https://img.shields.io/badge/Ren_Research_Group-Xiamen%20University-n?style=social&color=abcdef"></a>  
             Thanks for all [contributors](contributors)!  
@@ -209,10 +270,11 @@ def feedback():
 
     st.write('''''', unsafe_allow_html=True)
 
+
 if __name__ == "__main__":
 
-    st.image('./static/logo.png',  use_column_width=True)
-    
+    st.image('/media/ramancloud/static/logo.png',  use_column_width=True)
+
     # Set the font size for st.tabs using HTML styling
     css = '''
     <style>
@@ -222,7 +284,7 @@ if __name__ == "__main__":
     </style>
     '''
     st.markdown(css, unsafe_allow_html=True)
-    
+
     with st.container(border=True):
         data_processing_and_mining()
 
