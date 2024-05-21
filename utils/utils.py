@@ -19,7 +19,7 @@ def load_mapping_files(content, mode='Horiba'):
         # find the columns with nan
         indexs = mapping.loc[:, mapping.isna().any()]
         # find the rows without nan
-        wavenumber = mapping[mapping.isna().any()].iloc[0].to_numpy()
+        wavenumber = mapping.iloc[0].to_numpy()
         wavenumber = wavenumber[~np.isnan(wavenumber)]
         
         data = mapping.loc[:, mapping.isna().any() == False].iloc[1:].to_numpy()
