@@ -19,7 +19,7 @@ def load_mapping_files(content, mode='Horiba'):
         # find the columns with nan
         indexs = mapping.loc[:, mapping.isna().any()]
         # find the rows without nan
-        wavenumber = mapping[mapping.isna().any()].iloc[0].to_numpy()
+        wavenumber = mapping.iloc[0].to_numpy()
         wavenumber = wavenumber[~np.isnan(wavenumber)]
         
         data = mapping.loc[:, mapping.isna().any() == False].iloc[1:].to_numpy()
@@ -72,7 +72,7 @@ def exec_mysql(sql):
 
     # Define the database connection parameters
     db_config = {
-    "host": "10.26.50.228",  # Use Docker container hostname or IP address if needed
+    "host": "10.26.50.40",  # Use Docker container hostname or IP address if needed
     "user": "root",
     "password": "123456",
     "db": "ramancloud_database",  # Use your database name
