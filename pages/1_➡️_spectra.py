@@ -12,7 +12,7 @@ import streamlit as st
 import plotly.express  as px
 
 from utils.modules import spectra_cut_module, spectra_denoise_module, spectra_baseline_module
-from utils.utils import generate_download_link, exec_mysql
+from utils.utils import generate_download_link, exec_mysql, load_spectrum_data
 
 
 st.set_page_config(
@@ -23,51 +23,20 @@ st.set_page_config(
 )
 startTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-# @st.cache_data
+
 def load_data(file):
-    # 加载数据并转换为字符串格式
-    content = file.getvalue()
-
-    # 通过正则表达式移除文件内容中的数字前的文本
-    import re
-    pattern = re.compile(b'^[-]?\d+[.]?')
-    lines = content.split(b'\n')
-    lines = [line for line in lines if pattern.match(line)]
-
-    # 将字符串转换为字节形式
-    content = b'\n'.join(lines)
-
-    # 识别文件内容的分隔符
-    if len(lines[0].split(b'\t')) > 1:
-        delimiter = '\t'
-    elif len(lines[0].split(b',')) > 1:
-        delimiter = ','
-    else:
-        delimiter = ' '
-
-    # 加载带有指定分隔符 '\t' 或 ',' 的字符串到 DataFrame
-    spec = pd.read_csv(io.BytesIO(content), delimiter=delimiter, header=None)
-
-    # 根据列数生成 DataFrame，存储在 st.session_state['raw_spec'] 中
-    if len(spec.columns) >= 4:
-        res = pd.DataFrame({'wavenumber': spec.iloc[:, -2], 'raw': spec.iloc[:, -1]})
-    else:
-        res = pd.DataFrame({'wavenumber': spec.iloc[:, 0], 'raw': spec.iloc[:, -1]})
-        # 哇哦，res传入值时，很像字典，但其实不是，dataframe更像是一个excel表格
-    st.session_state['raw_spec'] = res
-    return res
-
+    spectrum = load_spectrum_data(file)
+    st.session_state['raw_spec'] = spectrum
+    return spectrum
 
 def upload_module(files):
     specs = []
     names = []
 
-    # 对于每个文件，调用 load_data 函数加载数据并存储
     for file in files:
-        spec = load_data(file)  # 先处理成dataframe格式
+        spec = load_data(file) 
         specs.append(spec)
         names.append(file.name)
-    # 返回谱图数据和文件名字
     return specs, names
 
 
@@ -105,17 +74,13 @@ def process(file: pd.DataFrame, cut_args, smooth_args, baseline_args):
 
 
 def run():
-    # 在页面上显示一个图片，用于标识正在处理光谱数据
     st.image("https://img.shields.io/badge/Ramancloud-processing%20the%20spectra-blue?style=for-the-badge", )
 
-    # 从会话状态中获取原始光谱数据，如果不存在则设为None
     raw_specs = st.session_state['raw_spec'] if 'raw_spec' in st.session_state else None
 
     # ==============================================data input container============================================== #
     with st.container(border=True):
-        # 设置数据输入容器的标题和分隔线
         st.subheader('Import data', divider='gray')
-        # 显示上传光谱数据的说明文本
         st.markdown('<font size=5>**Upload your spectra**</font>', unsafe_allow_html=True)
 
         # 创建文件上传组件，接受txt和asc文件，支持多个文件上传
