@@ -112,10 +112,10 @@ elif mode == "split mapping into spectra":
                     # Convert the ndarray to bytes
                     arr_bytes = io.BytesIO()
                     # Create an in-memory file-like object for each array
-                    np.savetxt(arr_bytes, arr, delimiter=',', fmt='%s')
+                    np.savetxt(arr_bytes, arr, delimiter='\t', fmt='%s')
                     arr_bytes.seek(0)
                     # Add the in-memory file to the zip file
-                    zip_file.writestr(f'{filename}_split_{i+1}.txt', arr_bytes.getvalue())
+                    zip_file.writestr(f'{filename[:-4]}_split_{i+1}.txt', arr_bytes.getvalue())
                 print(zip_file)
             href = generate_download_link(zip_buffer, 'split.zip')
             
