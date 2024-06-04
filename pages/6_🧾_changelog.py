@@ -14,6 +14,9 @@ def main_content():
   st.title('Changelog')
   st.markdown(
       """
+#### 20240603
+- Added a new algorithm for predicting the Raman spectrum of a organic molecule
+
 #### 20240506
 - Update the publications and some descriptions
 - Optimize the interface
@@ -52,19 +55,19 @@ def main_content():
   """)
 
 
-def sidebar_content():
-    with st.sidebar:
-        st.markdown('''
+# def sidebar_content():
+#     with st.sidebar:
+#         st.markdown('''
 
-                    ### Changelog  
-                    - [20240506](#20240506)
-                    - [20231212](#20231212)  
-                    - [20231105](#20231105)  
-                    - [20231026](#20231026)  
-                    - [20231011](#20231011)  
-                    - [20230920](#20230920)  
-                    - [20230914](#20230914)
-                    ''')
+#                     ### Changelog  
+#                     - [20240506](#20240506)
+#                     - [20231212](#20231212)  
+#                     - [20231105](#20231105)  
+#                     - [20231026](#20231026)  
+#                     - [20231011](#20231011)  
+#                     - [20230920](#20230920)  
+#                     - [20230914](#20230914)
+#                     ''')
 
 
 def feedback():
@@ -90,5 +93,5 @@ def feedback():
 
 if __name__ == "__main__":
     main_content()
-    sidebar_content()
+    # sidebar_content()
     feedback()
