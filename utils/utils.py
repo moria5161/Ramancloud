@@ -13,46 +13,106 @@ import urllib.parse
 import time
 
 
-def load_mapping_files(content, mode='Horiba'):
-    if mode == 'Horiba':
-        mapping = pd.read_csv(io.BytesIO(content), delimiter='\t', header=None)
-        # find the columns with nan
-        indexs = mapping.loc[:, mapping.isna().any()]
-        # find the rows without nan
-        wavenumber = mapping.iloc[0].to_numpy()
-        wavenumber = wavenumber[~np.isnan(wavenumber)]
-        
-        data = mapping.loc[:, mapping.isna().any() == False].iloc[1:].to_numpy()
+def load_spectrum_data(file):
+    content = file.getvalue()
 
-    elif mode == 'Renishaw':
-        mapping = pd.read_csv(io.BytesIO(content), delimiter='\t', header=None)
-        if mapping.shape[1] != 3:
-            st.error('We can just process time series data with 3 columns in Renishaw, please check your files.')
-        mapping.columns = ['time', 'wavenumber', 'intensity']
-        pivot_mapping = mapping.pivot_table(index='wavenumber', 
+    pattern = re.compile(b'^[-]?\d+[.]?')
+    lines = content.split(b'\n')
+    lines = [line for line in lines if pattern.match(line)]
+
+    content = b'\n'.join(lines)
+
+    # 识别文件内容的分隔符，加载带有指定分隔符 '\t' 或 ',' 的字符串到 DataFrame
+    if len(lines[0].split(b'\t')) > 1:
+        delimiter = '\t'
+    elif len(lines[0].split(b',')) > 1:
+        delimiter = ','
+    else:
+        delimiter = ' '
+    spec = pd.read_csv(io.BytesIO(content), delimiter=delimiter, header=None)
+
+    # 根据列数生成 DataFrame，存储在 st.session_state['raw_spec'] 中
+    if len(spec.columns) >= 4:
+        spectrum = pd.DataFrame({'wavenumber': spec.iloc[:, -2], 'raw': spec.iloc[:, -1]})
+    else:
+        spectrum = pd.DataFrame({'wavenumber': spec.iloc[:, 0], 'raw': spec.iloc[:, -1]})
+
+    return spectrum
+
+
+def load_time_series_file(content, instrument='Horiba'):
+    if instrument == 'Horiba':
+        time_series = pd.read_csv(io.BytesIO(content), delimiter='\t', header=None)
+        time_id = time_series.iloc[:, 0]
+        wavenumber = time_series.iloc[0].to_numpy()
+        wavenumber = wavenumber[~np.isnan(wavenumber)]
+        data = time_series.iloc[1:, 1:].to_numpy()
+
+    elif instrument == 'Renishaw':
+        time_series = pd.read_csv(io.BytesIO(content), delimiter='\t', header=None)
+        if time_series.shape[1] != 3:
+            assert 'The file is not a Renishaw time series file'
+
+        time_series.columns = ['time', 'wavenumber', 'intensity']
+        pivot_time_series = time_series.pivot_table(index='wavenumber', 
                                             columns='time', 
                                             values='intensity',
                                             aggfunc='first').reset_index().T
-        indexs = [np.nan] + list(pivot_mapping.index)[1:]
-        wavenumber = pivot_mapping.iloc[0].to_numpy()
-        data = pivot_mapping.iloc[1:].to_numpy()
+        time_id = [np.nan] + list(pivot_time_series.index)[1:]
+        wavenumber = pivot_time_series.iloc[0].to_numpy()
+        data = pivot_time_series.iloc[1:].to_numpy()
+
+    elif instrument == 'Nanophoton':
+        time_series = pd.read_csv(io.BytesIO(content), delimiter='\t')
+        time_id = [np.nan] + list(np.arange(1, (time_series.shape[1]-1) // 2 + 1))
+        wavenumber = time_series.iloc[:, 0].to_numpy()
+
+        data_columns = np.arange(1, time_series.shape[1], 2)
+        data = time_series.iloc[:, data_columns].to_numpy().T
+        data = data[::-1]
+
+    return time_series, time_id, wavenumber, data
+
+
+def load_imaging_file(content, instrument='Horiba'):
     
-    elif mode == 'Nanophoton':
-        mapping = pd.read_csv(io.BytesIO(content), delimiter='\t')
-        wavenumber = mapping.Wavenumber.to_numpy()
-        data = mapping.iloc[:, 1:-1].to_numpy().T
+    if instrument == 'Horiba':
+        imaging = pd.read_csv(io.BytesIO(content), delimiter='\t', header=None)
+        x_id, y_id = imaging.iloc[:, 0], imaging.iloc[:, 1]
+        x_size, y_size = len(x_id.unique()) - 1, len(y_id.unique()) - 1
+        img_id = imaging.iloc[:, :2]
+
+        wavenumber = imaging.iloc[0].to_numpy()
+        wavenumber = wavenumber[~np.isnan(wavenumber)]
+        data = imaging.iloc[1:, 2:].to_numpy().reshape(x_size, y_size, -1)
+
+    elif instrument == 'Renishaw':
+        st.error('We can not process imaging of Renishaw for now')
+
+    elif instrument == 'Nanophoton':
+        imaging = pd.read_csv(io.BytesIO(content), delimiter='\t')
+        wavenumber = imaging.Wavenumber.to_numpy()
         
         def extract_xy(string, key):
             pattern = 'x(?P<x>\d+)_y(?P<y>\d+)'
-            tmp = re.match(pattern, string).group(key)
-            if type(tmp) == str:
-                tmp = eval(tmp)
-            return tmp
+            num_str = re.match(pattern, string).group(key)
+            if type(num_str) == str:
+                num = eval(num_str)
+            else:
+                raise ValueError(f'fail to extract {key} value of Nanophoton file')
+            return num
+        
+        x_size = extract_xy(imaging.columns[-2], 'x') + 1
+        y_size = extract_xy(imaging.columns[-2], 'y') + 1
+        col = imaging.columns[1:-1]
+        img_id = [(np.nan, np.nan)] + [(extract_xy(c, 'x'), extract_xy(c, 'y')) for c in col]
 
-        col = mapping.columns[1:-1]
-        indexs = [(np.nan, np.nan)] + [(extract_xy(c, 'x'), extract_xy(c, 'y')) for c in col]
+        data = imaging.iloc[:, 1:-1].to_numpy().T
+        data = data.reshape(y_size, x_size, -1)
 
-    return mapping, indexs, wavenumber, data
+    return imaging, img_id, wavenumber, data
+
+
 def generate_download_link(file, filename):
 
     # check the file type
