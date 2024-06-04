@@ -13,11 +13,11 @@ from scipy.stats import norm
 
 
 class conv_block(nn.Module):
-    def __init__(self, in_ch, out_ch):
+    def __init__(self, in_ch, out_ch, ks=7):
         super(conv_block, self).__init__()
         self.up = nn.Sequential(
-            nn.Conv1d(in_ch, out_ch, kernel_size=7,
-                      stride=1, padding=3, bias=True),
+            nn.Conv1d(in_ch, out_ch, kernel_size=ks,
+                      stride=1, padding='same', bias=True),
             nn.BatchNorm1d(out_ch),
             nn.ReLU(inplace=True)
         )
@@ -28,13 +28,13 @@ class conv_block(nn.Module):
 
 
 class FCN(nn.Module):
-    def __init__(self, in_ch=1, out_ch=1):
+    def __init__(self, in_ch=1, out_ch=1, ks=7):
         super(FCN, self).__init__()
         n1 = 16
         filters = [n1, n1 * 2, n1 * 4, n1 * 8, n1 * 16, n1 * 32]
-        self.Conv1 = conv_block(in_ch, filters[2])
-        self.Conv2 = conv_block(filters[2], filters[2])
-        self.Conv3 = conv_block(filters[2], filters[2])
+        self.Conv1 = conv_block(in_ch, filters[2], ks=ks)
+        self.Conv2 = conv_block(filters[2], filters[2], ks=ks)
+        self.Conv3 = conv_block(filters[2], filters[2], ks=ks)
         # self.Conv4 = conv_block(filters[2], filters[2])
         # self.Conv5 = conv_block(filters[2], filters[2])
 
@@ -51,8 +51,9 @@ class FCN(nn.Module):
         return e6
 
 
-def F_CN():
-    return FCN(1, 1)
+def F_CN(ks=7):
+    model = FCN(1, 1, ks=ks)
+    return model
 
 
 # ==================================================================================================
@@ -94,14 +95,14 @@ def normalization(data):  # 定义函数，用于对数据进行归一化处理
 # 处理谱图数据
 
 class P2P:
-    def __init__(self, input_spectrum, epochs):
+    def __init__(self, input_spectrum, epochs=40, ks=7, Rc=1):
         self.cycle = 5
-        self.model = F_CN()
+        self.model = FCN(ks=ks)
         self.lr = 1e-3
         self.epochs = epochs
         self.device = 'cpu'
         self.optimizer = torch.optim.Adam(
-            self.model.parameters(), lr=self.lr, weight_decay=1)
+            self.model.parameters(), lr=self.lr, weight_decay=Rc)
 
         self.spectrum_train = self.data_process(input_spectrum)       
 

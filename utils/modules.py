@@ -44,11 +44,14 @@ def PEER_submodule(denoise_use_sidebar=False, imaging=False):
 def p2p_submodule(denoise_use_sidebar=False, imaging=False):
     if denoise_use_sidebar:
         with st.sidebar:
-            epochs = st.slider('number of epochs', 10, 50, 20, key='sidebar_epochs')
+            col1, col2 = st.columns(2)
+            ks = col1.st.slider('number of kernel_size', 1, 15, 7, key='sidebar_kernel_size')
+            Rc = col2.st.slider('Regularization coefficient size', 0, 3, 1, key='sidebar_R')
     else:
-        epochs = st.slider('loop times', 10, 50, 20, key='sidebar_epochs')
+        ks = st.slider('number of kernel_size', 1, 15, 7, key='sidebar_kernel_size')
+        Rc = st.slider('Regularization coefficient size', 0.1, 10.0, 1.0, step=0.1, key='sidebar_R')
 
-    st.info('This method was deployed latest, and the performance is not stable :smirk:')
+    # st.info('This method was deployed latest, and the performance is not stable :smirk:')
     with st.expander("See explanation"):
         st.write(
             """
@@ -57,7 +60,7 @@ def p2p_submodule(denoise_use_sidebar=False, imaging=False):
             This is [Peak2Peak](https://pubs.acs.org/doi/10.1021/acs.analchem.3c04608). You can find more details in [tutorial](/tutorial).
             """)
 
-        return {'epochs': epochs, 'imaging': imaging}
+        return {'ks': ks, 'Rc':Rc, 'imaging': imaging}
 
 
 def sg_submodule(denoise_use_sidebar=False, imaging=False):

@@ -13,6 +13,8 @@ import plotly.express  as px
 
 from utils.modules import spectra_cut_module, spectra_denoise_module, spectra_baseline_module
 from utils.utils import generate_download_link, exec_mysql
+from utils.functions import SF
+from api.SplitingFiting import gaussian_cauchy
 
 
 st.set_page_config(
@@ -202,6 +204,31 @@ def run():
                               line_width=1, line_dash="dash", line_color="black")
             # 在Streamlit中显示Plotly图表
             st.plotly_chart(fig, use_container_width=True)
+
+        # ================partial peak fitting================ #
+        with st.container(border=True):
+            st.subheader('Partial peak fitting', divider='gray')
+            # 显示选择栏，让用户选择是否进行峰拟合算法
+            perform_peak_fitting = st.checkbox("Perform peak fitting")
+            if perform_peak_fitting:
+                wavenumber, spectrum, optim_params = SF(demo_spec['wavenumber'], demo_spec['processed'], 3000, imaging=False)
+                spliting_spec = pd.DataFrame({'wavenumber': wavenumber, 'processed': spectrum})
+                spliting_spec_fig = spliting_spec.melt('wavenumber', var_name='category', value_name='intensity')
+                # st.write(spliting_spec_fig)
+                fig = px.line(spliting_spec_fig, x="wavenumber", y="intensity", color='category',
+                          color_discrete_map=custom_colors)
+                st.plotly_chart(fig, use_container_width=True)
+
+                for i in range(optim_params['mu'].shape[0]):
+                    spliting_spec[f'processed{i}'] = gaussian_cauchy(np.arange(len(spectrum)), optim_params['mu'][i], optim_params['sigma'][i],
+                                             optim_params['amp'][i], optim_params['weight'][i])
+                    spliting_spec_subfig = spliting_spec.melt('wavenumber', var_name='category', value_name='intensity')
+                    # st.write(spliting_spec_subfig)
+                subfig = px.line(spliting_spec_subfig, x="wavenumber", y="intensity", color='category',
+                                  color_discrete_map=custom_colors)
+                # Hide legend
+                subfig.update_layout(showlegend=False)
+                st.plotly_chart(subfig, use_container_width=True)
 
         # ================download container================ #
         with st.container(border=True):

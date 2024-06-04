@@ -8,8 +8,10 @@ from api.airPLS import ZhangFit
 from api.modpoly import mod_poly, imod_poly
 from api.AABS import aabs
 from api.p2p import P2P
+from api.SplitingFiting import PeakParsing, interplotation
 import streamlit as st
 import pymysql
+from concurrent.futures import ThreadPoolExecutor
 
 
 def skip(x):
@@ -113,7 +115,11 @@ def piecewiseFitting(x, breakpoint_right, breakpoint_left, order_left, order_rig
 @st.cache_data
 def sg(x, window_size, order, imaging=False):
     if imaging:
-        x = np.apply_along_axis(savgol_filter, 1, x, window_size, order)
+        def process_row(row):
+            return savgol_filter(row, window_size, order)
+        
+        with ThreadPoolExecutor(max_workers=16) as executor:
+            x = np.array(list(executor.map(process_row, x)))
     else:
         x = savgol_filter(x, window_size, order)
     return x
@@ -138,11 +144,17 @@ def PEER(x, loops: int = 1, hlaf_k_threshold: int = 2, imaging: bool = False):
     return x
 
 @st.cache_data
-def p2p(x, epochs, imaging=False):
-    net = P2P(input_spectrum=x, epochs=epochs) 
+def p2p(x, ks=7, Rc=1, imaging=False):
+    net = P2P(input_spectrum=x, ks=ks, Rc=Rc) 
     out = net.inference()
     return out
 
+def SF(wave, spec, epochs, imaging=False):
+    parsing = PeakParsing(spec, device='cpu', epochs=epochs, lr=0.05)
+    wave = interplotation(wave)
+    spec = parsing.predict_spectrum()
+    optim_params = parsing.get_params()
+    return wave, spec, optim_params
 
 # def wavelet(data):
 #     # 小波去燥
