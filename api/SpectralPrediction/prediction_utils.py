@@ -119,7 +119,15 @@ def hessfreq(Hi, Hij, edge_index, masses, normal=False, linear=False, scale=0.96
     # Diagonalisation
     eva, evec = torch.linalg.eigh(hessian)
     eva = eva * hess_t
-    freq = torch.pow(eva, 0.5) / (2 * torch.pi)
+
+    negative_indices = eva < 0
+    positive_indices = eva >= 0
+    freq = torch.zeros_like(eva)
+    
+    freq[negative_indices] = -torch.pow(torch.abs(eva[negative_indices]), 0.5) / (2 * torch.pi)
+    freq[positive_indices] = torch.pow(eva[positive_indices], 0.5) / (2 * torch.pi)
+
+    # freq = torch.pow(eva, 0.5) / (2 * torch.pi)
     freq = freq/cm_hz
     p = -evec.t()*wmasses
     normals = torch.norm(p, dim=1).unsqueeze(1)
@@ -338,7 +346,6 @@ def predict_spectrum(data):
         for idx in range(batch.batch[-1]+1):
             freq_pred, araman_pred = calspec(
                 Hi, Hij, dp, edge_index, atoms_batch, batch.atoms_x, idx)
-            freq_pred = freq_pred.nan_to_num()
             _, yraman_pred = freqaraman2spec(freq_pred, araman_pred)
     return yraman_pred / yraman_pred.max()
 
