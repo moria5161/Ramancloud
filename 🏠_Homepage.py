@@ -98,7 +98,7 @@ def get_to_know_us():
                 - Add noise2noise-based method for denoising  
                 - Add auto adaptive debaseline algorithm
                 - Add deep learning-based method for molecular spectral prediction
-                - :globe_with_meridians: [:red[visit our github]](https://github.com/X1nyuLu)''')
+                - :globe_with_meridians: [:red[visit our github]](https://github.com/X1nyuLu/ramancloud)''')
 
 
 def our_recent_research():
