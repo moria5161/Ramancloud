@@ -351,6 +351,5 @@ def predict_spectrum(data):
 
 
 def xyz2data(xyz_file_path):
-    
     rdmol, _ = xyz2rdmol_AC(xyz_file_path)
     return rdmol
