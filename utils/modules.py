@@ -15,7 +15,7 @@ from utils.functions import airPLS, ModPoly, IModPoly, piecewiseFitting, auto_ad
 
 #====================general submodules====================#
 
-def PEER_submodule(denoise_use_sidebar=False, imaging=False):
+def PEER_submodule(denoise_use_sidebar=False, mode='spectra'):
 
     if denoise_use_sidebar:
         with st.sidebar:
@@ -38,10 +38,10 @@ def PEER_submodule(denoise_use_sidebar=False, imaging=False):
             
             """)
 
-        return {'loops': loops, 'hlaf_k_threshold': hlaf_k_threshold, 'imaging': imaging}
+        return {'loops': loops, 'hlaf_k_threshold': hlaf_k_threshold, 'mode': mode}
 
 
-def p2p_submodule(denoise_use_sidebar=False, imaging=False):
+def p2p_submodule(denoise_use_sidebar=False, mode='spectra'):
     if denoise_use_sidebar:
         with st.sidebar:
             col1, col2 = st.columns(2)
@@ -60,10 +60,10 @@ def p2p_submodule(denoise_use_sidebar=False, imaging=False):
             This is [Peak2Peak](https://pubs.acs.org/doi/10.1021/acs.analchem.3c04608). You can find more details in [tutorial](/tutorial).
             """)
 
-        return {'ks': ks, 'Rc':Rc, 'imaging': imaging}
+        return {'ks': ks, 'Rc':Rc, 'mode': mode}
 
 
-def sg_submodule(denoise_use_sidebar=False, imaging=False):
+def sg_submodule(denoise_use_sidebar=False, mode='spectra'):
     if denoise_use_sidebar:
         with st.sidebar:
             col1, col2 = st.columns(2)
@@ -87,10 +87,10 @@ def sg_submodule(denoise_use_sidebar=False, imaging=False):
             will be.] This method is based on [Savitzky-Golay filter](https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter). 
             You can find more details in [tutorial](/tutorial).
             """)
-    return {'window_size':window_size, 'order':order, 'imaging':imaging}     
+    return {'window_size':window_size, 'order':order, 'mode':mode}     
 
 
-def airPLS_submodule(baseline_use_sidebar=False, imaging=False):
+def airPLS_submodule(baseline_use_sidebar=False, mode='spectra'):
     if baseline_use_sidebar:
         with st.sidebar:
             col1, col2 = st.columns(2)
@@ -112,9 +112,9 @@ def airPLS_submodule(baseline_use_sidebar=False, imaging=False):
             This method is based on [airPLS](https://doi.org/10.1039/B922045C) developed by Zhi-Min Zhang et. al. in Central South University.
             You can find more details in [tutorial](/tutorial).
             """)
-    return {'lambda_':lambda_, 'order_':order_, 'imaging':imaging}
+    return {'lambda_':lambda_, 'order_':order_, 'mode':mode}
 
-def ModPoly_submodule(baseline_use_sidebar=False, imaging=False):
+def ModPoly_submodule(baseline_use_sidebar=False, mode='spectra'):
     if baseline_use_sidebar:
         with st.sidebar:
             order_ = st.slider('order', 1, 35, 15, key='sidebar_order')
@@ -126,9 +126,9 @@ def ModPoly_submodule(baseline_use_sidebar=False, imaging=False):
             The parameters are the order of the polynomial used to fit the baseline. 
             [red]The higher the order, the greater the deduction of the baseline.[/red]
             """)
-    return {'order_':order_, 'imaging':imaging}
+    return {'order_':order_, 'mode':mode}
 
-def AABS_submodule(baseline_use_sidebar=False, imaging=False):
+def AABS_submodule(baseline_use_sidebar=False, mode='spectra'):
     if baseline_use_sidebar:
         with st.sidebar:
             col1, col2 = st.columns(2)
@@ -143,7 +143,7 @@ def AABS_submodule(baseline_use_sidebar=False, imaging=False):
         mdlit(
             """This method is based on [An auto-adaptive background subtraction method for Raman spectra](https://www.sciencedirect.com/science/article/pii/S1386142516300713) 
             """)
-    return {'Ln':Ln, 'Lb':Lb, 'imaging':imaging}
+    return {'Ln':Ln, 'Lb':Lb, 'mode':mode}
 
 #====================modules for spectra====================#
 def spectra_cut_module(spec_df):
@@ -196,13 +196,13 @@ def spectra_denoise_module(spec_df):
 
     # 根据用户选择的去噪方法，设置对应的参数
     if denoise_method == 'PEER':
-        denoise_args = PEER_submodule(denoise_use_sidebar=denoise_use_sidebar, imaging=False)
+        denoise_args = PEER_submodule(denoise_use_sidebar=denoise_use_sidebar, mode='spectra')
 
     elif denoise_method == 'Savitzky-Golay filter':
-        denoise_args = sg_submodule(denoise_use_sidebar=denoise_use_sidebar, imaging=False)
+        denoise_args = sg_submodule(denoise_use_sidebar=denoise_use_sidebar, mode='spectra')
 
     elif denoise_method == 'p2p':
-        denoise_args = p2p_submodule(denoise_use_sidebar=denoise_use_sidebar, imaging=False)
+        denoise_args = p2p_submodule(denoise_use_sidebar=denoise_use_sidebar, mode='spectra')
 
     # 将选定的去噪方法应用于数据，更新数据中的'processed'列
     spec_df['processed'] = denoise_method_dict[denoise_method](spec_df['processed'], **denoise_args)
@@ -228,13 +228,13 @@ def spectra_baseline_module(spec_df):
         st.sidebar.subheader('**baseline parameters**', divider='gray')
     
     if baseline_method == 'airPLS':
-        baseline_args = airPLS_submodule(baseline_use_sidebar=baseline_use_sidebar, imaging=False)
+        baseline_args = airPLS_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
     
     elif baseline_method in ['ModPoly', 'IModPoly']:
-        baseline_args = ModPoly_submodule(baseline_use_sidebar=baseline_use_sidebar, imaging=False)   
+        baseline_args = ModPoly_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')   
     
     elif baseline_method == 'auto-adaptive':
-        baseline_args = AABS_submodule(baseline_use_sidebar=baseline_use_sidebar, imaging=False)   
+        baseline_args = AABS_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')   
 
     elif baseline_method == 'piecewiseFitting':
         import numpy as np
@@ -281,32 +281,35 @@ def spectra_baseline_module(spec_df):
 
 
 #====================modules for mapping====================#
-def imaging_cut_module(mapping_data, wavenumber):
+def mapping_cut_module(mapping_data, wavenumber, mode='imaging'):
 
     st.subheader('Cut')
     st.caption("The module is used to cut the range of wavenumber, please drag the slider.")
 
     MIN, MAX = wavenumber.min(), wavenumber.max()
     values = st.slider('Select the range of wavenumber', min_value=MIN, max_value=MAX, value=(float(MIN), float(MAX)))
-    new_array = cut(x=mapping_data, values=values, wavenumber=wavenumber)
+    new_array = cut(x=mapping_data, values=values, wavenumber=wavenumber, mode=mode)
     start_idx = np.where(wavenumber >= values[0])[0][0]
     end_idx = np.where(wavenumber <= values[1])[0][-1]+1
     return new_array , (start_idx, end_idx)
 
 
-def imaging_denoise_module(mapping_data):
+def mapping_denoise_module(mapping_data, mode='imaging'):
     denoise_method_dict = {'Savitzky-Golay filter': sg, 'PEER':PEER, 'skip': skip}
     denoise_args = {}
     st.subheader('Smooth')
     col1, col2 = st.columns(2)
     col1.caption('The module is used to smooth the spectrum, please Select a method to continue.')
-    denoise_method = col2.selectbox('Select a method', denoise_method_dict.keys(), key='smooth', label_visibility='collapsed')
-
-    if denoise_method == 'Savitzky-Golay filter':
-        denoise_args = sg_submodule(denoise_use_sidebar=False, imaging=True)
+    denoise_method = col2.selectbox(label=' ', label_visibility='collapsed', 
+                                    options=denoise_method_dict.keys(), key='smooth', 
+                                    index=None, placeholder='select a method')
+    if denoise_method is None:
+        st.stop()
+    elif denoise_method == 'Savitzky-Golay filter':
+        denoise_args = sg_submodule(denoise_use_sidebar=False, mode=mode)
     
     elif denoise_method == 'PEER':
-        denoise_args = PEER_submodule(denoise_use_sidebar=False, imaging=True)
+        denoise_args = PEER_submodule(denoise_use_sidebar=False, mode=mode)
 
     elif denoise_method == 'ALRMA':
         col1, col2 = st.columns(2)
@@ -329,18 +332,21 @@ def imaging_denoise_module(mapping_data):
     return mapping_data, {'method':denoise_method_dict[denoise_method], 'args':denoise_args}
 
 
-def imaging_baseline_module(mapping_data):
+def mapping_baseline_module(mapping_data, mode='imaging'):
     baseline_method_dict = {'airPLS': airPLS, 'ModPoly':ModPoly, 'IModPoly': IModPoly, 'skip': skip}
     baseline_args = {}
     st.subheader('Baseline removal')
     col1, col2 = st.columns(2)
     col1.caption('The module is used to remove the baseline, please drag the slider or click `skip button`.')
-    baseline_method = col2.selectbox('Select a method', baseline_method_dict.keys(), key='baseline', label_visibility='collapsed')
-
-    if baseline_method == 'airPLS':
-        baseline_args = airPLS_submodule(baseline_use_sidebar=False, imaging=True)
+    baseline_method = col2.selectbox(label=' ', label_visibility='collapsed', 
+                                    options=baseline_method_dict.keys(), key='baseline', 
+                                    index=None, placeholder='select a method')
+    if baseline_method is None:
+        st.stop()
+    elif baseline_method == 'airPLS':
+        baseline_args = airPLS_submodule(baseline_use_sidebar=False, mode=mode)
     elif baseline_method in ['ModPoly', 'IModPoly']:
-        baseline_args = ModPoly_submodule(baseline_use_sidebar=False, imaging=True)   
+        baseline_args = ModPoly_submodule(baseline_use_sidebar=False, mode=mode)   
 
     mapping_data = baseline_method_dict[baseline_method](mapping_data, **baseline_args)
     return mapping_data, {'method':baseline_method_dict[baseline_method], 'args':baseline_args}

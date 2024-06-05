@@ -19,11 +19,13 @@ def skip(x):
 
 
 @st.cache_data
-def cut(x, values, wavenumber=[]):
-    if len(wavenumber):
-        if type(x) != np.ndarray:
-            x = np.array(x)
-        return x[:, (wavenumber >= values[0]) & (wavenumber <= values[1])]
+def cut(x, values, wavenumber=[], mode='spectra'):
+    if mode != 'spectra':
+        x = np.array(x) if type(x) != np.ndarray else x
+        if mode == 'time series':
+            return x[:, (wavenumber >= values[0]) & (wavenumber <= values[1])]
+        elif mode == 'imaging':
+            return x[:, :, (wavenumber >= values[0]) & (wavenumber <= values[1])]
     else:
         return x[(x.wavenumber >= values[0]) & (x.wavenumber <= values[1])]
 
@@ -35,7 +37,7 @@ def minmax(x):
 
 
 @st.cache_data
-def airPLS(x, lambda_, order_, imaging=False):
+def airPLS(x, lambda_, order_, mode='spectra'):
     def func(inp):
         out = ZhangFit(inp, lambda_=lambda_, porder=order_)
         # baseline = inp - res
@@ -43,41 +45,45 @@ def airPLS(x, lambda_, order_, imaging=False):
         # res = inp - func(np.arange(len(inp)))
         # res = res - res.min()
         return out
-    if imaging:
-        res = np.apply_along_axis(func, 1, x)
-        return res
+    if mode != 'spectra':
+        size = x.shape
+        res = np.apply_along_axis(func, 1, x.reshape(-1, size[-1]))
+        res = res.reshape(size)
     else:
         res = func(x)
-        return res
+    return res
 
 
-def auto_adaptive(x, Ln, Lb, imaging=False):
+def auto_adaptive(x, Ln, Lb, mode='spectra'):
     return aabs(x, Ln, Lb)
 
 
 @st.cache_data
-def ModPoly(x, order_, gradient=1e-3, repitition=9, imaging=False):
+def ModPoly(x, order_, gradient=1e-3, repitition=9, mode='spectra'):
     def func(inp):
         out = mod_poly(inp, order_, gradient=gradient, repitition=repitition)
         return out
-    if imaging:
-        res = np.apply_along_axis(func, 1, x)
-        return res
+    if mode != 'spectra':
+        size = x.shape
+        res = np.apply_along_axis(func, 1, x.reshape(-1, size[-1]))
+        res = res.reshape(size)
     else:
         res = func(x)
-        return res
+    return res
 
 
 @st.cache_data
-def IModPoly(x, order_, gradient=1e-3, repitition=9, imaging=False):
+def IModPoly(x, order_, gradient=1e-3, repitition=9, mode='spectra'):
     def func(inp):
         out = imod_poly(inp, order_, gradient=gradient, repitition=repitition)
         return out
-    if imaging:
-        res = np.apply_along_axis(func, 1, x)
+    if mode != 'spectra':
+        size = x.shape
+        res = np.apply_along_axis(func, 1, x.reshape(-1, size[-1]))
+        res = res.reshape(size)
     else:
         res = func(x)
-        return res
+    return res
 
 
 @st.cache_data
@@ -113,20 +119,21 @@ def piecewiseFitting(x, breakpoint_right, breakpoint_left, order_left, order_rig
 
 
 @st.cache_data
-def sg(x, window_size, order, imaging=False):
-    if imaging:
-        def process_row(row):
-            return savgol_filter(row, window_size, order)
-        
-        with ThreadPoolExecutor(max_workers=16) as executor:
-            x = np.array(list(executor.map(process_row, x)))
+def sg(x, window_size, order, mode='spectra'):
+    def func(inp):
+        out = savgol_filter(inp, window_size, order)
+        return out
+    if mode != 'spectra':
+        size = x.shape
+        res = np.apply_along_axis(func, 1, x.reshape(-1, size[-1]))
+        res = res.reshape(size)
     else:
-        x = savgol_filter(x, window_size, order)
+        x = func(x)
     return x
 
 
 @st.cache_data
-def PEER(x, loops: int = 1, hlaf_k_threshold: int = 2, imaging: bool = False):
+def PEER(x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
 
     if type(x) != np.ndarray:
         x = np.array(x)
@@ -136,11 +143,12 @@ def PEER(x, loops: int = 1, hlaf_k_threshold: int = 2, imaging: bool = False):
         hlaf_k_threshold = int(hlaf_k_threshold)
 
     for _ in range(loops):
-        if imaging:
-            x = np.apply_along_axis(weight_resultX2, 1, x, hlaf_k_threshold)
+        if mode != 'spectra':
+            size = x.shape
+            res = np.apply_along_axis(weight_resultX2, 1, x.reshape(-1, size[-1]), hlaf_k_threshold, )
+            res = res.reshape(size)
         else:
             x = weight_resultX2(x, hlaf_k_threshold)
-
     return x
 
 @st.cache_data
