@@ -152,7 +152,7 @@ def PEER(x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
     return x
 
 @st.cache_data
-def p2p(x, ks=7, Rc=1, imaging=False):
+def p2p(x, ks=7, Rc=1):
     net = P2P(input_spectrum=x, ks=ks, Rc=Rc) 
     out = net.inference()
     return out
