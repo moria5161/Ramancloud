@@ -69,7 +69,7 @@ def data_processing_and_mining():
                         ''')
         if text_col.button(':point_right: :red[try other useful tools]',
                            help='find help?', use_container_width=True, key='other_tools'):
-            st.switch_page('pages/5_🛠️_other_tools.py')
+            st.switch_page('pages/6_🛠️_extra_tools.py')
 
     with st.expander(":rainbow[**About user agreement and privacy policy**]"):
         st.warning(
