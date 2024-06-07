@@ -3,11 +3,12 @@ import time
 import numpy as np
 import pandas as pd
 
-import plotly.express as px
 import streamlit as st
 
 from api.SpectralPrediction.prediction_utils import xyz2data, predict_spectrum
 from api.SpectralPrediction.code.function import rdmol2pt
+
+from utils.utils import generate_download_link
 
 cache_path = '/media/ramancloud/cache'
 
@@ -25,7 +26,7 @@ def upload_xyz_module(upload_file):
     os.remove(cache_file_path)
     return mol
 
-
+@st.cache_data
 def raman_predicting_module(rdmol, name):
 
     data = rdmol2pt(rdmol, name)
@@ -85,14 +86,26 @@ def run():
             pred_spectrum = raman_predicting_module(demo_mol, 'test')
             tab1, tab2 = st.tabs(['Molecule', 'Predicted Raman spectrum'])
             with tab1:
-                demonstrate_mol(demo_mol)                
+                demonstrate_mol(demo_mol)
             
             with tab2:
                 demo_spec_fig = pd.DataFrame({'wavenumber':np.linspace(500, 4000, 3501), 'intensity':pred_spectrum})
-                fig = px.line(demo_spec_fig, x="wavenumber", y="intensity")
 
-                # 在Streamlit中显示Plotly图表
-                st.plotly_chart(fig, use_container_width=True)
+                st.line_chart(demo_spec_fig, x="wavenumber", y="intensity")
+                
+                download_button = st.button(':+1: :blue[process and download]')
+                if download_button:
+                    if demo_data == 'test':
+                        st.error(
+                            'Downloading demo data is not supported. Please upload your own data.')
+                        st.stop()
+                    else:
+                        file = demo_spec_fig.to_csv(sep='\t', index=False, header=False)
+                        st.write('Generating download URL...')
+                        time.sleep(2)
+                        st.markdown(':red[**It will finish soon...**]')
+                        href = generate_download_link(file.encode('utf-8'), f'predicted_spectrum.txt')
+                        st.markdown(href, unsafe_allow_html=True)
 
 
 if __name__ == '__main__':
