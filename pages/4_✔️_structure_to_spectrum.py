@@ -9,13 +9,16 @@ from streamlit_ketcher import st_ketcher
 from rdkit import Chem
 from rdkit.Chem import AllChem
 
+import py3Dmol
+from stmol import showmol
+
 from api.SpectralPrediction.prediction_utils import xyz2data, predict_spectrum
 from api.SpectralPrediction.code.function import rdmol2pt
 
 from utils.utils import generate_download_link
 
-cache_path = '/media/ramancloud/cache'
 
+cache_path = '/media/ramancloud/cache'
 
 def optmize_conformer(mol):
     mol = Chem.AddHs(mol)
@@ -46,8 +49,7 @@ def raman_predicting_module(rdmol, name):
 
 def demonstrate_mol(mol):
 
-    import py3Dmol
-    from stmol import showmol
+
 
     # Display with py3Dmol
 
@@ -99,9 +101,9 @@ def run():
                 st.markdown('<font size=5>**Or use demo data**</font>',
                             unsafe_allow_html=True)
                 demo_data = st.selectbox(label=' ', label_visibility='collapsed', index=None,
-                                        options=['test'], placeholder='select demo data')
+                                        options=['one complex organic compound'], placeholder='select demo data')
 
-                if demo_data == 'test':
+                if demo_data == 'one complex organic compound':
                     xyz_file_path = '/media/ramancloud/samples/test.xyz'
                     demo_mol = xyz2data(xyz_file_path)
                     st.session_state['mol'] = demo_mol
@@ -114,11 +116,10 @@ def run():
     if 'mol' in st.session_state and st.session_state['mol'] is not None:
 
         # ================data visualization container================ #
-        st.error('Thanks for your visiting! This page is still under construction. All features will be available soon...')
         with st.container(border=True):
             st.subheader('Visualization')
             pred_spectrum = raman_predicting_module(demo_mol, 'test')
-            tab1, tab2 = st.tabs(['Molecule', 'Predicted Raman spectrum'])
+            tab1, tab2 = st.tabs(['3D conformer', 'Predicted Raman spectrum'])
             with tab1:
                 demonstrate_mol(demo_mol)
             
@@ -127,9 +128,9 @@ def run():
 
                 st.line_chart(demo_spec_fig, x="wavenumber", y="intensity")
                 
-                download_button = st.button(':+1: :blue[process and download]')
+                download_button = st.button(':+1: :blue[process and download]', use_container_width=True)
                 if download_button:
-                    if demo_data == 'test':
+                    if demo_data == 'one complex organic compound':
                         st.error(
                             'Downloading demo data is not supported. Please upload your own data.')
                         st.stop()
@@ -144,5 +145,6 @@ def run():
 
 if __name__ == '__main__':
     st.image("https://img.shields.io/badge/Ramancloud-predict%20molecular%20spectra-blue?style=for-the-badge", )
+    # st.info('Thanks for your visiting! This page is still under construction. All features will be available soon...')
     run()
     
