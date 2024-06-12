@@ -11,7 +11,7 @@ st.set_page_config(
         'Get Help': 'https://ramancloud.xmu.edu.cn/tutorial',
         'Report a bug': 'https://github.com/X1nyulu/ramancloud/issues',
         'About': '''Immerse yourself in the captivating realm of spectral analysis and witness the magic of Raman spectra.  
-                **Contributors:** Xinyu Lu, Dr. Hao Ma, et. al.''',
+                **Contributors:** [Xinyu Lu](https://x1nyulu.github.io), [Dr. Hao Ma](https://www.researchgate.net/profile/Hao-Ma-20), et. al.''',
     }
 )
 
