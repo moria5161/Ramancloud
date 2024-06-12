@@ -49,10 +49,6 @@ def raman_predicting_module(rdmol, name):
 
 def demonstrate_mol(mol):
 
-
-
-    # Display with py3Dmol
-
     mol_block = Chem.MolToMolBlock(mol)
     viewer = py3Dmol.view(width=640, height=200)
     viewer.addModel(mol_block, "mol")
@@ -101,11 +97,14 @@ def run():
                 st.markdown('<font size=5>**Or use demo data**</font>',
                             unsafe_allow_html=True)
                 demo_data = st.selectbox(label=' ', label_visibility='collapsed', index=None,
-                                        options=['one complex organic compound'], placeholder='select demo data')
+                                        options=['benzene', 'caffeine'], placeholder='select demo data')
 
-                if demo_data == 'one complex organic compound':
-                    xyz_file_path = '/media/ramancloud/samples/test.xyz'
-                    demo_mol = xyz2data(xyz_file_path)
+                if demo_data == 'benzene':
+                    demo_mol = xyz2data('/media/ramancloud/samples/benzene.xyz')
+                    st.session_state['mol'] = demo_mol
+                elif demo_data == 'caffeine':
+                    demo_mol = xyz2data('/media/ramancloud/samples/caffeine.xyz')
+                    print('caff', demo_mol)
                     st.session_state['mol'] = demo_mol
             else:
                 demo_mol = upload_xyz_module(upload_file)
@@ -147,4 +146,10 @@ if __name__ == '__main__':
     st.image("https://img.shields.io/badge/Ramancloud-predict%20molecular%20spectra-blue?style=for-the-badge", )
     # st.info('Thanks for your visiting! This page is still under construction. All features will be available soon...')
     run()
-    
+    # =================reference================ #
+    st.markdown('''
+        ### Reference and acknowledgment
+        The interactive modules are built based on the following references. Thanks for their great work!:clap:
+        - [Streamlit Ketcher](https://github.com/mik-laj/streamlit-ketcher)  
+        - [Stmol](https://github.com/napoles-uach/stmol)          
+          ''')
