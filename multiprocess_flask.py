@@ -13,16 +13,23 @@ def airPLS_parallel_process(data, lambda_, order_):
         print(len(data[1,:]))
     return np.array(res)
 
-def ModPoly_parallel_process(data, order_, gradient, repitition):
-    with Pool(processes= 8) as pool:
-        res = pool.starmap(mod_poly, [(row, order_, gradient, repitition) for row in data])
-    return np.array(res)
+def ModPoly_parallel_process(data, degree, gradient, repitition):
+    with Pool() as pool:
+        results = pool.starmap(mod_poly, [(row, degree, repitition, gradient, idx) for idx, row in enumerate(data)])
+    
+    # 保持原始行的顺序
+    results.sort(key=lambda x: x[1])
+    corrected_data = [result[0] for result in results]
+    return np.array(corrected_data)
 
-def IModPoly_parallel_process(data, order_, gradient, repitition):
-    with Pool(processes= 8) as pool:
-        print('IModPoly_parallel_process start!')
-        res = pool.starmap(imod_poly, [(row, order_, gradient, repitition) for row in data])
-    return np.array(res)
+def IModPoly_parallel_process(data, degree, gradient, repitition):
+    with Pool() as pool:
+        results = pool.starmap(imod_poly, [(row, degree, repitition, gradient, idx) for idx, row in enumerate(data)])
+    
+    # Maintain original row order
+    results.sort(key=lambda x: x[1])
+    corrected_data = [result[0] for result in results]
+    return np.array(corrected_data)
 
 def PEER_parallel_process(data, loops, hlaf_k_threshold):
     with Pool(processes= 8) as pool:
@@ -62,6 +69,7 @@ def modpoly_handler():
         size = x.shape
         res = ModPoly_parallel_process(x.reshape(-1, size[-1]), order_, gradient, repitition)
         res = res.reshape(size)
+        print(res.shape)
         # 将结果转换为列表并返回 JSON 响应
         return jsonify(res.tolist())
     

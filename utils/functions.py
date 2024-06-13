@@ -99,6 +99,7 @@ def ModPoly(x, order_, gradient=1e-3, repitition=9, mode='spectra'):
         processed_data = mod_poly(x, order_, gradient, repitition)
     end_time = time.time()
     print('ModPoly usetime: ', end_time - start_time)
+    print(processed_data.shape)
     return processed_data
 
 
@@ -127,6 +128,7 @@ def IModPoly(x, order_, gradient=1e-3, repitition=9, mode='spectra'):
         processed_data = imod_poly(x, order_, gradient, repitition)
     end_time = time.time()
     print('IModPoly usetime: ', end_time - start_time)
+    
     return processed_data
 
 
