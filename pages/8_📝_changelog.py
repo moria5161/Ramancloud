@@ -14,6 +14,9 @@ def main_content():
   st.title('Changelog')
   st.markdown(
       """
+#### 20240607
+- a module has been added to manually draw the molecular structure in the spectrum to structure page
+
 #### 20240603
 - Added a new algorithm for predicting the Raman spectrum of a organic molecule
 

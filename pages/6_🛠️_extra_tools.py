@@ -61,6 +61,7 @@ elif mode == "split mapping into spectra":
     upload = st.file_uploader("Upload a file", type="txt")
     if upload is not None:
         st.warning('upload success')
+        
         if instrument == "Horiba":
             df = pd.read_csv(upload, delimiter='\t', header=None)
             filename = upload.name
@@ -79,6 +80,30 @@ elif mode == "split mapping into spectra":
             data = df.iloc[:, -1].to_numpy().reshape(batch, -1)
             
             files = [np.c_[wave[i], data[i]] for i in range(batch)]
+        
+        elif instrument == "Nanophoton":
+            filename = upload.name
+            content = upload.read().decode("utf-8")
+            data = content.splitlines()
+            list = data[2].split('\t')
+            arr_w, arr_s = [], []
+            
+            for i in range(1, len(data)):
+                wavenum = []
+                signal = []
+                for l in data[i].split('\t'):
+                    if '.' not in l:
+                        signal.append(int(l))
+                    else:
+                        wavenum.append(float(l))
+                arr_w.append(np.array(wavenum))
+                arr_s.append(np.array(signal))
+            
+            arr_w = np.stack(arr_w)
+            arr_s = np.stack(arr_s)
+            
+            # 存储结果
+            files = [np.c_[arr_w[:, i], arr_s[:, i]] for i in range(1, arr_w.shape[1])]
 
         elif instrument == "Nanophoton":
             # 读取上传的文件内容

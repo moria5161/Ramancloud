@@ -160,7 +160,7 @@ def run():
             time.sleep(1)
             st.error('Here is our [user item and privacy policy.](privacy_policy)')
             # save_unlabeled_mapping_to_mysql(raw_mapping_arr, wavenumber)
-
+            demo_data = None
         else:
             st.markdown('<font size=5>**Or use demo data**</font>',unsafe_allow_html=True)
             demo_data = st.selectbox(label=' ', label_visibility='collapsed', index=None, 
@@ -280,24 +280,27 @@ def run():
                                   state="complete", expanded=True)
 
                 # =================save data to mysql================ #
-                sql = open(
+                try:
+                    sql = open(
                     '/media/ramancloud/utils/add_labeled_spectra.sql', 'r').read()
 
-                raw_wavenumber = wavenumber.tolist()
-                raw_spectrum = raw_mapping_arr[demo_index-1]
-                pre_spectrum = demo_spec.processed.to_list()
-                sql = sql.format(
-                    startTime,
-                    raw_wavenumber,
-                    raw_spectrum,
-                    pre_spectrum,
-                    {'values': (wavenumber[cut_start], wavenumber[cut_end-1])},
-                    denoise_args['method'].__name__,
-                    denoise_args['args'],
-                    baseline_args['method'].__name__,
-                    baseline_args['args'],
-                )
-                exec_mysql(sql)
+                    raw_wavenumber = wavenumber.tolist()
+                    raw_spectrum = raw_mapping_arr[demo_index-1]
+                    pre_spectrum = demo_spec.processed.to_list()
+                    sql = sql.format(
+                        startTime,
+                        raw_wavenumber,
+                        raw_spectrum,
+                        pre_spectrum,
+                        {'values': (wavenumber[cut_start], wavenumber[cut_end-1])},
+                        denoise_args['method'].__name__,
+                        denoise_args['args'],
+                        baseline_args['method'].__name__,
+                        baseline_args['args'],
+                    )
+                    exec_mysql(sql)
+                except Exception as e:
+                    print(e)
 
     # =================reference================ #
     st.markdown('''

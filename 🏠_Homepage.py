@@ -11,7 +11,7 @@ st.set_page_config(
         'Get Help': 'https://ramancloud.xmu.edu.cn/tutorial',
         'Report a bug': 'https://github.com/X1nyulu/ramancloud/issues',
         'About': '''Immerse yourself in the captivating realm of spectral analysis and witness the magic of Raman spectra.  
-                **Contributors:** Xinyu Lu, Dr. Hao Ma, et. al.''',
+                **Contributors:** [Xinyu Lu](https://x1nyulu.github.io), [Dr. Hao Ma](https://www.researchgate.net/profile/Hao-Ma-20), et. al.''',
     }
 )
 
@@ -32,7 +32,7 @@ def data_processing_and_mining():
                         ''')
         if text_col.button(':point_right: :red[try our spectral processing app]',
                            help='denoising debaseline and so on', use_container_width=True, key='spectra'):
-            st.switch_page('pages/1_➡️_spectra.py')
+            st.switch_page('pages/1_➡️_process_spectra.py')
 
     with tab2:
         img_col, text_col = st.columns([0.3, 0.7])
@@ -45,7 +45,7 @@ def data_processing_and_mining():
                         ''')
         if text_col.button(':point_right: :red[try our spectral imaging/time series processing app]',
                            help='denoising debaseline and so on', use_container_width=True, key='imaging'):
-            st.switch_page('pages/2_➡️_imaging.py')
+            st.switch_page('pages/2_➡️_process_mapping.py')
 
     with tab3:
         img_col, text_col = st.columns([0.3, 0.7])
@@ -58,7 +58,7 @@ def data_processing_and_mining():
                         ''')
         if text_col.button(':point_right: :red[try our spectral prediction app]',
                            help='find help?', use_container_width=True, key='spectral_prediction'):
-            st.switch_page('pages/3_➡️_spectral_prediction.py')
+            st.switch_page('pages/4_✔️_structure_to_spectrum.py')
 
     with tab4:
         img_col, text_col = st.columns([0.3, 0.7])
@@ -69,7 +69,7 @@ def data_processing_and_mining():
                         ''')
         if text_col.button(':point_right: :red[try other useful tools]',
                            help='find help?', use_container_width=True, key='other_tools'):
-            st.switch_page('pages/4_➡️_other_tools.py')
+            st.switch_page('pages/6_🛠️_extra_tools.py')
 
     with st.expander(":rainbow[**About user agreement and privacy policy**]"):
         st.warning(
