@@ -48,7 +48,7 @@ def mod_poly(x, degree=2,repitition=100,gradient=0.001):
         corrected=np.array(list(corrected))
         return corrected
 
-def imod_poly(x,degree=2,repitition=100,gradient=0.001):
+def imod_poly(x, degree=2,repitition=100,gradient=0.001):
         '''IModPoly from paper: Automated Autofluorescence Background Subtraction Algorithm for Biomedical Raman Spectroscopy, by Zhao, Jianhua, Lui, Harvey, McLean, David I., Zeng, Haishan (2007)
 
         degree: Polynomial degree, default is 2        

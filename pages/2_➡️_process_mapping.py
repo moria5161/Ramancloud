@@ -253,7 +253,7 @@ def run():
                 download_button = st.button(':+1: :blue[process and download]')
 
             if download_button:
-                if demo_data != '-':
+                if demo_data is not None:
                     st.error(
                         'Downloading demo data is not supported. Please upload your own data.')
                     st.stop()

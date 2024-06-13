@@ -1,6 +1,8 @@
 '''
 This file contains the functions and algorithms used in the modules.
 '''
+import time
+import requests
 import numpy as np
 from scipy.signal import savgol_filter
 from api.PEER import weight_resultX2
@@ -12,6 +14,8 @@ from api.SplitingFiting import PeakParsing, interplotation
 import streamlit as st
 import pymysql
 from concurrent.futures import ThreadPoolExecutor
+from multiprocessing import Pool, cpu_count
+from pathos.multiprocessing import ProcessingPool as Pool
 
 
 def skip(x):
@@ -36,22 +40,37 @@ def minmax(x):
 # ==================== Baseline Correction ==================== #
 
 
+# def airPLS_parallel_process(data, lambda_, order_):
+#     with Pool(processes= 8) as pool:
+#         # print(f"Using {cpu_count()} processes for parallel processing.") # 64
+#         res = pool.starmap(ZhangFit, [(row, lambda_, order_) for row in data])
+#     return np.array(res)
+
 @st.cache_data
 def airPLS(x, lambda_, order_, mode='spectra'):
-    def func(inp):
-        out = ZhangFit(inp, lambda_=lambda_, porder=order_)
-        # baseline = inp - res
-        # func = np.poly1d(np.polyfit(np.arange(len(inp)), baseline, order_))
-        # res = inp - func(np.arange(len(inp)))
-        # res = res - res.min()
-        return out
+    start_time = time.time()
+    # st.write(x)
     if mode != 'spectra':
-        size = x.shape
-        res = np.apply_along_axis(func, 1, x.reshape(-1, size[-1]))
-        res = res.reshape(size)
+        # 将数据转换为列表，以便 JSON 序列化
+        data_payload = {
+            'data': x.tolist(),
+            'lambda': lambda_,
+            'order': order_,
+        }
+        
+        # 发送 POST 请求
+        response = requests.post("http://localhost:5000/airPLS", json=data_payload)
+        if response.status_code == 200:
+            result = response.json()
+            processed_data = np.array(result)  # 转换回 NumPy 数组
+        else:
+            print("Request failed with status code:", response.status_code)
     else:
-        res = func(x)
-    return res
+        processed_data = ZhangFit(x, lambda_, order_)
+
+    end_time = time.time()
+    print('airPLS usetime: ', end_time - start_time)
+    return processed_data
 
 
 def auto_adaptive(x, Ln, Lb, mode='spectra'):
@@ -60,30 +79,56 @@ def auto_adaptive(x, Ln, Lb, mode='spectra'):
 
 @st.cache_data
 def ModPoly(x, order_, gradient=1e-3, repitition=9, mode='spectra'):
-    def func(inp):
-        out = mod_poly(inp, order_, gradient=gradient, repitition=repitition)
-        return out
+    start_time = time.time()
     if mode != 'spectra':
-        size = x.shape
-        res = np.apply_along_axis(func, 1, x.reshape(-1, size[-1]))
-        res = res.reshape(size)
+        data_payload = {
+            'data': x.tolist(),
+            'order': order_,
+            'gradient': gradient,
+            'repitition': repitition,
+        }
+
+        # 发送 POST 请求
+        response = requests.post("http://localhost:5000/modpoly", json=data_payload)
+        if response.status_code == 200:
+            result = response.json()
+            processed_data = np.array(result)
+        else:
+            print("Request failed with status code:", response.status_code)
     else:
-        res = func(x)
-    return res
+        processed_data = mod_poly(x, order_, gradient, repitition)
+    end_time = time.time()
+    print('ModPoly usetime: ', end_time - start_time)
+    return processed_data
 
 
 @st.cache_data
 def IModPoly(x, order_, gradient=1e-3, repitition=9, mode='spectra'):
-    def func(inp):
-        out = imod_poly(inp, order_, gradient=gradient, repitition=repitition)
-        return out
+    st.write(x.shape)
+    size = x.shape
+    st.write((x.reshape(-1, size[-1])).shape)
+    start_time = time.time()
     if mode != 'spectra':
-        size = x.shape
-        res = np.apply_along_axis(func, 1, x.reshape(-1, size[-1]))
-        res = res.reshape(size)
+        data_payload = {
+            'data': x.tolist(),
+            'order': order_,
+            'gradient': gradient,
+            'repitition': repitition,
+        }
+
+        # 发送 POST 请求
+        response = requests.post("http://localhost:5000/imodpoly", json=data_payload)
+        if response.status_code == 200:
+            result = response.json()
+            processed_data = np.array(result)
+        else:
+            print("Request failed with status code:", response.status_code)
     else:
-        res = func(x)
-    return res
+        processed_data = imod_poly(x, order_, gradient, repitition)
+    end_time = time.time()
+    print('IModPoly usetime: ', end_time - start_time)
+    return processed_data
+
 
 
 @st.cache_data
@@ -134,27 +179,39 @@ def sg(x, window_size, order, mode='spectra'):
 
 @st.cache_data
 def PEER(x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
-
-    if type(x) != np.ndarray:
-        x = np.array(x)
-    if type(loops) != int:
-        loops = int(loops)
-    if type(hlaf_k_threshold) != int:
-        hlaf_k_threshold = int(hlaf_k_threshold)
-
-    for _ in range(loops):
-        if mode != 'spectra':
-            size = x.shape
-            res = np.apply_along_axis(weight_resultX2, 1, x.reshape(-1, size[-1]), hlaf_k_threshold, )
-            res = res.reshape(size)
+    start_time = time.time()
+    if mode != 'spectra':
+        data_payload = {
+            'data': x.tolist(),
+            'loops': loops,
+            'hlaf_k_threshold': hlaf_k_threshold,
+        }
+        # 发送 POST 请求
+        response = requests.post("http://localhost:5000/PEER", json=data_payload)
+        if response.status_code == 200:
+            result = response.json()
+            processed_data = np.array(result)
         else:
-            x = weight_resultX2(x, hlaf_k_threshold)
-    return x
+            print("Request failed with status code:", response.status_code)
+    else:
+        if type(x) != np.ndarray:
+            x = np.array(x)
+        if type(hlaf_k_threshold) != int:
+            hlaf_k_threshold = int(hlaf_k_threshold)
+
+        processed_data = weight_resultX2(x, hlaf_k_threshold)
+
+    end_time = time.time()
+    print('PEER usetime: ', end_time - start_time)
+    return processed_data
 
 @st.cache_data
-def p2p(x, ks=7, Rc=1):
+def p2p(x, ks=7, Rc=1,mode='spectra'):
+    start_time = time.time()
     net = P2P(input_spectrum=x, ks=ks, Rc=Rc) 
     out = net.inference()
+    end_time = time.time()
+    print('P2P usetime: ', end_time - start_time)
     return out
 
 def SF(wave, spec, epochs, imaging=False):

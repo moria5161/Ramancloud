@@ -117,9 +117,9 @@ def airPLS_submodule(baseline_use_sidebar=False, mode='spectra'):
 def ModPoly_submodule(baseline_use_sidebar=False, mode='spectra'):
     if baseline_use_sidebar:
         with st.sidebar:
-            order_ = st.slider('order', 1, 35, 15, key='sidebar_order')
+            order_ = st.slider('order', 1, 10, 2, key='sidebar_order')
     else:
-        order_ = st.slider('order', 1, 35, 15)
+        order_ = st.slider('order', 1, 10, 2)
     with st.expander("See explanation"):
         mdlit(
             """This method is based on [ModPoly](https://doi.org/10.1366/000370203322554518) and [IModPoly](https://doi.org/10.1366/000370207782597003) 

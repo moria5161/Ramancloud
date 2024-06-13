@@ -95,7 +95,9 @@ def main_content():
                 
                 Here, we describe the parameters of each algorithm in detail.
                 ##### Savitzky-Golay
-                :red[Here is the introduction of Savitzky-Golay algorithm.]
+                Savitzky-Golay is a powerful and intelligent smoothing algorithm that can effectively remove noise from data through polynomial fitting.Its main parameters are as follows:
+                1. window_size: The window size used for data smoothing. The larger the window size, the more obvious the smoothing effect will be; otherwise, more details of the signal will be retained.
+                2. order: The order of the polynomial used for data smoothing. The larger the order, the higher the order of the polynomial, the smoother the data; otherwise, the lower the order, the closer the data is to the original data.
                 ##### PEER
                 :red[Parameters of algorithm(loop times, peak seeking parameter for PEER smoothing) can be adjusted in the following tab.]  
                 ##### P2P
@@ -108,11 +110,30 @@ def main_content():
                 
                 Here, we describe the parameters of each algorithm in detail.
                 ##### airPLS
-                :red[Here is the introduction of airPLS algorithm.]
+                airPLS(Adaptive Iterative Re-weighted Penalized Least Squares) is a powerful and intelligent baseline correction algorithm that can effectively remove background signals from data through iterative and adaptive weighting methods. Making the actual peak more clear and obvious. When using airPLS algorithm for baseline correction, users need to pay attention to two adjustable parameters:
+                1. lambda: This parameter is used to adjust the degree of smoothness. It determines the weight of the penalty term. The larger the lambda, the greater the weight of the penalty term, and the smoother the baseline; otherwise, the smaller the lambda, the smaller the weight of the penalty term, and the closer the baseline is to the original data.
+                2. order: This parameter is used to adjust the order of the penalty item. The larger the order, the higher the order of the penalty item, the smoother the baseline; otherwise, the smaller the order, the lower the order of the penalty item, the closer the baseline is to the original data.
+
+                Reference: Zhang, Z.M., Chen, S., Liang, Y.Z., 2010. Baseline correction using adaptive iteratively reweighted penalized least squares. Analyst 135, 1138–1146.
                 ##### Auto-Adaptive
-                :red[Here is the introduction of Auto-Adaptive algorithm.]
+                Auto-Adaptive is an Adaptive Asymmetric Baseline Smoothing algorithm that adjusts parameters automatically to make the baseline smoother and closer to the original data. When using the Auto-Adaptive algorithm for baseline correction, users need to pay attention to two adjustable parameters:
+                1. Ln: The window length parameter used for data smoothing. The larger Ln is, the more obvious the smoothing effect will be; otherwise, more details of the signal will be retained.
+                2. Lb: A window length parameter used for baseline smoothing. The larger the Lb, the better to determine the position of the baseline; otherwise, more details between adjacent peaks will be preserved.
                 ##### ModPoly and IModPoly
-                :red[Here is the introduction of ModPoly and IModPoly algorithm.]
+                ModPoly(Modified Polynomial) and IModPoly(Iterative Modified Polynomial) are two polynomial-based baseline correction algorithms. Through polynomial fitting, background signals in data can be effectively removed. 
+                Making the actual peak more clear and obvious. IModploy is an improved version of Modpoly, and the use scenarios of the two are different. Modpoly tends to deal with the needs of general background deductions, while IModpoly is more suitable for dealing with the needs of complex background deductions.
+                The use of the two is consistent, in general, Modpoly and IModpoly have three parameters:
+                1. degree: Polynomial degree, default is 2.
+                2. repitition: How many iterations to run. Default is 100.
+                3. gradient:  Gradient for polynomial loss,  default is 0.001. It measures incremental gain over each iteration. If gain in any iteration is less than this, further improvement will stop.
+
+                The user can adjust the parameter degree. The other two parameters do not need to be adjusted.
+
+                Reference: 
+
+                Lieber, C., et al. Automated method for subtraction of fluorescence from biological raman spectra. Applied Spectroscopy, 2003, 57(11), 1363-1367.
+
+                Gan, F., et al. Baseline correction by improved iterative polynomial fitting with automatic threshold. Chemometrics and Intelligent Laboratory Systems, 2006, 82, 59-65.
                 ##### ULF
                 :red[Here is the introduction of ULF algorithm.]
                 ''')
@@ -142,7 +163,7 @@ def main_content():
 
                 Here, we describe the parameters of each algorithm in detail.
                 ##### Savitzky-Golay
-                :red[Here is the introduction of Savitzky-Golay algorithm.]
+                Refer to the introduction of Savitzky-Golay in the spectrum processing module
                 ##### PEER
                 :red[Parameters of algorithm(loop times, peak seeking parameter for PEER smoothing) can be adjusted in the following tab.]
                 ##### ALRMA and CLRMA
