@@ -17,7 +17,6 @@ def ModPoly_parallel_process(data, degree, gradient, repitition):
     with Pool() as pool:
         results = pool.starmap(mod_poly, [(row, degree, repitition, gradient, idx) for idx, row in enumerate(data)])
     
-    # 保持原始行的顺序
     results.sort(key=lambda x: x[1])
     corrected_data = [result[0] for result in results]
     return np.array(corrected_data)
@@ -69,7 +68,7 @@ def modpoly_handler():
         size = x.shape
         res = ModPoly_parallel_process(x.reshape(-1, size[-1]), order_, gradient, repitition)
         res = res.reshape(size)
-        print(res.shape)
+
         # 将结果转换为列表并返回 JSON 响应
         return jsonify(res.tolist())
     

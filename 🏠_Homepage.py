@@ -3,7 +3,7 @@ import streamlit as st
 
 
 st.set_page_config(
-    page_title="RamanCloud",
+    page_title="RamanCloud_Beta",
     page_icon=":cloud:",
     # layout="wide",
     initial_sidebar_state="expanded",
@@ -272,6 +272,27 @@ def feedback():
 
 
 if __name__ == "__main__":
+    
+    MAX_USERS = 1
+
+    # 计数器：跟踪当前活跃的用户数
+    if "active_users" not in st.session_state:
+        st.session_state.active_users = 0
+
+    # 检查用户数量
+    def check_user_limit():
+        if st.session_state.active_users >= MAX_USERS:
+            st.stop()
+            st.warning("当前在线人数已达到最大限制，请稍后再试。")
+        else:
+            st.session_state.active_users += 1
+
+    # 更新用户状态
+    def update_user_state():
+        st.session_state.active_users -= 1
+
+    # 主程序
+    check_user_limit()
 
     st.image('/media/ramancloud/static/logo.png',  use_column_width=True)
 
