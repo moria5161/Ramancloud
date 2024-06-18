@@ -165,8 +165,8 @@ def sg(x, window_size, order, mode='spectra'):
         res = np.apply_along_axis(func, 1, x.reshape(-1, size[-1]))
         res = res.reshape(size)
     else:
-        x = func(x)
-    return x
+        res = func(x)
+    return res
 
 
 @st.cache_data
