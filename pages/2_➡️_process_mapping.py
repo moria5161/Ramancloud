@@ -209,6 +209,9 @@ def run():
                                             placeholder='Select a time step for demostration')
                     if demo_index is not None:
                         st.write(f'The time step you selected is: {demo_index}')
+                        # print(len(wavenumber[cut_start:cut_end]))
+                        # print(len(raw_mapping_arr[demo_index-1][cut_start:cut_end]))
+                        # print(len(demo_mapping[demo_index-1]))
                         demo_spec = pd.DataFrame({'wavenumber': wavenumber[cut_start:cut_end],
                                                 'raw': raw_mapping_arr[demo_index-1][cut_start:cut_end],
                                                 'processed': demo_mapping[demo_index-1]})
@@ -260,15 +263,10 @@ def run():
                 with st.status('Running......', expanded=True) as status:
                     st.write('Processing data...')
                     time.sleep(2)
-                    print((wavenumber[None, cut_start:cut_end]).shape)
-                    print(demo_mapping.shape)
                     size = demo_mapping.shape
                     res_df = np.c_[indexs, np.r_[
                         wavenumber[None, cut_start:cut_end], demo_mapping.reshape(-1, size[-1])]]
-                    print((demo_mapping.reshape(-1, size[-1])).shape)
-                    print(indexs.shape)
-                    print(res_df.shape)
-                    # print(res_df.reshape(size).shape)
+               
                     res_df = pd.DataFrame(res_df)
                     st.write('Saving data...')
                     time.sleep(2)

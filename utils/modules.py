@@ -330,8 +330,8 @@ def mapping_cut_module(mapping_data, wavenumber, mode='imaging'):
     MIN, MAX = wavenumber.min(), wavenumber.max()
     values = st.slider('Select the range of wavenumber', min_value=MIN, max_value=MAX, value=(float(MIN), float(MAX)))
     new_array = cut(x=mapping_data, values=values, wavenumber=wavenumber, mode=mode)
-    start_idx = np.where(wavenumber >= values[0])[0][0]
-    end_idx = np.where(wavenumber <= values[1])[0][-1]+1
+    start_idx = len(wavenumber)-len(np.where(wavenumber >= values[0])[0])
+    end_idx = len(np.where(wavenumber <= values[1])[0])
     return new_array , (start_idx, end_idx)
 
 
