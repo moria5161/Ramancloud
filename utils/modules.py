@@ -11,6 +11,7 @@ from utils.functions import cut
 from utils.functions import skip
 from utils.functions import sg, PEER, p2p
 from utils.functions import airPLS, ModPoly, IModPoly, piecewiseFitting, auto_adaptive
+from utils.functions import min_max, max_, z_score
 
 
 #====================general submodules====================#
@@ -144,6 +145,11 @@ def AABS_submodule(baseline_use_sidebar=False, mode='spectra'):
             """This method is based on [An auto-adaptive background subtraction method for Raman spectra](https://www.sciencedirect.com/science/article/pii/S1386142516300713) 
             """)
     return {'Ln':Ln, 'Lb':Lb, 'mode':mode}
+
+
+# def min_max_submodule(normalize_use_sidebar=False):
+#     if normalize_use_sidebar:
+
 
 #====================modules for spectra====================#
 def spectra_cut_module(spec_df):
@@ -279,6 +285,41 @@ def spectra_baseline_module(spec_df):
 
     return spec_df, {'method':baseline_method_dict[baseline_method], 'args':baseline_args}
 
+
+def spectra_normalize_module(spec_df):
+    # 定义字典，包含两种三种归一化方法及其对应的函数
+    normalize_method_dict = {'min-max': min_max, 'max_': max_, 'z-score': z_score, 'skip': skip}
+    # normalize_args = {}  # 初始化归一化参数字典
+    # 如果'spec_df'中没有名为'processed'的列，就将'raw'列的内容复制到'processed'列
+    if 'processed' not in spec_df.columns:
+        spec_df['processed'] = spec_df['raw'].copy()
+    # 在界面上显示标题
+    st.markdown('''<font size=5>**Step 4: normalize**</font>''', unsafe_allow_html=True)
+    # 获取两个列元素，第一个列元素包含文本，第二个列元素包含选择框
+    col1, col2 = st.columns(2)
+    # 在第一个列元素中显示文本信息
+    col1.write(
+        'The module is used to normalize the spectrum, please select a method to continue. If you want to skip this step, please select **skip**')
+    # 在第二个列元素中创建选择框，供用户选择归一化方法
+    normalize_method = col2.selectbox('Select a method', normalize_method_dict.keys(), key='normalize',
+                                        label_visibility='collapsed')
+    # # 在第二个列中创建开关，用于切换使用侧边栏
+    # normalize_use_sidebar = col2.toggle('use sidebar', key='normalize_use_sidebar', help='switch the slider to sidebar')
+    # # 如果选择使用侧边栏，就在侧边栏中显示归一化参数的子标题
+    # if normalize_use_sidebar:
+    #     st.sidebar.subheader('**normalize parameters**', divider='gray')
+    # 根据用户选择的归一化方法，设置对应的参数
+    # if normalize_method == 'min-max':
+    #     normalize_args = min_max_submodule(normalize_use_sidebar=normalize_use_sidebar)
+    # elif normalize_method == 'max_':
+    #     normalize_args = max_submodule(normalize_use_sidebar=normalize_use_sidebar)
+    # elif normalize_method == 'z-score':
+    #     normalize_args = z_score_submodule(normalize_use_sidebar=normalize_use_sidebar)
+    
+    # 将选定的归一化方法应用于数据，更新数据中的'processed'列
+    spec_df['processed'] = normalize_method_dict[normalize_method](spec_df['processed'])
+    # 返回更新后的数据和使用的归一化方法及参数信息（字典形式）
+    return spec_df, {'method': normalize_method_dict[normalize_method]}
 
 #====================modules for mapping====================#
 def mapping_cut_module(mapping_data, wavenumber, mode='imaging'):

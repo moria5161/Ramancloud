@@ -260,8 +260,15 @@ def run():
                 with st.status('Running......', expanded=True) as status:
                     st.write('Processing data...')
                     time.sleep(2)
+                    print((wavenumber[None, cut_start:cut_end]).shape)
+                    print(demo_mapping.shape)
+                    size = demo_mapping.shape
                     res_df = np.c_[indexs, np.r_[
-                        wavenumber[None, cut_start:cut_end], demo_mapping]]
+                        wavenumber[None, cut_start:cut_end], demo_mapping.reshape(-1, size[-1])]]
+                    print((demo_mapping.reshape(-1, size[-1])).shape)
+                    print(indexs.shape)
+                    print(res_df.shape)
+                    # print(res_df.reshape(size).shape)
                     res_df = pd.DataFrame(res_df)
                     st.write('Saving data...')
                     time.sleep(2)

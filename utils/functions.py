@@ -40,12 +40,6 @@ def minmax(x):
 # ==================== Baseline Correction ==================== #
 
 
-# def airPLS_parallel_process(data, lambda_, order_):
-#     with Pool(processes= 8) as pool:
-#         # print(f"Using {cpu_count()} processes for parallel processing.") # 64
-#         res = pool.starmap(ZhangFit, [(row, lambda_, order_) for row in data])
-#     return np.array(res)
-
 @st.cache_data
 def airPLS(x, lambda_, order_, mode='spectra'):
     start_time = time.time()
@@ -96,7 +90,7 @@ def ModPoly(x, order_, gradient=1e-3, repitition=9, mode='spectra'):
         else:
             print("Request failed with status code:", response.status_code)
     else:
-        processed_data = mod_poly(x, order_, gradient, repitition)
+        processed_data = mod_poly(x, order_, gradient, repitition)[0]
     end_time = time.time()
     print('ModPoly usetime: ', end_time - start_time)
     return processed_data
@@ -104,9 +98,6 @@ def ModPoly(x, order_, gradient=1e-3, repitition=9, mode='spectra'):
 
 @st.cache_data
 def IModPoly(x, order_, gradient=1e-3, repitition=9, mode='spectra'):
-    st.write(x.shape)
-    size = x.shape
-    st.write((x.reshape(-1, size[-1])).shape)
     start_time = time.time()
     if mode != 'spectra':
         data_payload = {
@@ -124,7 +115,7 @@ def IModPoly(x, order_, gradient=1e-3, repitition=9, mode='spectra'):
         else:
             print("Request failed with status code:", response.status_code)
     else:
-        processed_data = imod_poly(x, order_, gradient, repitition)
+        processed_data = imod_poly(x, order_, gradient, repitition)[0]
     end_time = time.time()
     print('IModPoly usetime: ', end_time - start_time)
     
@@ -238,6 +229,20 @@ def SF(wave, spec, epochs, imaging=False):
 
 def ALRMADenoise():
     pass
+
+
+# ==================== Normalize ==================== #
+
+
+def min_max(x):
+    _range = np.max(x) - np.min(x)
+    return (x - np.min(x)) / _range
+
+def max_(x):
+    return x / np.max(x)
+
+def z_score(x):
+    return (x - np.mean(x)) / np.std(x)
 
 
 @st.cache_data

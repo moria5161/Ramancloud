@@ -38,7 +38,7 @@ def imod_poly(row, degree=2, repitition=100, gradient=0.001, index=0):
     polx_updated = polx[yorig <= (ypred + Previous_Dev)]
     ypred = ypred[yorig <= (ypred + Previous_Dev)]
 
-    for i in range(2, repitition + 1):
+    for i in range(2, int(repitition) + 1):
         if i > 2:
             Previous_Dev = DEV
         ypred = lin.fit(polx_updated, yold).predict(polx_updated)

@@ -7,11 +7,12 @@ import time
 import zipfile
 import pandas as pd
 import numpy as np
-                
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots               
 import streamlit as st
 import plotly.express  as px
 
-from utils.modules import spectra_cut_module, spectra_denoise_module, spectra_baseline_module
+from utils.modules import spectra_cut_module, spectra_denoise_module, spectra_baseline_module, spectra_normalize_module
 # from utils.utils import generate_download_link, exec_mysql
 from utils.functions import SF
 from api.SplitingFiting import gaussian_cauchy
@@ -137,40 +138,74 @@ def run():
             demo_spec, smooth_args = spectra_denoise_module(demo_spec)
             # 使用光谱基线校正模块对处理后的光谱数据进行基线校正处理，并获取校正后的光谱数据和校正参数
             demo_spec, baseline_args = spectra_baseline_module(demo_spec)
+            # 对谱图数据进行归一化处理
+            demo_spec, normalize_args = spectra_normalize_module(demo_spec)
             # 将光谱数据转换为适合绘图的格式
             demo_spec_fig = demo_spec.melt('wavenumber', var_name='category', value_name='intensity')
+
 
         # ================data visualization container================ #
         with st.container(border=True):
             # 设置数据可视化容器的标题和分隔线
             st.subheader('Data visualization', divider='gray')
-
+            # 在侧边栏中显示选择栏，让用户选择是否显示基线校正的结果
             with st.sidebar:
-                col1, col2, col3 = st.columns([5, 1, 1])
-                if baseline_args['method'].__name__ == 'skip':
+                col1, col2, col3 = st.columns([5, 1, 1]) # 三列布局
+                if baseline_args['method'].__name__ == 'skip': # 如果基线校正参数为空，则只显示选择颜色的单个颜色选择器
                     col1.write('Pick a color for processed spectrum')
                 else:
                     col1.write('Pick colors for processed spectrum and baseline')
 
-                pre_color = col2.color_picker(label=' ', label_visibility='collapsed', value='#FF0000')
+                pre_color = col2.color_picker(label=' ', label_visibility='collapsed', value='#FF0000') # 颜色选择器
                 custom_colors = {'raw': 'blue', 'processed': pre_color}
+
                 if baseline_args['method'].__name__ != 'skip':
                     baseline_color = col3.color_picker(label=' ', label_visibility='collapsed', value='#22CE12')
                     custom_colors['baseline'] = baseline_color
+        # 创建子图
+        fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
+                            vertical_spacing=0.1,
+                            subplot_titles=("Raw Spectrum and Baseline", "Processed Spectrum"))
 
-            # 使用Plotly绘制光谱数据的图表，并根据选择的颜色进行颜色标记
-            fig = px.line(demo_spec_fig, x="wavenumber", y="intensity", color='category',
-                          color_discrete_map=custom_colors)
+        # 分离原始数据和处理后的数据
+        raw_data = demo_spec_fig[demo_spec_fig['category'] == 'raw']
+        processed_data = demo_spec_fig[demo_spec_fig['category'] == 'processed']
+        baseline_data = None
+        # 判断baseline是否存在，如果存在则添加基线数据
+        if 'baseline' in demo_spec_fig['category'].to_list(): 
+            baseline_data = demo_spec_fig[demo_spec_fig['category'] == 'baseline']
 
-            if 'breakpoint_left' in baseline_args['args']:
-                # 绘制基线校正所用的两条竖直虚线
-                fig.add_vline(x=demo_spec['wavenumber'].to_numpy()[baseline_args['args']['breakpoint_left']],
-                              line_width=1, line_dash="dash", line_color="black")
-                fig.add_vline(x=demo_spec['wavenumber'].to_numpy()[baseline_args['args']['breakpoint_right']],
-                              line_width=1, line_dash="dash", line_color="black")
-            # 在Streamlit中显示Plotly图表
-            st.plotly_chart(fig, use_container_width=True)
-
+        # 添加原始数据
+        fig.add_trace(
+            go.Scatter(x=raw_data['wavenumber'], y=raw_data['intensity'], mode='lines', name='Raw', line=dict(color='blue')),
+            row=1, col=1
+        )
+        # 添加基线数据
+        if baseline_data is not None and 'baseline' in custom_colors:
+            fig.add_trace(
+                go.Scatter(x=baseline_data['wavenumber'], y=baseline_data['intensity'], mode='lines', name='Baseline', line=dict(color=custom_colors['baseline'], dash='dash')),
+                row=1, col=1
+            )
+        # 添加处理后的数据
+        fig.add_trace(
+            go.Scatter(x=processed_data['wavenumber'], y=processed_data['intensity'], mode='lines', name='Processed', line=dict(color=custom_colors['processed'])),
+            row=2, col=1
+        )
+        # # 绘制基线校正的竖直虚线
+        # if 'breakpoint_left' in baseline_args['args']:
+        #     fig.add_vline(x=demo_spec_fig['wavenumber'].to_numpy()[baseline_args['args']['breakpoint_left']],
+        #                 line_width=1, line_dash="dash", line_color="black", row=1, col=1)
+        #     fig.add_vline(x=demo_spec_fig['wavenumber'].to_numpy()[baseline_args['args']['breakpoint_right']],
+        #                 line_width=1, line_dash="dash", line_color="black", row=1, col=1)
+        # 更新布局
+        fig.update_layout(height=600, width=800, title_text="Raman Spectra")
+        fig.update_xaxes(title_text="Wavenumber (cm-1)", row=2, col=1)
+        fig.update_yaxes(title_text="Intensity", row=1, col=1)
+        fig.update_yaxes(title_text="Intensity", row=2, col=1)
+        # 在Streamlit中显示图表
+        st.plotly_chart(fig, use_container_width=True)
+ 
+                
         # ================partial peak fitting================ #
         with st.container(border=True):
             st.subheader('Partial peak fitting', divider='gray')
