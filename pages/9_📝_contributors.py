@@ -17,6 +17,7 @@ def main_content():
     ### Team Members
     - **[Xinyu Lu](https://x1nyulu.github.io/):** Lead Developer, responsible for the core functionality and management of the project.
     - **[Dr. Hao Ma](https://www.researchgate.net/profile/Hao-Ma-20):** UI/UX Designer, designed the user interface.
+    - **[Nannan Zhang](https://moria5161.github.io/):** Functional verification personnel, mainly responsible for some algorithm optimization, web page speed up and other work
     - **Zhengyan Pan:** Functional Validator, responsible for the validation of algorithms and writing of documentation.
     - **Siheng Luo, Chenyue Wang, Jia Li:** Functional Developers, responsible for the development of algorithms and tools.
 
