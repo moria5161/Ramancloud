@@ -127,19 +127,15 @@ def run():
 
                 st.line_chart(demo_spec_fig, x="wavenumber", y="intensity")
                 
-                download_button = st.button(':+1: :blue[process and download]', use_container_width=True)
-                if download_button:
-                    if demo_data == 'one complex organic compound':
-                        st.error(
-                            'Downloading demo data is not supported. Please upload your own data.')
-                        st.stop()
-                    else:
-                        file = demo_spec_fig.to_csv(sep='\t', index=False, header=False)
-                        st.write('Generating download URL...')
-                        time.sleep(2)
-                        st.markdown(':red[**It will finish soon...**]')
-                        href = generate_download_link(file.encode('utf-8'), f'predicted_spectrum.txt')
-                        st.markdown(href, unsafe_allow_html=True)
+            download_button = st.button(':+1: :blue[download predicted spectrum]', use_container_width=True)
+            
+            if download_button:
+                file = demo_spec_fig.to_csv(sep='\t', index=False, header=False)
+                st.write('Generating download URL...')
+                time.sleep(1)
+                st.markdown(':red[**It will finish soon...**]')
+                href = generate_download_link(file.encode('utf-8'), f'predicted_spectrum.txt')
+                st.markdown(href, unsafe_allow_html=True)
 
 
 if __name__ == '__main__':
