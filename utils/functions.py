@@ -126,8 +126,8 @@ def sg(x, window_size, order, mode='spectra'):
         res = np.apply_along_axis(func, 1, x.reshape(-1, size[-1]))
         res = res.reshape(size)
     else:
-        x = func(x)
-    return x
+        res = func(x)
+    return res
 
 
 @st.cache_data
@@ -146,8 +146,8 @@ def PEER(x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
             res = np.apply_along_axis(weight_resultX2, 1, x.reshape(-1, size[-1]), hlaf_k_threshold, )
             res = res.reshape(size)
         else:
-            x = weight_resultX2(x, hlaf_k_threshold)
-    return x
+            res = weight_resultX2(x, hlaf_k_threshold)
+    return res
 
 @st.cache_data
 def p2p(x, epochs, mode='spectra'):
