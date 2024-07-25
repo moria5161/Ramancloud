@@ -261,8 +261,7 @@ def run():
                     time.sleep(2)
                     size = demo_mapping.shape
                     res_df = np.c_[indexs, np.r_[
-                        wavenumber[None, cut_start:cut_end], demo_mapping.reshape(-1, size[-1])]]
-               
+                        wavenumber[None, cut_start:cut_end], demo_mapping.reshape(-1, demo_mapping.shape[-1]).astype(np.int64)]]
                     res_df = pd.DataFrame(res_df)
                     st.write('Saving data...')
                     time.sleep(2)
