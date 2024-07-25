@@ -17,24 +17,24 @@ def main_content():
     st.title('Welcome to RamanCloud Tutorials!')
     st.markdown('''
                 
-                RamanCloud is designed to be a user-friendly and powerful tool for spectral data processing and analysis, especially for Raman spectroscopy.
-                The platform is developed by the [Ren Research Group](https://bren.xmu.edu.cn) in Xiamen University.  
+                ##### RamanCloud is designed to be a user-friendly and powerful tool for spectral data processing and analysis, especially for Raman spectroscopy.
+                ##### The platform is developed by the [Ren Research Group](https://bren.xmu.edu.cn) in Xiamen University.  
                 
-                You can run this tutorial in a couple of ways:  
-                - Use the demo data we gave you on the page.   
-                - Upload a local spectrum file in *.txt format with a **200MB** limit per file.   
+                ##### You can run this tutorial in a couple of ways:  
+                 - ###### Use the demo data we gave you on the page.   
+                 - ###### Upload a local spectrum file in *.txt format with a **200MB** limit per file.   
                 
-                After selecting one of the demos or uploading the file(s), several modules will be enabled on the page for further custom data process.  
+                ##### After selecting one of the demos or uploading the file(s), several modules will be enabled on the page for further custom data process.  
                 
-                After processing, you can download the processed data and the baseline data if you want.  
-                It is noteable that all the download links are **temporary** and will be expired when you leave the page. 
+                ##### After processing, you can download the processed data and the baseline data if you want.  
+                ##### It is noteable that all the download links are **temporary** and will be expired when you leave the page.
                 ''')
 
     st.divider()
-    st.markdown('''If you are interested in the ***application of deep learning in Raman spectroscopy***, these two papers may be helpful to you.''')
+    st.markdown('''##### If you are interested in the ***application of deep learning in Raman spectroscopy***, these two papers may be helpful to you.''')
 
-    tab1, tab2 = st.tabs(['Spectral preprocessing and identification',
-                         'Establishment of spectrum-structure correlation'])
+    tab1, tab2 = st.tabs(['##### Spectral preprocessing and identification',
+                         '##### Establishment of spectrum-structure correlation'])
 
     with tab1:
         with st.container(border=True):
@@ -73,16 +73,24 @@ def main_content():
             )
             col2.image('/media/ramancloud/static/spec_str2.jpeg')
 
-    st.subheader("Process the spectra", divider='blue')
+    st.markdown(
+    """
+    <h1 style='text-align: center;'>
+    Process the spectra
+    </h1>
+    <hr style='border: 1px solid black;' />
+    """,
+    unsafe_allow_html=True
+)
     st.markdown('''
-                This page is designed for custom spectral processing. It features several common data processing tasks, including
+                ##### This page is designed for custom spectral processing. It features several common data processing tasks, including
                 - #### [data cut](#cut-module)
                 - #### [data smoothing](#smooth-module)
                 - #### [baseline removal](#baseline-removal-module)  
 
-                After processing, you can download the processed data and the baseline data if you want. 
-                It is noteable that all the download links are **temporary** and will be expired when you leave the page.  
-                The following is a brief introduction of each module.                  
+                ##### After processing, you can download the processed data and the baseline data if you want. 
+                ##### It is noteable that all the download links are **temporary** and will be expired when you leave the page.  
+                ##### The following is a brief introduction of each module.                  
                 ''')
     st.markdown('''
                 ### cut module
@@ -178,7 +186,15 @@ def main_content():
                 :red[Here is the introduction of CLRMA algorithm.]
                 ''')
 
-    st.subheader('Predict the spectra', divider='blue')
+    st.markdown(
+    """
+    <h1 style='text-align: center; color: blue;'>
+    Predict the Spectra 
+    </h1>
+    <hr style='border: 1px solid blue;' />
+    """,
+    unsafe_allow_html=True
+)
     st.markdown('''
                 This page is designed for custom spectral prediction. It features several common data processing tasks, including
                 
