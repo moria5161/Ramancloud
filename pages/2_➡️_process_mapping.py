@@ -209,13 +209,9 @@ def run():
                                             placeholder='Select a time step for demostration')
                     if demo_index is not None:
                         st.write(f'The time step you selected is: {demo_index}')
-                        # print(len(wavenumber[cut_start:cut_end]))
-                        # print(len(raw_mapping_arr[demo_index-1][cut_start:cut_end]))
-                        # print(len(demo_mapping[demo_index-1]))
                         demo_spec = pd.DataFrame({'wavenumber': wavenumber[cut_start:cut_end],
                                                 'raw': raw_mapping_arr[demo_index-1][cut_start:cut_end],
                                                 'processed': demo_mapping[demo_index-1]})
-
                         fig = plot_spectrum(demo_spec, baseline_args)
                         st.plotly_chart(fig, use_container_width=True)
 
@@ -228,7 +224,7 @@ def run():
                         demo_spec = pd.DataFrame({'wavenumber': wavenumber[cut_start:cut_end],
                                                 'raw': raw_mapping_arr[demo_x_pixel, demo_y_pixel, cut_start:cut_end],
                                                 'processed': demo_mapping[demo_x_pixel, demo_y_pixel]})
-
+                        
                         fig = plot_spectrum(demo_spec, baseline_args)
                         st.plotly_chart(fig, use_container_width=True)
         # ================download container================ #

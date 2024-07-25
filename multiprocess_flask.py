@@ -58,7 +58,6 @@ def airPLS_handler():
 @app.route('/modpoly', methods=['POST'])
 def modpoly_handler():
     try:
-        # 获取 JSON 请求数据
         req_data = request.json
         x = np.array(req_data['data'])
         order_ = req_data['order']
@@ -69,7 +68,6 @@ def modpoly_handler():
         res = ModPoly_parallel_process(x.reshape(-1, size[-1]), order_, gradient, repitition)
         res = res.reshape(size)
 
-        # 将结果转换为列表并返回 JSON 响应
         return jsonify(res.tolist())
     
     except Exception as e:
@@ -79,7 +77,6 @@ def modpoly_handler():
 @app.route('/imodpoly', methods=['POST'])
 def imodpoly_handler():
     try:
-        # 获取 JSON 请求数据
         req_data = request.json
         x = np.array(req_data['data'])
         print(x.shape)
@@ -100,7 +97,6 @@ def imodpoly_handler():
         res = IModPoly_parallel_process(x.reshape(-1, size[-1]), order_, gradient, repitition)
         res = res.reshape(size)
 
-        # 将结果转换为列表并返回 JSON 响应
         return jsonify(res.tolist())
     
     except Exception as e:

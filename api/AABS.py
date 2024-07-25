@@ -234,7 +234,7 @@ def repeat(smoothed_values, Ln, Lb):
     return background
 
 
-def aabs(y, Ln=6, Lb=140):
+def aabs(wave, y, Ln=6, Lb=140):
     if type(y) != np.ndarray:
         y = np.array(y)
     res_y = y.copy()
@@ -242,4 +242,4 @@ def aabs(y, Ln=6, Lb=140):
     background = repeat(smoothed_values, Ln, Lb)
     background_smooth = basic_smooth(5, Lb, background)
     res_y -= background_smooth
-    return res_y
+    return  res_y

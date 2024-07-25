@@ -76,18 +76,18 @@ def main_content():
     st.subheader("Process the spectra", divider='blue')
     st.markdown('''
                 This page is designed for custom spectral processing. It features several common data processing tasks, including
-                - [data cut](#cut-module)
-                - [data smoothing](#smooth-module)
-                - [baseline removal](#baseline-removal-module)  
+                - #### [data cut](#cut-module)
+                - #### [data smoothing](#smooth-module)
+                - #### [baseline removal](#baseline-removal-module)  
 
                 After processing, you can download the processed data and the baseline data if you want. 
                 It is noteable that all the download links are **temporary** and will be expired when you leave the page.  
                 The following is a brief introduction of each module.                  
                 ''')
     st.markdown('''
-                #### cut module
+                ### cut module
                 On this module, you will be able to select the range of wavenumber via dragging the both ends of wavenumber data.  
-                #### smooth module
+                ### smooth module
                 This module features several algorithms for custom data processing experience: 
                 [Savitzky-Golay](https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter), [What Is a Savitzky-Golay Filter?](https://ieeexplore.ieee.org/document/5888646),
                 [PEER](https://www.sciencedirect.com/science/article/abs/pii/S0169743905003006),
@@ -96,13 +96,13 @@ def main_content():
                 Here, we describe the parameters of each algorithm in detail.
                 ##### Savitzky-Golay
                 Savitzky-Golay is a powerful and intelligent smoothing algorithm that can effectively remove noise from data through polynomial fitting.Its main parameters are as follows:
-                1. window_size: The window size used for data smoothing. The larger the window size, the more obvious the smoothing effect will be; otherwise, more details of the signal will be retained.
-                2. order: The order of the polynomial used for data smoothing. The larger the order, the higher the order of the polynomial, the smoother the data; otherwise, the lower the order, the closer the data is to the original data.
+                1. window_size: The winder of the polydow size used for data smoothing. The larger the window size, the more obvious the smoothing effect will be; otherwise, more details of the signal will be retained.
+                2. order: The ornomial used for data smoothing. The larger the order, the higher the order of the polynomial, the smoother the data; otherwise, the lower the order, the closer the data is to the original data.
                 ##### PEER
                 :red[Parameters of algorithm(loop times, peak seeking parameter for PEER smoothing) can be adjusted in the following tab.]  
                 ##### P2P
                 :red[Here is the introduction of P2P algorithm.]
-                #### baseline removal module
+                ### baseline removal module
                 Baseline removal module features providing several spectrum baseline-remove algorithms for custom data processing experience: airPLS, Auto-Adaptive, IModPoly, and ModPoly.  
                 
                 A real time plot rendering preview window will allow you to check the visualized result of your processed spectrum data for further adjustments.
@@ -138,7 +138,15 @@ def main_content():
                 :red[Here is the introduction of ULF algorithm.]
                 ''')
 
-    st.subheader('Process the spectral imaging', divider='blue')
+    st.markdown(
+    """
+    <h1 style='text-align: center; color: blue;'>
+    Process the spectral imaging
+    </h1>
+    <hr style='border: 1px solid blue;' />
+    """,
+    unsafe_allow_html=True
+)
     st.markdown('''
                 This page is designed for custom hyper-spectral imaging (HSI) processing. It features same tasks as ***Process the spectra*** page, including
                 - [spectral cut](#cut-module)
@@ -149,17 +157,17 @@ def main_content():
                 The following is a brief introduction of each module.  
                 ''')
     st.markdown('''
-                #### cut module
+                ### cut module
                 On this module, you will be able to select the range of wavenumber via dragging the both ends of wavenumber data.
-                #### despike module
+                ### despike module
                 This module features several algorithms for removing spikes in the imaging data.
                 Here, we describe the parameters of each algorithm in detail.
-                #### HSI smooth module
+                ### HSI smooth module
                 This module features several algorithms for custom data processing experience:
                 [Savitzky-Golay](https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter),
                 [PEER](https://www.sciencedirect.com/science/article/abs/pii/S0169743905003006),
-                [ALRMA](), 
-                and [CLRMA]().
+                [ALRMA](https://analyticalsciencejournals.onlinelibrary.wiley.com/doi/10.1002/jrs.6024), 
+                and [CLRMA](https://pubs.acs.org/doi/10.1021/acs.analchem.1c02071).
 
                 Here, we describe the parameters of each algorithm in detail.
                 ##### Savitzky-Golay
@@ -174,15 +182,15 @@ def main_content():
     st.markdown('''
                 This page is designed for custom spectral prediction. It features several common data processing tasks, including
                 
-                #### input molecules by SMILES or upload the coordinate file
+                ### input molecules by SMILES or upload the coordinate file
                 You can input the molecule by SMILES or upload the coordinate file.
 
-                #### prediction
+                ### prediction
                 This part features several algorithms for spectral prediction based on the input molecule. Four types of molecular spectra can be predicted: 
                 [IR](#IR), [Raman](#Raman), [UV-vis](#UV-vis), and [NMR](#NMR). The algorithms used for prediction are based on the [DetaNet](https://www.nature.com/articles/s43588-023-00550-y).
                 
                 Here, we demonstrate the workflow of the prediction by taking the Raman spectra as an example.
-                ##### Example
+                #### Example
                 ''')
 
     st.subheader('Other useful tools', divider=True)

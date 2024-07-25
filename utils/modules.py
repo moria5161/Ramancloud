@@ -7,8 +7,7 @@ import pandas as pd
 import streamlit as st
 from markdownlit import mdlit
 
-from utils.functions import cut
-from utils.functions import skip
+from utils.functions import CNN_rPLS, Skip, cut, skip
 from utils.functions import sg, PEER, p2p
 from utils.functions import airPLS, ModPoly, IModPoly, piecewiseFitting, auto_adaptive
 from utils.functions import min_max, max_, z_score
@@ -115,6 +114,24 @@ def airPLS_submodule(baseline_use_sidebar=False, mode='spectra'):
             """)
     return {'lambda_':lambda_, 'order_':order_, 'mode':mode}
 
+
+def hpw_submodule(baseline_use_sidebar=False, mode='spectra'):
+    if baseline_use_sidebar:
+        with st.sidebar:
+            col1, col2 = st.columns(2)
+            # lambda_ = col1.slider('lambda', 1, 200, 100, key='sidebar_lambda')
+            # order_ = col2.slider('order', 1, 35, 15, key='sidebar_order')
+    else:
+        col1, col2 = st.columns(2)
+
+    with st.expander("See explanation"):
+        st.markdown(
+            """
+            You can find more details in [tutorial](/tutorial).
+            """)
+    return {'mode':mode}
+
+
 def ModPoly_submodule(baseline_use_sidebar=False, mode='spectra'):
     if baseline_use_sidebar:
         with st.sidebar:
@@ -211,7 +228,7 @@ def spectra_denoise_module(spec_df):
         denoise_args = p2p_submodule(denoise_use_sidebar=denoise_use_sidebar, mode='spectra')
 
     # 将选定的去噪方法应用于数据，更新数据中的'processed'列
-    spec_df['processed'] = denoise_method_dict[denoise_method](spec_df['processed'], **denoise_args)
+    spec_df['processed'] = denoise_method_dict[denoise_method](spec_df['wavenumber'], spec_df['processed'], **denoise_args)
 
     # 返回更新后的数据和使用的去噪方法及参数信息（字典形式）
     return spec_df, {'method': denoise_method_dict[denoise_method], 'args': denoise_args}
@@ -221,7 +238,7 @@ def spectra_baseline_module(spec_df):
     st.markdown('''<font size=5>**Step 3: baseline removal**</font>''', unsafe_allow_html=True)
 
     baseline_args = {}
-    baseline_method_dict = {'auto-adaptive':auto_adaptive, 'airPLS': airPLS, 'ModPoly':ModPoly, 'IModPoly': IModPoly, 'piecewiseFitting':piecewiseFitting, 'skip': skip}
+    baseline_method_dict = {'auto-adaptive':auto_adaptive, 'airPLS': airPLS, 'ModPoly':ModPoly, 'IModPoly': IModPoly, 'piecewiseFitting':piecewiseFitting, 'CNN-rPLS': CNN_rPLS, 'skip': skip}
     if 'processed' not in spec_df.columns:
         spec_df['processed'] = spec_df['raw'].copy()
 
@@ -241,6 +258,9 @@ def spectra_baseline_module(spec_df):
     
     elif baseline_method == 'auto-adaptive':
         baseline_args = AABS_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')   
+
+    elif baseline_method == 'baseline_hpw':
+        baseline_args = hpw_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
 
     elif baseline_method == 'piecewiseFitting':
         import numpy as np
@@ -278,9 +298,10 @@ def spectra_baseline_module(spec_df):
                 developed by Guokun Liu et. al. in Xiamen University.  
                 
                 """)
-    
+
     cache = spec_df['processed'].copy()
-    spec_df['processed'] = baseline_method_dict[baseline_method](spec_df['processed'], **baseline_args)
+
+    spec_df['processed']= baseline_method_dict[baseline_method](spec_df['wavenumber'], spec_df['processed'], **baseline_args)
     spec_df['baseline'] = cache - spec_df['processed']
 
     return spec_df, {'method':baseline_method_dict[baseline_method], 'args':baseline_args}
@@ -316,9 +337,8 @@ def spectra_normalize_module(spec_df):
     # elif normalize_method == 'z-score':
     #     normalize_args = z_score_submodule(normalize_use_sidebar=normalize_use_sidebar)
     
-    # 将选定的归一化方法应用于数据，更新数据中的'processed'列
-    spec_df['processed'] = normalize_method_dict[normalize_method](spec_df['processed'])
-    # 返回更新后的数据和使用的归一化方法及参数信息（字典形式）
+    spec_df['processed'] = normalize_method_dict[normalize_method](spec_df['wavenumber'], spec_df['processed'])
+    
     return spec_df, {'method': normalize_method_dict[normalize_method]}
 
 #====================modules for mapping====================#
@@ -368,8 +388,8 @@ def mapping_denoise_module(mapping_data, mode='imaging'):
             st.markdown(
                 """ This method is based on [Collaborative Low-Rank Matrix Approximation-Assisted Fast Hyperspectral Raman Imaging and Tip-Enhanced Raman Spectroscopic Imaging](https://doi.org/10.1021/acs.analchem.1c02071).
                 """)
-            
-    mapping_data = denoise_method_dict[denoise_method](mapping_data, **denoise_args)
+    mapping_data_assist = 100      
+    mapping_data = denoise_method_dict[denoise_method](mapping_data_assist, mapping_data, **denoise_args)
     return mapping_data, {'method':denoise_method_dict[denoise_method], 'args':denoise_args}
 
 
@@ -388,6 +408,7 @@ def mapping_baseline_module(mapping_data, mode='imaging'):
         baseline_args = airPLS_submodule(baseline_use_sidebar=False, mode=mode)
     elif baseline_method in ['ModPoly', 'IModPoly']:
         baseline_args = ModPoly_submodule(baseline_use_sidebar=False, mode=mode)   
-
-    mapping_data = baseline_method_dict[baseline_method](mapping_data, **baseline_args)
+    
+    mapping_data_assist = 100
+    mapping_data = baseline_method_dict[baseline_method](mapping_data_assist, mapping_data, **baseline_args)
     return mapping_data, {'method':baseline_method_dict[baseline_method], 'args':baseline_args}

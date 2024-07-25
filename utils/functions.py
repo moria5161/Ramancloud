@@ -7,6 +7,7 @@ import numpy as np
 from scipy.signal import savgol_filter
 from api.PEER import weight_resultX2
 from api.airPLS import ZhangFit
+from api.hpw.bgcorrected_hpw import reference
 from api.modpoly import mod_poly, imod_poly
 from api.AABS import aabs
 from api.p2p import P2P
@@ -18,9 +19,12 @@ from multiprocessing import Pool, cpu_count
 from pathos.multiprocessing import ProcessingPool as Pool
 
 
-def skip(x):
+def skip(wa, x):
     return x
 
+
+def Skip(x):
+    return x
 
 @st.cache_data
 def cut(x, values, wavenumber=[], mode='spectra'):
@@ -34,14 +38,21 @@ def cut(x, values, wavenumber=[], mode='spectra'):
         return x[(x.wavenumber >= values[0]) & (x.wavenumber <= values[1])]
 
 
-def minmax(x):
-    return (x - x.min()) / (x.max() - x.min())
-
 # ==================== Baseline Correction ==================== #
+@st.cache_data
+def CNN_rPLS(wave, x, mode='spectra'):
+    if mode != 'spectra':
+        pass
+
+    else:
+        process_data = reference(wave, x)
+
+    return process_data
+
 
 
 @st.cache_data
-def airPLS(x, lambda_, order_, mode='spectra'):
+def airPLS(wa, x, lambda_, order_, mode='spectra'):
     start_time = time.time()
     # st.write(x)
     if mode != 'spectra':
@@ -67,12 +78,12 @@ def airPLS(x, lambda_, order_, mode='spectra'):
     return processed_data
 
 
-def auto_adaptive(x, Ln, Lb, mode='spectra'):
-    return aabs(x, Ln, Lb)
+def auto_adaptive(wa, x, Ln, Lb, mode='spectra'):
+    return aabs(wa, x, Ln, Lb)
 
 
 @st.cache_data
-def ModPoly(x, order_, gradient=1e-3, repitition=9, mode='spectra'):
+def ModPoly(wa, x, order_, gradient=1e-3, repitition=9, mode='spectra'):
     start_time = time.time()
     if mode != 'spectra':
         data_payload = {
@@ -97,7 +108,7 @@ def ModPoly(x, order_, gradient=1e-3, repitition=9, mode='spectra'):
 
 
 @st.cache_data
-def IModPoly(x, order_, gradient=1e-3, repitition=9, mode='spectra'):
+def IModPoly(wa, x, order_, gradient=1e-3, repitition=9, mode='spectra'):
     start_time = time.time()
     if mode != 'spectra':
         data_payload = {
@@ -124,12 +135,12 @@ def IModPoly(x, order_, gradient=1e-3, repitition=9, mode='spectra'):
 
 
 @st.cache_data
-def piecewiseFitting(x, breakpoint_right, breakpoint_left, order_left, order_right, order_whole):
+def piecewiseFitting(wa, x, breakpoint_right, breakpoint_left, order_left, order_right, order_whole):
     x = np.array(x)
-    left = ModPoly(x[:breakpoint_right], order_left,
+    left = ModPoly(wa, x[:breakpoint_right], order_left,
                    gradient=1e-3, repitition=9)
     left -= left.min()
-    right = IModPoly(x[breakpoint_left:], order_right,
+    right = IModPoly(wa, x[breakpoint_left:], order_right,
                      gradient=1e-3, repitition=9)
     right = right[breakpoint_right-breakpoint_left:]
     # right -= right.min()
@@ -148,7 +159,7 @@ def piecewiseFitting(x, breakpoint_right, breakpoint_left, order_left, order_rig
         obj_baseline = x - tmp
         obj_baseline[:] = target_baseline
         tmp = x - obj_baseline
-    tmp = IModPoly(tmp, 2)
+    tmp = IModPoly(wa, tmp, 2)
     # tmp = tmp - tmp.min()
     return tmp
 
@@ -156,7 +167,7 @@ def piecewiseFitting(x, breakpoint_right, breakpoint_left, order_left, order_rig
 
 
 @st.cache_data
-def sg(x, window_size, order, mode='spectra'):
+def sg(wa, x, window_size, order, mode='spectra'):
     def func(inp):
         out = savgol_filter(inp, window_size, order)
         return out
@@ -170,7 +181,7 @@ def sg(x, window_size, order, mode='spectra'):
 
 
 @st.cache_data
-def PEER(x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
+def PEER(wa, x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
     start_time = time.time()
     if mode != 'spectra':
         data_payload = {
@@ -198,7 +209,7 @@ def PEER(x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
     return processed_data
 
 @st.cache_data
-def p2p(x, ks=7, Rc=1,mode='spectra'):
+def p2p(wa, x, ks=7, Rc=1,mode='spectra'):
     start_time = time.time()
     net = P2P(input_spectrum=x, ks=ks, Rc=Rc) 
     out = net.inference()
@@ -206,6 +217,7 @@ def p2p(x, ks=7, Rc=1,mode='spectra'):
     print('P2P usetime: ', end_time - start_time)
     return out
 
+@st.cache_data
 def SF(wave, spec, epochs, imaging=False):
     parsing = PeakParsing(spec, device='cpu', epochs=epochs, lr=0.05)
     wave = interplotation(wave)
@@ -233,15 +245,17 @@ def ALRMADenoise():
 
 # ==================== Normalize ==================== #
 
-
-def min_max(x):
+@st.cache_data
+def min_max(wa, x):
     _range = np.max(x) - np.min(x)
     return (x - np.min(x)) / _range
 
-def max_(x):
+@st.cache_data
+def max_(wa, x):
     return x / np.max(x)
 
-def z_score(x):
+@st.cache_data
+def z_score(wa, x):
     return (x - np.mean(x)) / np.std(x)
 
 
