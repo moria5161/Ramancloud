@@ -45,11 +45,11 @@ def p2p_submodule(denoise_use_sidebar=False, mode='spectra'):
     if denoise_use_sidebar:
         with st.sidebar:
             col1, col2 = st.columns(2)
-            ks = col1.st.slider('number of kernel_size', 1, 15, 7, key='sidebar_kernel_size')
-            Rc = col2.st.slider('Regularization coefficient size', 0, 3, 1, key='sidebar_R')
+            ks = col1.st.slider('kernel_size', 1, 15, 7, key='sidebar_kernel_size')
+            Rc = col2.st.slider('Regularization coefficient', 0, 3, 1, key='sidebar_R')
     else:
-        ks = st.slider('number of kernel_size', 1, 15, 7, key='sidebar_kernel_size')
-        Rc = st.slider('Regularization coefficient size', 0.1, 10.0, 1.0, step=0.1, key='sidebar_R')
+        ks = st.slider('kernel_size', 1, 15, 7, key='sidebar_kernel_size')
+        Rc = st.slider('Regularization coefficient', 0.1, 10.0, 1.0, step=0.1, key='sidebar_R')
 
     # st.info('This method was deployed latest, and the performance is not stable :smirk:')
     with st.expander("See explanation"):
@@ -115,7 +115,7 @@ def airPLS_submodule(baseline_use_sidebar=False, mode='spectra'):
     return {'lambda_':lambda_, 'order_':order_, 'mode':mode}
 
 
-def hpw_submodule(baseline_use_sidebar=False, mode='spectra'):
+def CNN_rPLS_submodule(baseline_use_sidebar=False, mode='spectra'):
     if baseline_use_sidebar:
         with st.sidebar:
             col1, col2 = st.columns(2)
@@ -260,7 +260,7 @@ def spectra_baseline_module(spec_df):
         baseline_args = AABS_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')   
 
     elif baseline_method == 'baseline_hpw':
-        baseline_args = hpw_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
+        baseline_args = CNN_rPLS_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
 
     elif baseline_method == 'piecewiseFitting':
         import numpy as np

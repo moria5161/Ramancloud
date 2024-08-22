@@ -5,7 +5,7 @@ import time
 import requests
 import numpy as np
 from scipy.signal import savgol_filter
-from api.PEER import weight_resultX2
+from api.PEER import peer
 from api.airPLS import ZhangFit
 from api.hpw.bgcorrected_hpw import reference
 from api.modpoly import mod_poly, imod_poly
@@ -202,7 +202,7 @@ def PEER(wa, x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
         if type(hlaf_k_threshold) != int:
             hlaf_k_threshold = int(hlaf_k_threshold)
 
-        processed_data = weight_resultX2(x, hlaf_k_threshold)
+        processed_data = peer(x, loops, hlaf_k_threshold)
 
     end_time = time.time()
     print('PEER usetime: ', end_time - start_time)

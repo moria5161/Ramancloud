@@ -3,7 +3,7 @@ from multiprocessing import Pool
 import numpy as np
 from api.airPLS import ZhangFit
 from api.modpoly import mod_poly, imod_poly
-from api.PEER import weight_resultX2
+from api.PEER import peer, weight_resultX2
 
 app = Flask(__name__)
 
@@ -32,7 +32,7 @@ def IModPoly_parallel_process(data, degree, gradient, repitition):
 
 def PEER_parallel_process(data, loops, hlaf_k_threshold):
     with Pool(processes= 8) as pool:
-        res = pool.starmap(weight_resultX2, [(row, hlaf_k_threshold) for row in data])
+        res = pool.starmap(peer, [(row, loops, hlaf_k_threshold) for row in data])
     return np.array(res)
 
 
