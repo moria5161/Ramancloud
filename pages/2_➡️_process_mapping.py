@@ -2,7 +2,7 @@ import time
 import numpy as np
 import pandas as pd
 import streamlit as st
-
+from sklearn.cluster import KMeans
 from plotly.subplots import make_subplots
 import plotly.express as px
 import plotly.graph_objs as go
@@ -69,23 +69,19 @@ def downsample(input_img, scale_factor=None, return_scale_factor=False):
     if len(input_img.shape) == 2:
         input_img = input_img[:, :, np.newaxis]
 
-    # 获取原始尺寸
     original_height, original_width = input_img.shape[:2]
 
     if scale_factor is None:
         scale_factor = max(original_height // 100, original_width // 100)
 
-    # 计算新的尺寸
     new_height = original_height // scale_factor
     new_width = original_width // scale_factor
 
-    # 创建新的图像数组
     downsampled_image = np.zeros(
         (new_height, new_width, input_img.shape[2]), dtype=input_img.dtype)
 
     for i in range(new_height):
         for j in range(new_width):
-            # 选择原图中对应的像素
             downsampled_image[i, j] = input_img[i *
                                                 scale_factor, j * scale_factor]
 
@@ -96,38 +92,70 @@ def downsample(input_img, scale_factor=None, return_scale_factor=False):
 
 
 # @st.cache_data(experimental_allow_widgets=True)
-def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
-    fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
-                        vertical_spacing=0.15, subplot_titles=('Raw mapping', 'Processed mapping'))
-    
+def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber, n_clusters=2):
     if st.session_state['mode'] == 'time series':
-
+        fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
+                        vertical_spacing=0.05, subplot_titles=('Raw mapping', 'Processed mapping'))
         downsampled_raw = downsample(raw_mapping_arr[:, cut_start:cut_end], scale_factor=2)
         downsampled_demo, downsample_scale_factor = downsample(demo_mapping, 
                                                             scale_factor=2, return_scale_factor=True)
         downsampled_x = wavenumber[cut_start:cut_end][::downsample_scale_factor][:downsampled_demo.shape[1]]
-    
-        # Create heatmap traces using go.Heatmap
         heatmap1 = go.Heatmap(z=downsampled_raw[:, :, 0], x=downsampled_x, 
                             colorbar=dict(y=0.75, len=0.5), name='raw')
         heatmap2 = go.Heatmap(z=downsampled_demo[:, :, 0], x=downsampled_x, 
                             colorbar=dict(y=0.25, len=0.5), name='processed')
         
-    elif st.session_state['mode'] == 'imaging':
-        # Create heatmap traces using go.Heatmap
-        heatmap1 = go.Heatmap(z=raw_mapping_arr[:, :, cut_start:cut_end].mean(-1), 
-                            colorbar=dict(y=0.75, len=0.5), name='raw')
-        heatmap2 = go.Heatmap(z=demo_mapping.mean(-1), 
-                            colorbar=dict(y=0.25, len=0.5), name='processed')
-    
-    # Append the heatmap traces to the subplot
-    fig.add_trace(heatmap1, row=1, col=1)
-    fig.add_trace(heatmap2, row=2, col=1)
-    # Set titles for the subplots
-    fig.update_xaxes(title_text="Wavenumber", row=2, col=1)
+        fig.add_trace(heatmap1, row=1, col=1)
+        fig.add_trace(heatmap2, row=2, col=1)
+        fig.update_xaxes(title_text="Wavenumber", row=2, col=1)
+        st.plotly_chart(fig, use_container_width=True)
 
-    # Use st.plotly_chart to display the subplot
-    st.plotly_chart(fig, use_container_width=True)
+    elif st.session_state['mode'] == 'imaging':
+        fig = make_subplots(rows=3, cols=1, shared_xaxes=True,
+                        vertical_spacing=0.05, subplot_titles=('Raw mapping', 'Processed mapping', 'Clustered mapping'))
+        wavenumber_cut = wavenumber[cut_start:cut_end]
+        target_wavenumber = st.number_input(
+                            "Select the target wavenumber for imaging or default mean wavenumber imaging", 
+                            min_value=float(wavenumber_cut.min()), 
+                            max_value=float(wavenumber_cut.max()), 
+                            value=wavenumber_cut.mean())
+        closest_index = np.abs(wavenumber_cut - target_wavenumber).argmin()
+        heatmap1 = go.Heatmap(z=raw_mapping_arr[:, :, closest_index], 
+                            colorbar=dict(y=0.85, len=0.3), name='raw')
+        heatmap2 = go.Heatmap(z=demo_mapping[:, :, closest_index], 
+                     colorbar=dict(y=0.5, len=0.3), name='processed')
+
+        n_clusters = st.number_input("Select the number of clusters for clustering, default is 4",
+                                    min_value=2, max_value=100, value=4, step=1)
+        data_to_cluster = demo_mapping[:, :, closest_index]
+        data_flattened = data_to_cluster.reshape(-1, 1)
+        kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+        kmeans.fit(data_flattened)
+        cluster_labels = kmeans.labels_.reshape(data_to_cluster.shape)
+        heatmap3 = go.Heatmap(z=cluster_labels, 
+                            colorscale='Jet', 
+                            colorbar=dict(y=0.15, len=0.3), name='clustered')
+
+        fig.add_trace(heatmap1, row=1, col=1)
+        fig.add_trace(heatmap2, row=2, col=1)
+        fig.add_trace(heatmap3, row=3, col=1)
+
+        fig.update_xaxes(title_text="Pixelx", row=1, col=1)
+        fig.update_xaxes(title_text="Pixelx", row=2, col=1)
+        fig.update_xaxes(title_text="Pixelx", row=3, col=1)
+        fig.update_yaxes(title_text="Pixely", row=1, col=1, autorange='reversed')
+        fig.update_yaxes(title_text="Pixely", row=2, col=1, autorange='reversed')
+        fig.update_yaxes(title_text="Pixely", row=3, col=1, autorange='reversed')
+
+        fig.update_layout(  
+            height=raw_mapping_arr.shape[0] * 2.4 * 10, 
+            width=raw_mapping_arr.shape[1] * 6, 
+            autosize=False, 
+            margin=dict(l=20, r=20, t=20, b=20),  
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
 
 @st.cache_data
 def plot_spectrum(demo_spec, __baseline_args):
@@ -201,6 +229,8 @@ def run():
             tab1, tab2 = st.tabs(['Mapping', 'Spectrum'])
             with tab1:
                 plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber)
+                st.write('If the image is seriously distorted, first check that the image wavenumber is correct')
+
 
             with tab2:
                 if st.session_state['mode'] == 'time series':
