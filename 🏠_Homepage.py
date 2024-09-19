@@ -3,7 +3,7 @@ import streamlit as st
 
 
 st.set_page_config(
-    page_title="RamanCloud",
+    page_title="RamanCloud_Beta",
     page_icon=":cloud:",
     # layout="wide",
     initial_sidebar_state="expanded",
@@ -273,7 +273,7 @@ def feedback():
 
 
 if __name__ == "__main__":
-
+    
     st.image('/media/ramancloud/static/logo.png',  use_column_width=True)
 
     # Set the font size for st.tabs using HTML styling

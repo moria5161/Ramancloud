@@ -101,9 +101,8 @@ def load_imaging_file(content, instrument='Horiba'):
             else:
                 raise ValueError(f'fail to extract {key} value of Nanophoton file')
             return num
-        
-        x_size = extract_xy(imaging.columns[-2], 'x') + 1
-        y_size = extract_xy(imaging.columns[-2], 'y') + 1
+        x_size = extract_xy(imaging.columns[-2], 'x') - extract_xy(imaging.columns[1], 'x') + 1
+        y_size = extract_xy(imaging.columns[-2], 'y') - extract_xy(imaging.columns[1], 'y') + 1
         col = imaging.columns[1:-1]
         img_id = [(np.nan, np.nan)] + [(extract_xy(c, 'x'), extract_xy(c, 'y')) for c in col]
 

@@ -80,11 +80,13 @@ elif mode == "split mapping into spectra":
             data = df.iloc[:, -1].to_numpy().reshape(batch, -1)
             
             files = [np.c_[wave[i], data[i]] for i in range(batch)]
-        
+
         elif instrument == "Nanophoton":
+            # 读取上传的文件内容
             filename = upload.name
             content = upload.read().decode("utf-8")
             data = content.splitlines()
+            print(data.shape)
             list = data[2].split('\t')
             arr_w, arr_s = [], []
             

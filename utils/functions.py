@@ -1,20 +1,30 @@
 '''
 This file contains the functions and algorithms used in the modules.
 '''
+import time
+import requests
 import numpy as np
 from scipy.signal import savgol_filter
-from api.PEER import weight_resultX2
+from api.PEER import peer
 from api.airPLS import ZhangFit
+from api.hpw.bgcorrected_hpw import reference
 from api.modpoly import mod_poly, imod_poly
 from api.AABS import aabs
 from api.p2p import P2P
+from api.SplitingFiting import PeakParsing, interplotation
 import streamlit as st
 import pymysql
+from concurrent.futures import ThreadPoolExecutor
+from multiprocessing import Pool, cpu_count
+from pathos.multiprocessing import ProcessingPool as Pool
 
 
-def skip(x):
+def skip(wa, x):
     return x
 
+
+def Skip(x):
+    return x
 
 @st.cache_data
 def cut(x, values, wavenumber=[], mode='spectra'):
@@ -28,69 +38,109 @@ def cut(x, values, wavenumber=[], mode='spectra'):
         return x[(x.wavenumber >= values[0]) & (x.wavenumber <= values[1])]
 
 
-def minmax(x):
-    return (x - x.min()) / (x.max() - x.min())
-
 # ==================== Baseline Correction ==================== #
-
-
 @st.cache_data
-def airPLS(x, lambda_, order_, mode='spectra'):
-    def func(inp):
-        out = ZhangFit(inp, lambda_=lambda_, porder=order_)
-        # baseline = inp - res
-        # func = np.poly1d(np.polyfit(np.arange(len(inp)), baseline, order_))
-        # res = inp - func(np.arange(len(inp)))
-        # res = res - res.min()
-        return out
+def CNN_rPLS(wave, x, mode='spectra'):
     if mode != 'spectra':
-        size = x.shape
-        res = np.apply_along_axis(func, 1, x.reshape(-1, size[-1]))
-        res = res.reshape(size)
+        pass
+
     else:
-        res = func(x)
-    return res
+        process_data = reference(wave, x)
 
+    return process_data
 
-def auto_adaptive(x, Ln, Lb, mode='spectra'):
-    return aabs(x, Ln, Lb)
 
 
 @st.cache_data
-def ModPoly(x, order_, gradient=1e-3, repitition=9, mode='spectra'):
-    def func(inp):
-        out = mod_poly(inp, order_, gradient=gradient, repitition=repitition)
-        return out
+def airPLS(wa, x, lambda_, order_, mode='spectra'):
+    start_time = time.time()
+    # st.write(x)
     if mode != 'spectra':
-        size = x.shape
-        res = np.apply_along_axis(func, 1, x.reshape(-1, size[-1]))
-        res = res.reshape(size)
+        # 将数据转换为列表，以便 JSON 序列化
+        data_payload = {
+            'data': x.tolist(),
+            'lambda': lambda_,
+            'order': order_,
+        }
+        
+        # 发送 POST 请求
+        response = requests.post("http://localhost:5000/airPLS", json=data_payload)
+        if response.status_code == 200:
+            result = response.json()
+            processed_data = np.array(result)  # 转换回 NumPy 数组
+        else:
+            print("Request failed with status code:", response.status_code)
     else:
-        res = func(x)
-    return res
+        processed_data = ZhangFit(x, lambda_, order_)
+
+    end_time = time.time()
+    print('airPLS usetime: ', end_time - start_time)
+    return processed_data
+
+
+def auto_adaptive(wa, x, Ln, Lb, mode='spectra'):
+    return aabs(wa, x, Ln, Lb)
 
 
 @st.cache_data
-def IModPoly(x, order_, gradient=1e-3, repitition=9, mode='spectra'):
-    def func(inp):
-        out = imod_poly(inp, order_, gradient=gradient, repitition=repitition)
-        return out
+def ModPoly(wa, x, order_, gradient=1e-3, repitition=9, mode='spectra'):
+    start_time = time.time()
     if mode != 'spectra':
-        size = x.shape
-        res = np.apply_along_axis(func, 1, x.reshape(-1, size[-1]))
-        res = res.reshape(size)
+        data_payload = {
+            'data': x.tolist(),
+            'order': order_,
+            'gradient': gradient,
+            'repitition': repitition,
+        }
+
+        # 发送 POST 请求
+        response = requests.post("http://localhost:5000/modpoly", json=data_payload)
+        if response.status_code == 200:
+            result = response.json()
+            processed_data = np.array(result)
+        else:
+            print("Request failed with status code:", response.status_code)
     else:
-        res = func(x)
-    return res
+        processed_data = mod_poly(x, order_, gradient, repitition)[0]
+    end_time = time.time()
+    print('ModPoly usetime: ', end_time - start_time)
+    return processed_data
 
 
 @st.cache_data
-def piecewiseFitting(x, breakpoint_right, breakpoint_left, order_left, order_right, order_whole):
+def IModPoly(wa, x, order_, gradient=1e-3, repitition=9, mode='spectra'):
+    start_time = time.time()
+    if mode != 'spectra':
+        data_payload = {
+            'data': x.tolist(),
+            'order': order_,
+            'gradient': gradient,
+            'repitition': repitition,
+        }
+
+        # 发送 POST 请求
+        response = requests.post("http://localhost:5000/imodpoly", json=data_payload)
+        if response.status_code == 200:
+            result = response.json()
+            processed_data = np.array(result)
+        else:
+            print("Request failed with status code:", response.status_code)
+    else:
+        processed_data = imod_poly(x, order_, gradient, repitition)[0]
+    end_time = time.time()
+    print('IModPoly usetime: ', end_time - start_time)
+    
+    return processed_data
+
+
+
+@st.cache_data
+def piecewiseFitting(wa, x, breakpoint_right, breakpoint_left, order_left, order_right, order_whole):
     x = np.array(x)
-    left = ModPoly(x[:breakpoint_right], order_left,
+    left = ModPoly(wa, x[:breakpoint_right], order_left,
                    gradient=1e-3, repitition=9)
     left -= left.min()
-    right = IModPoly(x[breakpoint_left:], order_right,
+    right = IModPoly(wa, x[breakpoint_left:], order_right,
                      gradient=1e-3, repitition=9)
     right = right[breakpoint_right-breakpoint_left:]
     # right -= right.min()
@@ -109,7 +159,7 @@ def piecewiseFitting(x, breakpoint_right, breakpoint_left, order_left, order_rig
         obj_baseline = x - tmp
         obj_baseline[:] = target_baseline
         tmp = x - obj_baseline
-    tmp = IModPoly(tmp, 2)
+    tmp = IModPoly(wa, tmp, 2)
     # tmp = tmp - tmp.min()
     return tmp
 
@@ -117,7 +167,7 @@ def piecewiseFitting(x, breakpoint_right, breakpoint_left, order_left, order_rig
 
 
 @st.cache_data
-def sg(x, window_size, order, mode='spectra'):
+def sg(wa, x, window_size, order, mode='spectra'):
     def func(inp):
         out = savgol_filter(inp, window_size, order)
         return out
@@ -126,35 +176,54 @@ def sg(x, window_size, order, mode='spectra'):
         res = np.apply_along_axis(func, 1, x.reshape(-1, size[-1]))
         res = res.reshape(size)
     else:
-        res = func(x)
-    return res
+        x = func(x)
+    return x
 
 
 @st.cache_data
-def PEER(x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
-
-    if type(x) != np.ndarray:
-        x = np.array(x)
-    if type(loops) != int:
-        loops = int(loops)
-    if type(hlaf_k_threshold) != int:
-        hlaf_k_threshold = int(hlaf_k_threshold)
-
-    for _ in range(loops):
-        if mode != 'spectra':
-            size = x.shape
-            res = np.apply_along_axis(weight_resultX2, 1, x.reshape(-1, size[-1]), hlaf_k_threshold, )
-            res = res.reshape(size)
+def PEER(wa, x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
+    start_time = time.time()
+    if mode != 'spectra':
+        data_payload = {
+            'data': x.tolist(),
+            'loops': loops,
+            'hlaf_k_threshold': hlaf_k_threshold,
+        }
+        # 发送 POST 请求
+        response = requests.post("http://localhost:5000/PEER", json=data_payload)
+        if response.status_code == 200:
+            result = response.json()
+            processed_data = np.array(result)
         else:
-            res = weight_resultX2(x, hlaf_k_threshold)
-    return res
+            print("Request failed with status code:", response.status_code)
+    else:
+        if type(x) != np.ndarray:
+            x = np.array(x)
+        if type(hlaf_k_threshold) != int:
+            hlaf_k_threshold = int(hlaf_k_threshold)
+
+        processed_data = peer(x, loops, hlaf_k_threshold)
+
+    end_time = time.time()
+    print('PEER usetime: ', end_time - start_time)
+    return processed_data
 
 @st.cache_data
-def p2p(x, epochs, mode='spectra'):
-    net = P2P(input_spectrum=x, epochs=epochs) 
+def p2p(wa, x, ks=7, Rc=1,mode='spectra'):
+    start_time = time.time()
+    net = P2P(input_spectrum=x, ks=ks, Rc=Rc) 
     out = net.inference()
+    end_time = time.time()
+    print('P2P usetime: ', end_time - start_time)
     return out
 
+@st.cache_data
+def SF(wave, spec, epochs, imaging=False):
+    parsing = PeakParsing(spec, device='cpu', epochs=epochs, lr=0.05)
+    wave = interplotation(wave)
+    spec = parsing.predict_spectrum()
+    optim_params = parsing.get_params()
+    return wave, spec, optim_params
 
 # def wavelet(data):
 #     # 小波去燥
@@ -172,6 +241,22 @@ def p2p(x, epochs, mode='spectra'):
 
 def ALRMADenoise():
     pass
+
+
+# ==================== Normalize ==================== #
+
+@st.cache_data
+def min_max(wa, x):
+    _range = np.max(x) - np.min(x)
+    return (x - np.min(x)) / _range
+
+@st.cache_data
+def max_(wa, x):
+    return x / np.max(x)
+
+@st.cache_data
+def z_score(wa, x):
+    return (x - np.mean(x)) / np.std(x)
 
 
 @st.cache_data

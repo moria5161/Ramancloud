@@ -7,11 +7,15 @@ import time
 import zipfile
 import pandas as pd
 import numpy as np
-                
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots               
 import streamlit as st
 import plotly.express  as px
 
-from utils.modules import spectra_cut_module, spectra_denoise_module, spectra_baseline_module
+from utils.modules import spectra_cut_module, spectra_denoise_module, spectra_baseline_module, spectra_normalize_module
+# from utils.utils import generate_download_link, exec_mysql
+from utils.functions import SF
+from api.SplitingFiting import gaussian_cauchy
 from utils.utils import generate_download_link, exec_mysql, load_spectrum_data
 
 
@@ -123,10 +127,10 @@ def run():
         # ================data visualization container================ #
         with st.container(border=True):
             st.subheader('Data visualization', divider='gray')
-
+            # 在侧边栏中显示选择栏，让用户选择是否显示基线校正的结果
             with st.sidebar:
-                col1, col2, col3 = st.columns([5, 1, 1])
-                if baseline_args['method'].__name__ == 'skip':
+                col1, col2, col3 = st.columns([5, 1, 1]) # 三列布局
+                if baseline_args['method'].__name__ == 'skip': # 如果基线校正参数为空，则只显示选择颜色的单个颜色选择器
                     col1.write('Pick a color for processed spectrum')
                 else:
                     col1.write('Pick colors for processed spectrum and baseline')

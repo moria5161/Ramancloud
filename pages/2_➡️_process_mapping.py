@@ -242,7 +242,6 @@ def run():
                         demo_spec = pd.DataFrame({'wavenumber': wavenumber[cut_start:cut_end],
                                                 'raw': raw_mapping_arr[demo_index-1][cut_start:cut_end],
                                                 'processed': demo_mapping[demo_index-1]})
-
                         fig = plot_spectrum(demo_spec, baseline_args)
                         st.plotly_chart(fig, use_container_width=True)
 
@@ -255,7 +254,7 @@ def run():
                         demo_spec = pd.DataFrame({'wavenumber': wavenumber[cut_start:cut_end],
                                                 'raw': raw_mapping_arr[demo_x_pixel, demo_y_pixel, cut_start:cut_end],
                                                 'processed': demo_mapping[demo_x_pixel, demo_y_pixel]})
-
+                        
                         fig = plot_spectrum(demo_spec, baseline_args)
                         st.plotly_chart(fig, use_container_width=True)
         # ================download container================ #
@@ -290,6 +289,7 @@ def run():
                 with st.status('Running......', expanded=True) as status:
                     st.write('Processing data...')
                     time.sleep(2)
+                    size = demo_mapping.shape
                     res_df = np.c_[indexs, np.r_[
                         wavenumber[None, cut_start:cut_end], demo_mapping.reshape(-1, demo_mapping.shape[-1]).astype(np.int64)]]
                     res_df = pd.DataFrame(res_df)
