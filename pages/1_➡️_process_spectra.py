@@ -10,7 +10,7 @@ import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots               
 import streamlit as st
-import plotly.express  as px
+import plotly.express as px
 
 from utils.modules import spectra_cut_module, spectra_denoise_module, spectra_baseline_module, spectra_normalize_module
 # from utils.utils import generate_download_link, exec_mysql
@@ -59,13 +59,14 @@ def save_unlabeled_spectra_to_mysql(raw_specs):
         exec_mysql(sql)
 
         
-def process(file:pd.DataFrame, cut_args, smooth_args, baseline_args):
+def process(file: pd.DataFrame, cut_args, smooth_args, baseline_args):
     res_df = cut_args['method'](file, **cut_args['args'])
-    res_df['raw'] = smooth_args['method'](res_df['raw'], **smooth_args['args']) if smooth_args['args'] else res_df['raw']
-    before_baseline = res_df['raw'].copy()
-    res_df['raw'] = baseline_args['method'](res_df['raw'], **baseline_args['args']) if baseline_args['method'].__name__ != 'skip' else res_df['raw']
-    if baseline_args['method'].__name__ != 'skip': 
-        res_df['baseline'] = before_baseline - res_df['raw'] 
+    if smooth_args['args']:
+        res_df['raw'] = smooth_args['method'](res_df['wavenumber'], res_df['raw'], **smooth_args['args'])
+    if baseline_args['method'].__name__ != 'skip':
+        before_baseline = res_df['raw'].copy()
+        res_df['raw'] = baseline_args['method'](res_df['wavenumber'], res_df['raw'], **baseline_args['args'])
+        res_df['baseline'] = before_baseline - res_df['raw']
     return res_df
 
 
@@ -127,7 +128,6 @@ def run():
         # ================data visualization container================ #
         with st.container(border=True):
             st.subheader('Data visualization', divider='gray')
-            # 在侧边栏中显示选择栏，让用户选择是否显示基线校正的结果
             with st.sidebar:
                 col1, col2, col3 = st.columns([5, 1, 1]) # 三列布局
                 if baseline_args['method'].__name__ == 'skip': # 如果基线校正参数为空，则只显示选择颜色的单个颜色选择器
