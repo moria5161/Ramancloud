@@ -10,7 +10,7 @@ import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots               
 import streamlit as st
-import plotly.express  as px
+import plotly.express as px
 
 from utils.modules import spectra_cut_module, spectra_denoise_module, spectra_baseline_module, spectra_normalize_module
 # from utils.utils import generate_download_link, exec_mysql
@@ -60,20 +60,13 @@ def save_unlabeled_spectra_to_mysql(raw_specs):
 
         
 def process(file: pd.DataFrame, cut_args, smooth_args, baseline_args):
-    # 使用切割方法对光谱数据进行切割处理
     res_df = cut_args['method'](file, **cut_args['args'])
-    # 如果平滑参数不为空，则使用平滑方法对光谱数据进行平滑处理
     if smooth_args['args']:
-        res_df['raw'] = smooth_args['method'](res_df['raw'], **smooth_args['args'])
-    # 如果基线校正参数指定的方法不为 'skip'，则进行基线校正处理
+        res_df['raw'] = smooth_args['method'](res_df['wavenumber'], res_df['raw'], **smooth_args['args'])
     if baseline_args['method'].__name__ != 'skip':
-        # 备份基线校正前的光谱数据
         before_baseline = res_df['raw'].copy()
-        # 使用基线校正方法对光谱数据进行基线校正处理
-        res_df['raw'] = baseline_args['method'](res_df['raw'], **baseline_args['args'])
-        # 计算基线并存储到结果DataFrame中
+        res_df['raw'] = baseline_args['method'](res_df['wavenumber'], res_df['raw'], **baseline_args['args'])
         res_df['baseline'] = before_baseline - res_df['raw']
-    # 返回处理后的光谱数据DataFrame
     return res_df
 
 
@@ -87,37 +80,30 @@ def run():
         st.subheader('Import data', divider='gray')
         st.markdown('<font size=5>**Upload your spectra**</font>', unsafe_allow_html=True)
 
-        # 创建文件上传组件，接受txt和asc文件，支持多个文件上传
         upload_file = st.file_uploader(label=' ', accept_multiple_files=True, type=['txt', 'asc'],
                                        label_visibility='collapsed')
 
         # 初始化demo_data变量
         demo_data = '-'
         if not upload_file:
-            # 如果未上传文件，则显示使用演示数据的下拉选择框
             st.markdown('<font size=5>**Or use demo data**</font>', unsafe_allow_html=True)
             demo_data = st.selectbox(label=' ', label_visibility='collapsed',
                                      options=['-', 'Bacteria', 'Ultra low frequence Raman'])
             if demo_data == '-':
                 st.session_state['raw_spec'] = None
             elif demo_data == 'Bacteria':
-                # 如果选择了Bacteria演示数据，则加载Bacteria.txt文件的数据
                 raw_demo_spec = pd.read_csv('/media/ramancloud/samples/Bacteria.txt', delimiter='\t', header=None)
                 st.session_state['raw_spec'] = raw_demo_spec
                 raw_demo_spec.columns = ['wavenumber', 'raw']
             elif demo_data == 'Ultra low frequence Raman':
-                # 如果选择了Ultra low frequence Raman演示数据，则加载ULF.txt文件的数据
                 raw_demo_spec = pd.read_csv('/media/ramancloud/samples/ULF.txt', delimiter='\t', header=None)
                 st.session_state['raw_spec'] = raw_demo_spec
                 raw_demo_spec.columns = ['wavenumber', 'raw']
 
         else:
-            # 如果上传了文件，则加载上传的文件数据
             raw_specs, filenames = upload_module(upload_file)
             time.sleep(1)
-            # 显示警告信息，包含用户条款和隐私政策的链接
             st.warning('Here is our [user item and privacy policy.](privacy_policy)')
-            # 如果上传了多个文件，则在侧边栏中显示下拉选择框，用于选择一个文件进行预处理
             if len(raw_specs) > 1:
                 demo_file = st.selectbox(
                     'Select a spectrum for preprocessing', filenames)
@@ -130,25 +116,17 @@ def run():
 
         # ================data processing container================ #
         with st.container(border=True):
-            # 设置数据处理容器的标题和分隔线
             st.subheader('Data processing', divider='gray')
-            # 使用光谱切割模块对演示数据进行处理，并获取处理后的光谱数据和切割参数
             demo_spec, cut_args = spectra_cut_module(raw_demo_spec)
-            # 使用光谱去噪模块对处理后的光谱数据进行去噪处理，并获取去噪后的光谱数据和去噪参数
             demo_spec, smooth_args = spectra_denoise_module(demo_spec)
-            # 使用光谱基线校正模块对处理后的光谱数据进行基线校正处理，并获取校正后的光谱数据和校正参数
             demo_spec, baseline_args = spectra_baseline_module(demo_spec)
-            # 对谱图数据进行归一化处理
             demo_spec, normalize_args = spectra_normalize_module(demo_spec)
-            # 将光谱数据转换为适合绘图的格式
             demo_spec_fig = demo_spec.melt('wavenumber', var_name='category', value_name='intensity')
 
 
         # ================data visualization container================ #
         with st.container(border=True):
-            # 设置数据可视化容器的标题和分隔线
             st.subheader('Data visualization', divider='gray')
-            # 在侧边栏中显示选择栏，让用户选择是否显示基线校正的结果
             with st.sidebar:
                 col1, col2, col3 = st.columns([5, 1, 1]) # 三列布局
                 if baseline_args['method'].__name__ == 'skip': # 如果基线校正参数为空，则只显示选择颜色的单个颜色选择器
@@ -162,74 +140,38 @@ def run():
                 if baseline_args['method'].__name__ != 'skip':
                     baseline_color = col3.color_picker(label=' ', label_visibility='collapsed', value='#22CE12')
                     custom_colors['baseline'] = baseline_color
-        # 创建子图
-        fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
-                            vertical_spacing=0.1,
-                            subplot_titles=("Raw Spectrum and Baseline", "Processed Spectrum"))
 
-        # 分离原始数据和处理后的数据
-        raw_data = demo_spec_fig[demo_spec_fig['category'] == 'raw']
-        processed_data = demo_spec_fig[demo_spec_fig['category'] == 'processed']
-        baseline_data = None
-        # 判断baseline是否存在，如果存在则添加基线数据
-        if 'baseline' in demo_spec_fig['category'].to_list(): 
-            baseline_data = demo_spec_fig[demo_spec_fig['category'] == 'baseline']
+            fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
+                                vertical_spacing=0.1,
+                                subplot_titles=("Raw Spectrum and Baseline", "Processed Spectrum"))
 
-        # 添加原始数据
-        fig.add_trace(
-            go.Scatter(x=raw_data['wavenumber'], y=raw_data['intensity'], mode='lines', name='Raw', line=dict(color='blue')),
-            row=1, col=1
-        )
-        # 添加基线数据
-        if baseline_data is not None and 'baseline' in custom_colors:
+
+            raw_data = demo_spec_fig[demo_spec_fig['category'] == 'raw']
+            processed_data = demo_spec_fig[demo_spec_fig['category'] == 'processed']
+            baseline_data = None
+ 
+            if 'baseline' in demo_spec_fig['category'].to_list(): 
+                baseline_data = demo_spec_fig[demo_spec_fig['category'] == 'baseline']
+
             fig.add_trace(
-                go.Scatter(x=baseline_data['wavenumber'], y=baseline_data['intensity'], mode='lines', name='Baseline', line=dict(color=custom_colors['baseline'], dash='dash')),
+                go.Scatter(x=raw_data['wavenumber'], y=raw_data['intensity'], mode='lines', name='Raw', line=dict(color='blue')),
                 row=1, col=1
             )
-        # 添加处理后的数据
-        fig.add_trace(
-            go.Scatter(x=processed_data['wavenumber'], y=processed_data['intensity'], mode='lines', name='Processed', line=dict(color=custom_colors['processed'])),
-            row=2, col=1
-        )
-        # # 绘制基线校正的竖直虚线
-        # if 'breakpoint_left' in baseline_args['args']:
-        #     fig.add_vline(x=demo_spec_fig['wavenumber'].to_numpy()[baseline_args['args']['breakpoint_left']],
-        #                 line_width=1, line_dash="dash", line_color="black", row=1, col=1)
-        #     fig.add_vline(x=demo_spec_fig['wavenumber'].to_numpy()[baseline_args['args']['breakpoint_right']],
-        #                 line_width=1, line_dash="dash", line_color="black", row=1, col=1)
-        # 更新布局
-        fig.update_layout(height=600, width=800, title_text="Raman Spectra")
-        fig.update_xaxes(title_text="Wavenumber (cm-1)", row=2, col=1)
-        fig.update_yaxes(title_text="Intensity", row=1, col=1)
-        fig.update_yaxes(title_text="Intensity", row=2, col=1)
-        # 在Streamlit中显示图表
-        st.plotly_chart(fig, use_container_width=True)
- 
-                
-        # ================partial peak fitting================ #
-        with st.container(border=True):
-            st.subheader('Partial peak fitting', divider='gray')
-            # 显示选择栏，让用户选择是否进行峰拟合算法
-            perform_peak_fitting = st.checkbox("Perform peak fitting")
-            if perform_peak_fitting:
-                wavenumber, spectrum, optim_params = SF(demo_spec['wavenumber'], demo_spec['processed'], 3000, imaging=False)
-                spliting_spec = pd.DataFrame({'wavenumber': wavenumber, 'processed': spectrum})
-                spliting_spec_fig = spliting_spec.melt('wavenumber', var_name='category', value_name='intensity')
-                # st.write(spliting_spec_fig)
-                fig = px.line(spliting_spec_fig, x="wavenumber", y="intensity", color='category',
-                          color_discrete_map=custom_colors)
-                st.plotly_chart(fig, use_container_width=True)
+            if baseline_data is not None and 'baseline' in custom_colors:
+                fig.add_trace(
+                    go.Scatter(x=baseline_data['wavenumber'], y=baseline_data['intensity'], mode='lines', name='Baseline', line=dict(color=custom_colors['baseline'], dash='dash')),
+                    row=1, col=1
+                )
+            fig.add_trace(
+                go.Scatter(x=processed_data['wavenumber'], y=processed_data['intensity'], mode='lines', name='Processed', line=dict(color=custom_colors['processed'])),
+                row=2, col=1
+            )
+            fig.update_layout(height=800, width=800)
+            fig.update_xaxes(title_text="Wavenumber (cm-1)", row=2, col=1)
+            fig.update_yaxes(title_text="Intensity", row=1, col=1)
+            fig.update_yaxes(title_text="Intensity", row=2, col=1)
 
-                for i in range(optim_params['mu'].shape[0]):
-                    spliting_spec[f'processed{i}'] = gaussian_cauchy(np.arange(len(spectrum)), optim_params['mu'][i], optim_params['sigma'][i],
-                                             optim_params['amp'][i], optim_params['weight'][i])
-                    spliting_spec_subfig = spliting_spec.melt('wavenumber', var_name='category', value_name='intensity')
-                    # st.write(spliting_spec_subfig)
-                subfig = px.line(spliting_spec_subfig, x="wavenumber", y="intensity", color='category',
-                                  color_discrete_map=custom_colors)
-                # Hide legend
-                subfig.update_layout(showlegend=False)
-                st.plotly_chart(subfig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True)
 
         # ================download container================ #
         with st.container(border=True):
