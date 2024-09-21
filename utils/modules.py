@@ -45,10 +45,10 @@ def p2p_submodule(denoise_use_sidebar=False, mode='spectra'):
     if denoise_use_sidebar:
         with st.sidebar:
             col1, col2 = st.columns(2)
-            ks = col1.st.slider('kernel_size', 1, 15, 7, key='sidebar_kernel_size')
+            ks = col1.st.slider('kernel_size', 1, 15, 3, key='sidebar_kernel_size')
             Rc = col2.st.slider('Regularization coefficient', 0, 3, 1, key='sidebar_R')
     else:
-        ks = st.slider('kernel_size', 1, 15, 7, key='sidebar_kernel_size')
+        ks = st.slider('kernel_size', 1, 15, 3, key='sidebar_kernel_size')
         Rc = st.slider('Regularization coefficient', 0.1, 10.0, 1.0, step=0.1, key='sidebar_R')
 
     # st.info('This method was deployed latest, and the performance is not stable :smirk:')
@@ -324,19 +324,6 @@ def spectra_normalize_module(spec_df):
     # 在第二个列元素中创建选择框，供用户选择归一化方法
     normalize_method = col2.selectbox('Select a method', normalize_method_dict.keys(), key='normalize',
                                         label_visibility='collapsed')
-    # # 在第二个列中创建开关，用于切换使用侧边栏
-    # normalize_use_sidebar = col2.toggle('use sidebar', key='normalize_use_sidebar', help='switch the slider to sidebar')
-    # # 如果选择使用侧边栏，就在侧边栏中显示归一化参数的子标题
-    # if normalize_use_sidebar:
-    #     st.sidebar.subheader('**normalize parameters**', divider='gray')
-    # 根据用户选择的归一化方法，设置对应的参数
-    # if normalize_method == 'min-max':
-    #     normalize_args = min_max_submodule(normalize_use_sidebar=normalize_use_sidebar)
-    # elif normalize_method == 'max_':
-    #     normalize_args = max_submodule(normalize_use_sidebar=normalize_use_sidebar)
-    # elif normalize_method == 'z-score':
-    #     normalize_args = z_score_submodule(normalize_use_sidebar=normalize_use_sidebar)
-    
     spec_df['processed'] = normalize_method_dict[normalize_method](spec_df['wavenumber'], spec_df['processed'])
     
     return spec_df, {'method': normalize_method_dict[normalize_method]}

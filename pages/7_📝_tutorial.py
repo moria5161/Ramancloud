@@ -123,7 +123,7 @@ def main_content():
                   2. peak seeking parameter: The parameter used for peak seeking. The larger the parameter, the larger the threshold of peak extraction and retention, and the smaller the number of peak extraction and retention
                 #### P2P
                   P2P(Peak2Peak) is a deep learning-based smoothing method, using self-supervised strategy, smoothing through mask method and regularization, specific user parameters are as follows:
-                  1. kernel_size: In deep learning, the larger the convolution kernel size of the features extracted by the model, the more obvious the smoothing effect will be, but the signal details may be lost.
+                  1. kernel_size: The smaller the convolution kernel size, the better the peak retention, and no more features will be sacrificed, but noise may become noticeable. 
                   2. Regularization coefficient: This parameter is the essence of smoothing, the larger the parameter, the better the smoothing effect, but it needs to be adjusted according to the actual situation to avoid serious distortion.
 
                 #### Baseline correction module
