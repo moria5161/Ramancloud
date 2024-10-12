@@ -56,7 +56,8 @@ def p2p_submodule(denoise_use_sidebar=False, mode='spectra'):
         st.write(
             """
 
-            **Epochs:** the number of epochs for training. It may cost 1.7s per epoch.    
+            **kernel_size:** It controls peak feature extraction and retention capabilities.   
+            **Regularization coefficient:** It controls the degree of noise reduction. 
             This is [Peak2Peak](https://pubs.acs.org/doi/10.1021/acs.analchem.3c04608). You can find more details in [tutorial](/tutorial).
             """)
 

@@ -70,6 +70,7 @@ class PeakParsing:
         self.lr = lr
         self.device = device
         self.num_peaks = 0
+        self.raw_peaks = None
         self._init_params()
         self._fit_data()
 
@@ -87,6 +88,7 @@ class PeakParsing:
         self.num_peaks = len(mu_list)
         amp_list = self.spectrum[mu_list]
         weight_list = np.ones(len(mu_list)) * 0.5
+        self.raw_peaks = mu_list
         self.model = GaussianCauchyModel(self.num_peaks)
 
         mu_data = torch.tensor(mu_list, dtype=torch.float32).clone().detach().requires_grad_(True).to(self.device)
@@ -131,6 +133,10 @@ class PeakParsing:
             optim_params = {'mu': self.mu_list, 'sigma': self.sigma_list, 'amp': self.amp_list,
                             'weight': self.weight_list}
             return optim_params
+
+
+    def get_peaks(self):
+        return self.raw_peaks
 
     def gaussian_cauchy(x, mu, sigma, amp, weight):
         gaussian_component = weight * amp * np.exp(-((x - mu) / sigma) ** 2 / 2)

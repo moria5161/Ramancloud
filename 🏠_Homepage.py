@@ -306,7 +306,7 @@ if __name__ == "__main__":
         html('''<a href='https://clustrmaps.com/site/1bxqy'  title='Visit tracker'><img src='//clustrmaps.com/map_v2.png?cl=ffffff&w=a&t=tt&d=IYobjN-Mu1pChSxslZv7Z5QG-hGiH_WbPUJNPPml1q0&co=2d78ad&ct=ffffff'/></a>''')
 
     def run_flask():
-        subprocess.run(["flask", "--app", "/media/ramancloud_beta/multiprocess_flask.py", "run"])
+        subprocess.run(["flask", "--app", "/media/ramancloud_beta/multiprocess_flask.py", "run", "--port=5002"])
 
     flask_thread = threading.Thread(target=run_flask)
     flask_thread.start()
