@@ -12,6 +12,7 @@ import plotly.express as px
 from utils.functions import SF
 from api.SplitingFiting import gaussian_cauchy
 from utils.utils import generate_download_link, exec_mysql, load_spectrum_data
+from utils.modules import spectra_cut_module
 from sklearn.decomposition import PCA
 
 st.set_page_config(
@@ -99,16 +100,22 @@ def run():
 
     if 'raw_spec' in st.session_state and st.session_state['raw_spec'] is not None:
 
+        # ================data crop================ #
+        with st.container(border=True):
+            st.subheader('Data Cropping', divider='gray')
+            demo_spec, cut_args = spectra_cut_module(raw_demo_spec)
+
+
         # ================partial peak fitting================ #
         with st.container(border=True):
             st.subheader('Partial peak fitting', divider='gray')
-            original_spec = pd.DataFrame({'wavenumber': raw_demo_spec['wavenumber'], 'raw': raw_demo_spec['raw']})
+            original_spec = pd.DataFrame({'wavenumber': demo_spec['wavenumber'], 'raw': demo_spec['raw']})
             original_spec_fig = original_spec.melt('wavenumber', var_name='category', value_name='intensity')
             original_fig = px.line(original_spec_fig, x="wavenumber", y="intensity", color='category')
             st.plotly_chart(original_fig, use_container_width=True)
             perform_peak_fitting = st.checkbox("Whether to perform peak fitting")
             if perform_peak_fitting:
-                wavenumber, spectrum, optim_params = SF(raw_demo_spec['wavenumber'], raw_demo_spec['raw'], 3000, imaging=False)
+                wavenumber, spectrum, optim_params = SF(demo_spec['wavenumber'], demo_spec['raw'], 3000, imaging=False)
                 spliting_spec = pd.DataFrame({'wavenumber': wavenumber, 'raw': spectrum})
                 peaks_data = []
                 for i in range(optim_params['mu'].shape[0]):
