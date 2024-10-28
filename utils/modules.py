@@ -190,35 +190,24 @@ def spectra_cut_module(spec_df):
 
 
 def spectra_denoise_module(spec_df):
-    # 定义字典，包含不同的去噪方法及其对应的函数
     denoise_method_dict = {'PEER': PEER, 'Savitzky-Golay filter': sg, 'p2p': p2p, 'skip': skip}
-    denoise_args = {}  # 初始化去噪参数字典
+    denoise_args = {}  
 
-    # 如果'spec_df'中没有名为'processed'的列，就将'raw'列的内容复制到'processed'列
     if 'processed' not in spec_df.columns:
         spec_df['processed'] = spec_df['raw'].copy()
 
-    # 在界面上显示标题
     st.markdown('''<font size=5>**Step 2: smooth**</font>''', unsafe_allow_html=True)
-    # 获取两个列元素，第一个列元素包含文本，第二个列元素包含选择框
     col1, col2 = st.columns(2)
-
-    # 在第一个列元素中显示文本信息
     col1.write(
         'The module is used to denoise the spectrum, please select a method to continue. If you want to skip this step, please select **skip**')
 
-    # 在第二个列元素中创建选择框，供用户选择去噪方法
     denoise_method = col2.selectbox('Select a method', denoise_method_dict.keys(), key='smooth',
                                     label_visibility='collapsed')
-
-    # 在第二个列元素中创建开关，用于切换使用侧边栏
     denoise_use_sidebar = col2.toggle('use sidebar', key='denoise_use_sidebar', help='switch the slider to sidebar')
 
-    # 如果选择使用侧边栏，就在侧边栏中显示平滑参数的子标题
     if denoise_use_sidebar:
         st.sidebar.subheader('**smooth parameters**', divider='gray')
 
-    # 根据用户选择的去噪方法，设置对应的参数
     if denoise_method == 'PEER':
         denoise_args = PEER_submodule(denoise_use_sidebar=denoise_use_sidebar, mode='spectra')
 
@@ -228,10 +217,8 @@ def spectra_denoise_module(spec_df):
     elif denoise_method == 'p2p':
         denoise_args = p2p_submodule(denoise_use_sidebar=denoise_use_sidebar, mode='spectra')
 
-    # 将选定的去噪方法应用于数据，更新数据中的'processed'列
     spec_df['processed'] = denoise_method_dict[denoise_method](spec_df['wavenumber'], spec_df['processed'], **denoise_args)
 
-    # 返回更新后的数据和使用的去噪方法及参数信息（字典形式）
     return spec_df, {'method': denoise_method_dict[denoise_method], 'args': denoise_args}
 
 
@@ -309,20 +296,14 @@ def spectra_baseline_module(spec_df):
 
 
 def spectra_normalize_module(spec_df):
-    # 定义字典，包含两种三种归一化方法及其对应的函数
     normalize_method_dict = {'min-max': min_max, 'max_': max_, 'z-score': z_score, 'skip': skip}
-    # normalize_args = {}  # 初始化归一化参数字典
-    # 如果'spec_df'中没有名为'processed'的列，就将'raw'列的内容复制到'processed'列
     if 'processed' not in spec_df.columns:
         spec_df['processed'] = spec_df['raw'].copy()
-    # 在界面上显示标题
     st.markdown('''<font size=5>**Step 4: normalize**</font>''', unsafe_allow_html=True)
-    # 获取两个列元素，第一个列元素包含文本，第二个列元素包含选择框
     col1, col2 = st.columns(2)
-    # 在第一个列元素中显示文本信息
     col1.write(
         'The module is used to normalize the spectrum, please select a method to continue. If you want to skip this step, please select **skip**')
-    # 在第二个列元素中创建选择框，供用户选择归一化方法
+
     normalize_method = col2.selectbox('Select a method', normalize_method_dict.keys(), key='normalize',
                                         label_visibility='collapsed')
     spec_df['processed'] = normalize_method_dict[normalize_method](spec_df['wavenumber'], spec_df['processed'])

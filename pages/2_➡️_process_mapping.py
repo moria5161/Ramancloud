@@ -92,10 +92,10 @@ def downsample(input_img, scale_factor=None, return_scale_factor=False):
 
 
 # @st.cache_data(experimental_allow_widgets=True)
-def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber, n_clusters=2):
+def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
     if st.session_state['mode'] == 'time series':
         fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
-                        vertical_spacing=0.05, subplot_titles=('Raw mapping', 'Processed mapping'))
+                        vertical_spacing=0.12, subplot_titles=('Raw mapping', 'Processed mapping'))
         downsampled_raw = downsample(raw_mapping_arr[:, cut_start:cut_end], scale_factor=2)
         downsampled_demo, downsample_scale_factor = downsample(demo_mapping, 
                                                             scale_factor=2, return_scale_factor=True)
@@ -111,8 +111,8 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber, 
         st.plotly_chart(fig, use_container_width=True)
 
     elif st.session_state['mode'] == 'imaging':
-        fig = make_subplots(rows=3, cols=1, shared_xaxes=True,
-                        vertical_spacing=0.05, subplot_titles=('Raw mapping', 'Processed mapping', 'Clustered mapping'))
+        fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
+                        vertical_spacing=0.12, subplot_titles=('Raw mapping', 'Processed mapping'))
         wavenumber_cut = wavenumber[cut_start:cut_end]
         target_wavenumber = st.number_input(
                             "Select the target wavenumber for imaging or default mean wavenumber imaging", 
@@ -121,31 +121,17 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber, 
                             value=wavenumber_cut.mean())
         closest_index = np.abs(wavenumber_cut - target_wavenumber).argmin()
         heatmap1 = go.Heatmap(z=raw_mapping_arr[:, :, closest_index], 
-                            colorbar=dict(y=0.85, len=0.3), name='raw')
+                            colorbar=dict(y=0.75, len=0.4), name='raw')
         heatmap2 = go.Heatmap(z=demo_mapping[:, :, closest_index], 
-                     colorbar=dict(y=0.5, len=0.3), name='processed')
-
-        n_clusters = st.number_input("Select the number of clusters for clustering, default is 4",
-                                    min_value=2, max_value=100, value=4, step=1)
-        data_to_cluster = demo_mapping[:, :, closest_index]
-        data_flattened = data_to_cluster.reshape(-1, 1)
-        kmeans = KMeans(n_clusters=n_clusters, random_state=42)
-        kmeans.fit(data_flattened)
-        cluster_labels = kmeans.labels_.reshape(data_to_cluster.shape)
-        heatmap3 = go.Heatmap(z=cluster_labels, 
-                            colorscale='Jet', 
-                            colorbar=dict(y=0.15, len=0.3), name='clustered')
+                     colorbar=dict(y=0.25, len=0.4), name='processed')
 
         fig.add_trace(heatmap1, row=1, col=1)
         fig.add_trace(heatmap2, row=2, col=1)
-        fig.add_trace(heatmap3, row=3, col=1)
 
         fig.update_xaxes(title_text="Pixelx", row=1, col=1)
         fig.update_xaxes(title_text="Pixelx", row=2, col=1)
-        fig.update_xaxes(title_text="Pixelx", row=3, col=1)
         fig.update_yaxes(title_text="Pixely", row=1, col=1, autorange='reversed')
         fig.update_yaxes(title_text="Pixely", row=2, col=1, autorange='reversed')
-        fig.update_yaxes(title_text="Pixely", row=3, col=1, autorange='reversed')
 
         fig.update_layout(  
             height=raw_mapping_arr.shape[0] * 2.4 * 10, 

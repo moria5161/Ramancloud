@@ -135,19 +135,7 @@ def run():
                 st.markdown("### Peak Information")
                 st.dataframe(peaks_df, use_container_width=True)
 
-         # =========================== PCA ========================== #
-        # with st.container(border=True):
-        #     st.subheader('PCA', divider='gray')
-        #     st.markdown('PCA is used for data dimensionality reduction and feature extraction, and you may need to upload many spectra to do this part.')
-        #     perform_pca = st.checkbox('Whether to perform PCA analysis')
-        #     if perform_pca:
-        #         data = [s.iloc[:, 1].values.reshape(1, -1) for s in raw_specs]  
-        #         D = np.vstack(data)
-        #         pca = PCA(n_components=2)
-        #         D_pca = pca.fit_transform(D)
-        #         df_pca = pd.DataFrame(D_pca, columns=['PC1', 'PC2'])
-        #         df_pca['label'] = np.concatenate([np.ones(len(data[i])) * (i + 1) for i in range(len(raw_specs))])
-        #         st.scatter_chart(df_pca, x='PC1', y='PC2', color='label')
+
         # =========================== 降维特征分析 ========================== #
         with st.container(border=True):
             st.subheader('Dimension reduction feature analysis', divider='gray')
