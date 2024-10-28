@@ -28,6 +28,7 @@ def Skip(x):
 
 @st.cache_data
 def cut(x, values, wavenumber=[], mode='spectra'):
+    print(values[0], values[1], x.shape)
     if mode != 'spectra':
         x = np.array(x) if type(x) != np.ndarray else x
         if mode == 'time series':
@@ -53,18 +54,13 @@ def CNN_rPLS(wave, x, mode='spectra'):
 
 @st.cache_data
 def airPLS(wa, x, lambda_, order_, mode='spectra'):
-    start_time = time.time()
-    # st.write(x)
     if mode != 'spectra':
-        # 将数据转换为列表，以便 JSON 序列化
         data_payload = {
             'data': x.tolist(),
             'lambda': lambda_,
             'order': order_,
         }
-        
-        # 发送 POST 请求
-        response = requests.post("http://localhost:5000/airPLS", json=data_payload)
+        response = requests.post("http://localhost:5002/airPLS", json=data_payload)
         if response.status_code == 200:
             result = response.json()
             processed_data = np.array(result)  # 转换回 NumPy 数组
@@ -73,8 +69,6 @@ def airPLS(wa, x, lambda_, order_, mode='spectra'):
     else:
         processed_data = ZhangFit(x, lambda_, order_)
 
-    end_time = time.time()
-    print('airPLS usetime: ', end_time - start_time)
     return processed_data
 
 
@@ -84,7 +78,6 @@ def auto_adaptive(wa, x, Ln, Lb, mode='spectra'):
 
 @st.cache_data
 def ModPoly(wa, x, order_, gradient=1e-3, repitition=9, mode='spectra'):
-    start_time = time.time()
     if mode != 'spectra':
         data_payload = {
             'data': x.tolist(),
@@ -94,7 +87,7 @@ def ModPoly(wa, x, order_, gradient=1e-3, repitition=9, mode='spectra'):
         }
 
         # 发送 POST 请求
-        response = requests.post("http://localhost:5000/modpoly", json=data_payload)
+        response = requests.post("http://localhost:5002/modpoly", json=data_payload)
         if response.status_code == 200:
             result = response.json()
             processed_data = np.array(result)
@@ -102,14 +95,11 @@ def ModPoly(wa, x, order_, gradient=1e-3, repitition=9, mode='spectra'):
             print("Request failed with status code:", response.status_code)
     else:
         processed_data = mod_poly(x, order_, gradient, repitition)[0]
-    end_time = time.time()
-    print('ModPoly usetime: ', end_time - start_time)
     return processed_data
 
 
 @st.cache_data
 def IModPoly(wa, x, order_, gradient=1e-3, repitition=9, mode='spectra'):
-    start_time = time.time()
     if mode != 'spectra':
         data_payload = {
             'data': x.tolist(),
@@ -119,7 +109,7 @@ def IModPoly(wa, x, order_, gradient=1e-3, repitition=9, mode='spectra'):
         }
 
         # 发送 POST 请求
-        response = requests.post("http://localhost:5000/imodpoly", json=data_payload)
+        response = requests.post("http://localhost:5002/imodpoly", json=data_payload)
         if response.status_code == 200:
             result = response.json()
             processed_data = np.array(result)
@@ -127,8 +117,6 @@ def IModPoly(wa, x, order_, gradient=1e-3, repitition=9, mode='spectra'):
             print("Request failed with status code:", response.status_code)
     else:
         processed_data = imod_poly(x, order_, gradient, repitition)[0]
-    end_time = time.time()
-    print('IModPoly usetime: ', end_time - start_time)
     
     return processed_data
 
@@ -176,13 +164,12 @@ def sg(wa, x, window_size, order, mode='spectra'):
         res = np.apply_along_axis(func, 1, x.reshape(-1, size[-1]))
         res = res.reshape(size)
     else:
-        x = func(x)
-    return x
+        res = func(x)
+    return res
 
 
 @st.cache_data
 def PEER(wa, x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
-    start_time = time.time()
     if mode != 'spectra':
         data_payload = {
             'data': x.tolist(),
@@ -190,7 +177,7 @@ def PEER(wa, x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
             'hlaf_k_threshold': hlaf_k_threshold,
         }
         # 发送 POST 请求
-        response = requests.post("http://localhost:5000/PEER", json=data_payload)
+        response = requests.post("http://localhost:5002/PEER", json=data_payload)
         if response.status_code == 200:
             result = response.json()
             processed_data = np.array(result)
@@ -203,18 +190,12 @@ def PEER(wa, x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
             hlaf_k_threshold = int(hlaf_k_threshold)
 
         processed_data = peer(x, loops, hlaf_k_threshold)
-
-    end_time = time.time()
-    print('PEER usetime: ', end_time - start_time)
     return processed_data
 
 @st.cache_data
 def p2p(wa, x, ks=7, Rc=1,mode='spectra'):
-    start_time = time.time()
     net = P2P(input_spectrum=x, ks=ks, Rc=Rc) 
     out = net.inference()
-    end_time = time.time()
-    print('P2P usetime: ', end_time - start_time)
     return out
 
 @st.cache_data

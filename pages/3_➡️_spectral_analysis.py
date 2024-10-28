@@ -1,4 +1,5 @@
 import time
+from scipy import integrate
 import streamlit as st
 from sparkai.llm.llm import ChatSparkLLM, ChunkPrintHandler
 from sparkai.core.messages import ChatMessage
@@ -11,6 +12,7 @@ import plotly.express as px
 from utils.functions import SF
 from api.SplitingFiting import gaussian_cauchy
 from utils.utils import generate_download_link, exec_mysql, load_spectrum_data
+from sklearn.decomposition import PCA
 
 st.set_page_config(
     page_title='RamanCloud',
@@ -65,7 +67,7 @@ def run():
     # ==============================================data input container============================================== #
     with st.container(border=True):
         st.subheader('Import  spectra data to analyse', divider='gray')
-        st.markdown('<font size=5>**Upload your spectra**</font>', unsafe_allow_html=True)
+        st.markdown('<font size=5>**Upload your spectra**</font><br><font size=3>This module does not provide pre-processing function, if necessary, please process in advance<font>', unsafe_allow_html=True)
 
         upload_file = st.file_uploader(label=' ', accept_multiple_files=True, type=['txt', 'asc'], label_visibility='collapsed')
 
@@ -100,20 +102,66 @@ def run():
         # ================partial peak fitting================ #
         with st.container(border=True):
             st.subheader('Partial peak fitting', divider='gray')
-            perform_peak_fitting = st.checkbox("Perform peak fitting")
+            original_spec = pd.DataFrame({'wavenumber': raw_demo_spec['wavenumber'], 'raw': raw_demo_spec['raw']})
+            original_spec_fig = original_spec.melt('wavenumber', var_name='category', value_name='intensity')
+            original_fig = px.line(original_spec_fig, x="wavenumber", y="intensity", color='category')
+            st.plotly_chart(original_fig, use_container_width=True)
+            perform_peak_fitting = st.checkbox("Whether to perform peak fitting")
             if perform_peak_fitting:
                 wavenumber, spectrum, optim_params = SF(raw_demo_spec['wavenumber'], raw_demo_spec['raw'], 3000, imaging=False)
                 spliting_spec = pd.DataFrame({'wavenumber': wavenumber, 'raw': spectrum})
-                spliting_spec_fig = spliting_spec.melt('wavenumber', var_name='category', value_name='intensity')
-                fig = px.line(spliting_spec_fig, x="wavenumber", y="intensity", color='category')
-                st.plotly_chart(fig, use_container_width=True)
-
+                peaks_data = []
                 for i in range(optim_params['mu'].shape[0]):
                     spliting_spec[f'raw{i}'] = gaussian_cauchy(np.arange(len(spectrum)), optim_params['mu'][i], optim_params['sigma'][i], optim_params['amp'][i], optim_params['weight'][i])
                     spliting_spec_subfig = spliting_spec.melt('wavenumber', var_name='category', value_name='intensity')
+                    position = optim_params['mu'][i]
+                    peak_position = wavenumber[int(position)]
+                    peak_height = optim_params['amp'][i]
+                    peak_width = optim_params['sigma'][i]
+                    peak_function = lambda x: gaussian_cauchy(x, optim_params['mu'][i], optim_params['sigma'][i], 
+                                              optim_params['amp'][i], optim_params['weight'][i])
+                    peak_area, _ = integrate.quad(peak_function, 0, len(spectrum) - 1)
+                    peaks_data.append({
+                            'Position': peak_position,
+                            'Height': peak_height,
+                            'Width': peak_width,
+                            'Area': peak_area
+                        })    
                 subfig = px.line(spliting_spec_subfig, x="wavenumber", y="intensity", color='category')
                 subfig.update_layout(showlegend=False)
                 st.plotly_chart(subfig, use_container_width=True)
+
+                peaks_df = pd.DataFrame(peaks_data)
+                st.markdown("### Peak Information")
+                st.dataframe(peaks_df, use_container_width=True)
+
+
+        # =========================== 降维特征分析 ========================== #
+        with st.container(border=True):
+            st.subheader('Dimension reduction feature analysis', divider='gray')
+            st.markdown('Choose a dimensionality reduction method (such as PCA or another) to ensure that multiple spectra are uploaded for analysis before analysis.')
+            
+            method = st.selectbox('Select the dimensionality reduction method', ['PCA'])
+            perform_analysis = st.checkbox('Whether to perform dimension reduction analysis')
+            if perform_analysis:
+                data = [s.iloc[:, 1].values.reshape(1, -1) for s in raw_specs]  
+                D = np.vstack(data)
+            
+                if method == 'PCA':
+                    labels = np.concatenate([np.ones(len(data[i])) * (i + 1) for i in range(len(raw_specs))])
+                    from sklearn.decomposition import PCA
+                    model = PCA(n_components=2)
+                    D_reduced = model.fit_transform(D)
+                # elif method == 'LDA':
+                #     labels = np.concatenate([np.ones(len(data[i])) * (i + 1) for i in range(len(raw_specs) - 1)])                   
+                #     from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+                #     model = LDA(n_components=2)
+                #     D_reduced = model.fit_transform(D, labels)
+
+                df_reduced = pd.DataFrame(D_reduced, columns=['Feature1', 'Feature2'])
+                df_reduced['labels'] = labels
+                st.scatter_chart(df_reduced, x='Feature1', y='Feature2', color='labels')
+
 
     # ================ Chat with Spark AI for Raman spectroscopy ================= #
     with st.container(border=True):

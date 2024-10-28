@@ -103,9 +103,8 @@ elif mode == "split mapping into spectra":
             
             arr_w = np.stack(arr_w)
             arr_s = np.stack(arr_s)
-            
-            # 存储结果
-            files = [np.c_[arr_w[:, i], arr_s[:, i]] for i in range(arr_w.shape[1])]
+
+            files = [np.c_[arr_w[:, i], arr_s[:, i]] for i in range(0, arr_w.shape[1])]
 
 
         with io.BytesIO() as zip_buffer: # Create an in-memory zip file
