@@ -95,7 +95,7 @@ def normalization(data):  # 定义函数，用于对数据进行归一化处理
 # 处理谱图数据
 
 class P2P:
-    def __init__(self, input_spectrum, epochs=40, ks=7, Rc=1):
+    def __init__(self, input_spectrum, epochs=15, ks=7, Rc=1):
         self.cycle = 5
         self.model = FCN(ks=ks)
         self.lr = 1e-3
@@ -125,22 +125,22 @@ class P2P:
         self.model.train()  
         sum_loss = 0  
         count = 0  
-        aug_times = 50
+        aug_times = 100
         GS_peak_intensity = 0.45  # 设置高斯峰强度
         criterion = nn.MSELoss()
 
         for _ in range(aug_times):
             count += 1  
-            data = add_Gau_peaks(spectrum_raw, 10, 40,
-                                GS_peak_intensity) 
-            data = torch.as_tensor(data, dtype=torch.float32)  
+            # data = add_Gau_peaks(spectrum_raw, 10, 40,
+            #                     GS_peak_intensity) 
+            data = torch.as_tensor(spectrum_raw, dtype=torch.float32)  
             data = data.reshape(1, data.shape[0])  # 调整张量形状
             data = data.reshape(1, data.shape[0], data.shape[1])  # 调整张量形状
             data = data.permute(1, 0, 2)  # 调整张量维度顺序
 
-            target = add_Gau_peaks(spectrum_raw, 10, 40,
-                                GS_peak_intensity)  
-            target = torch.as_tensor(target, dtype=torch.float32)  
+            # target = add_Gau_peaks(spectrum_raw, 10, 40,
+            #                     GS_peak_intensity)  
+            target = torch.as_tensor(spectrum_raw, dtype=torch.float32)  
             target = target.reshape(1, target.shape[0])  # 调整目标谱图张量形状
             target = target.reshape(
                 1, target.shape[0], target.shape[1])  # 调整目标谱图张量形状

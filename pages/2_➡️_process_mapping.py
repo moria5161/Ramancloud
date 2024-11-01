@@ -217,7 +217,6 @@ def run():
                 plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber)
                 st.write('If the image is seriously distorted, first check that the image wavenumber is correct')
 
-
             with tab2:
                 if st.session_state['mode'] == 'time series':
                     demo_index = st.selectbox(label=' ', label_visibility='collapsed', 
