@@ -60,7 +60,7 @@ def airPLS(wa, x, lambda_, order_, mode='spectra'):
             'lambda': lambda_,
             'order': order_,
         }
-        response = requests.post("http://localhost:5002/airPLS", json=data_payload)
+        response = requests.post("http://localhost:5000/airPLS", json=data_payload)
         if response.status_code == 200:
             result = response.json()
             processed_data = np.array(result)  # 转换回 NumPy 数组
@@ -87,7 +87,7 @@ def ModPoly(wa, x, order_, gradient=1e-3, repitition=9, mode='spectra'):
         }
 
         # 发送 POST 请求
-        response = requests.post("http://localhost:5002/modpoly", json=data_payload)
+        response = requests.post("http://localhost:5000/modpoly", json=data_payload)
         if response.status_code == 200:
             result = response.json()
             processed_data = np.array(result)
@@ -109,7 +109,7 @@ def IModPoly(wa, x, order_, gradient=1e-3, repitition=9, mode='spectra'):
         }
 
         # 发送 POST 请求
-        response = requests.post("http://localhost:5002/imodpoly", json=data_payload)
+        response = requests.post("http://localhost:5000/imodpoly", json=data_payload)
         if response.status_code == 200:
             result = response.json()
             processed_data = np.array(result)
@@ -177,7 +177,7 @@ def PEER(wa, x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
             'hlaf_k_threshold': hlaf_k_threshold,
         }
         # 发送 POST 请求
-        response = requests.post("http://localhost:5002/PEER", json=data_payload)
+        response = requests.post("http://localhost:5000/PEER", json=data_payload)
         if response.status_code == 200:
             result = response.json()
             processed_data = np.array(result)
