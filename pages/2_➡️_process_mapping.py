@@ -115,32 +115,33 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
                         vertical_spacing=0.12, subplot_titles=('Raw mapping', 'Processed mapping'))
         wavenumber_cut = wavenumber[cut_start:cut_end]
         target_wavenumber = st.number_input(
-                            "Select the target wavenumber for imaging or default mean wavenumber imaging", 
+                            "Select the target wavenumber for imaging", 
                             min_value=float(wavenumber_cut.min()), 
                             max_value=float(wavenumber_cut.max()), 
-                            value=wavenumber_cut.mean())
-        closest_index = np.abs(wavenumber_cut - target_wavenumber).argmin()
-        heatmap1 = go.Heatmap(z=raw_mapping_arr[:, :, closest_index], 
-                            colorbar=dict(y=0.75, len=0.4), name='raw')
-        heatmap2 = go.Heatmap(z=demo_mapping[:, :, closest_index], 
-                     colorbar=dict(y=0.25, len=0.4), name='processed')
+                            value=None, step=1.0, format='%f')
+        if target_wavenumber is not None:
+            closest_index = np.abs(wavenumber_cut - target_wavenumber).argmin()
+            heatmap1 = go.Heatmap(z=raw_mapping_arr[:, :, closest_index], 
+                                colorbar=dict(y=0.75, len=0.4), name='raw')
+            heatmap2 = go.Heatmap(z=demo_mapping[:, :, closest_index], 
+                        colorbar=dict(y=0.25, len=0.4), name='processed')
 
-        fig.add_trace(heatmap1, row=1, col=1)
-        fig.add_trace(heatmap2, row=2, col=1)
+            fig.add_trace(heatmap1, row=1, col=1)
+            fig.add_trace(heatmap2, row=2, col=1)
 
-        fig.update_xaxes(title_text="Pixelx", row=1, col=1)
-        fig.update_xaxes(title_text="Pixelx", row=2, col=1)
-        fig.update_yaxes(title_text="Pixely", row=1, col=1, autorange='reversed')
-        fig.update_yaxes(title_text="Pixely", row=2, col=1, autorange='reversed')
+            fig.update_xaxes(title_text="Pixelx", row=1, col=1)
+            fig.update_xaxes(title_text="Pixelx", row=2, col=1)
+            fig.update_yaxes(title_text="Pixely", row=1, col=1, autorange='reversed')
+            fig.update_yaxes(title_text="Pixely", row=2, col=1, autorange='reversed')
 
-        fig.update_layout(  
-            height=raw_mapping_arr.shape[0] * 2.4 * 10, 
-            width=raw_mapping_arr.shape[1] * 6, 
-            autosize=False, 
-            margin=dict(l=20, r=20, t=20, b=20),  
-        )
+            fig.update_layout(  
+                height=raw_mapping_arr.shape[0] * 2.4 * 10, 
+                width=raw_mapping_arr.shape[1] * 6, 
+                autosize=False, 
+                margin=dict(l=20, r=20, t=20, b=20),  
+            )
 
-        st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True)
 
 
 @st.cache_data
@@ -212,6 +213,14 @@ def run():
         # ================data visualization container================ #
         with st.container(border=True):
             st.subheader('Data visualization', divider=False)
+            avg_spectrum_raw = raw_mapping_arr.mean(axis=(0, 1))
+            avg_spectrum_processed = demo_mapping.mean(axis=(0, 1))
+            fig_avg = go.Figure()
+            fig_avg.add_trace(go.Scatter(x=wavenumber[cut_start:cut_end], y=avg_spectrum_raw[cut_start:cut_end], mode='lines', name='Raw Mean Spectrum'))
+            fig_avg.add_trace(go.Scatter(x=wavenumber[cut_start:cut_end], y=avg_spectrum_processed, mode='lines', name='Processed Mean Spectrum'))
+            fig_avg.update_layout(title="Average Spectrum", xaxis_title="Wavenumber", yaxis_title="Intensity")
+            st.plotly_chart(fig_avg)
+            
             tab1, tab2 = st.tabs(['Mapping', 'Spectrum'])
             with tab1:
                 plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber)

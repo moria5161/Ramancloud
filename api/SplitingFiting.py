@@ -81,7 +81,7 @@ class PeakParsing:
         return loss
 
     def _init_params(self):
-        peaks, _ = sp_signal.find_peaks(self.spectrum, distance=20)
+        peaks, _ = sp_signal.find_peaks(self.spectrum, distance=5)
         widths = sp_signal.peak_widths(self.spectrum, peaks, rel_height=0.5)[0]
         mu_list = peaks
         sigma_list = widths
