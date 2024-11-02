@@ -28,7 +28,6 @@ def Skip(x):
 
 @st.cache_data
 def cut(x, values, wavenumber=[], mode='spectra'):
-    print(values[0], values[1], x.shape)
     if mode != 'spectra':
         x = np.array(x) if type(x) != np.ndarray else x
         if mode == 'time series':
