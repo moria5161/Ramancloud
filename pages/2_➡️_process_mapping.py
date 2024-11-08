@@ -213,13 +213,15 @@ def run():
         # ================data visualization container================ #
         with st.container(border=True):
             st.subheader('Data visualization', divider=False)
-            avg_spectrum_raw = raw_mapping_arr.mean(axis=(0, 1))
-            avg_spectrum_processed = demo_mapping.mean(axis=(0, 1))
-            fig_avg = go.Figure()
-            fig_avg.add_trace(go.Scatter(x=wavenumber[cut_start:cut_end], y=avg_spectrum_raw[cut_start:cut_end], mode='lines', name='Raw Mean Spectrum'))
-            fig_avg.add_trace(go.Scatter(x=wavenumber[cut_start:cut_end], y=avg_spectrum_processed, mode='lines', name='Processed Mean Spectrum'))
-            fig_avg.update_layout(title="Average Spectrum", xaxis_title="Wavenumber", yaxis_title="Intensity")
-            st.plotly_chart(fig_avg)
+            if st.session_state['mode'] == 'imaging':
+                avg_spectrum_raw = raw_mapping_arr.mean(axis=(0, 1))
+                avg_spectrum_processed = demo_mapping.mean(axis=(0, 1))
+                fig_avg = go.Figure()
+                st.write(avg_spectrum_raw)
+                fig_avg.add_trace(go.Scatter(x=wavenumber[cut_start:cut_end], y=avg_spectrum_raw[cut_start:cut_end], mode='lines', name='Raw Mean Spectrum'))
+                fig_avg.add_trace(go.Scatter(x=wavenumber[cut_start:cut_end], y=avg_spectrum_processed, mode='lines', name='Processed Mean Spectrum'))
+                fig_avg.update_layout(title="Average Spectrum", xaxis_title="Wavenumber", yaxis_title="Intensity")
+                st.plotly_chart(fig_avg)
             
             tab1, tab2 = st.tabs(['Mapping', 'Spectrum'])
             with tab1:
