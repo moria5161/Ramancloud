@@ -1,4 +1,7 @@
+import io
 import time
+from PIL import Image
+from matplotlib import cm
 import numpy as np
 import pandas as pd
 import streamlit as st
@@ -7,6 +10,7 @@ from plotly.subplots import make_subplots
 import plotly.express as px
 import plotly.graph_objs as go
 
+from api.PeakArea_calcu import peak_area_highspec_image
 from utils.modules import mapping_cut_module, mapping_denoise_module, mapping_baseline_module
 from utils.utils import generate_download_link, exec_mysql, load_time_series_file, load_imaging_file
 
@@ -119,11 +123,24 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
                             min_value=float(wavenumber_cut.min()), 
                             max_value=float(wavenumber_cut.max()), 
                             value=None, step=1.0, format='%f')
+        
+        imaging_type = st.selectbox(
+        "Select imaging type",
+        ["Peak position imaging", ]
+                                    )
+
         if target_wavenumber is not None:
-            closest_index = np.abs(wavenumber_cut - target_wavenumber).argmin()
-            heatmap1 = go.Heatmap(z=raw_mapping_arr[:, :, closest_index], 
+            if imaging_type == "Peak position imaging":
+                closest_index = np.abs(wavenumber_cut - target_wavenumber).argmin()
+                raw_mapping_arr_z = raw_mapping_arr[:, :, closest_index]
+                demo_mapping_z = demo_mapping[:, :, closest_index]
+            # elif imaging_type == "Peak area imaging":
+            #     raw_mapping_arr_z = peak_area_highspec_image(raw_mapping_arr, wavenumber_cut, target_wavenumber)
+            #     demo_mapping_z = peak_area_highspec_image(demo_mapping, wavenumber_cut, target_wavenumber)
+            
+            heatmap1 = go.Heatmap(z=raw_mapping_arr_z, 
                                 colorbar=dict(y=0.75, len=0.4), name='raw')
-            heatmap2 = go.Heatmap(z=demo_mapping[:, :, closest_index], 
+            heatmap2 = go.Heatmap(z=demo_mapping_z, 
                         colorbar=dict(y=0.25, len=0.4), name='processed')
 
             fig.add_trace(heatmap1, row=1, col=1)
@@ -142,6 +159,32 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
             )
 
             st.plotly_chart(fig, use_container_width=True)
+    
+    def save_heatmap_as_image(data, file_name, colormap='viridis'):
+        norm_data = (data - np.min(data)) / (np.max(data) - np.min(data))
+        cmap = cm.get_cmap(colormap)
+        colored_data = cmap(norm_data)
+
+        img_array = (colored_data[:, :, :3] * 255).astype(np.uint8)
+        img = Image.fromarray(img_array)
+        img_buffer = io.BytesIO()
+        img.save(img_buffer, format="PNG")
+        img_buffer.seek(0)
+
+        return img_buffer
+
+    st.download_button(
+        label="Download the raw mapping",
+        data=save_heatmap_as_image(raw_mapping_arr_z, "raw_heatmap.png"),
+        file_name="raw_heatmap.png",
+        mime="image/png"
+    )
+
+    st.download_button(
+        label="Download the processed mapping",
+        data=save_heatmap_as_image(demo_mapping_z, "processed_heatmap.png"),
+        file_name="processed_heatmap.png",
+        mime="image/png")
 
 
 @st.cache_data
@@ -216,7 +259,7 @@ def run():
             if st.session_state['mode'] == 'imaging':
                 avg_spectrum_raw = raw_mapping_arr.mean(axis=(0, 1))
                 avg_spectrum_processed = demo_mapping.mean(axis=(0, 1))
-                fig_avg = go.Figure()
+                fig_avg = go.Figure() 
                 fig_avg.add_trace(go.Scatter(x=wavenumber[cut_start:cut_end], y=avg_spectrum_raw[cut_start:cut_end], mode='lines', name='Raw Mean Spectrum'))
                 fig_avg.add_trace(go.Scatter(x=wavenumber[cut_start:cut_end], y=avg_spectrum_processed, mode='lines', name='Processed Mean Spectrum'))
                 fig_avg.update_layout(title="Average Spectrum", xaxis_title="Wavenumber", yaxis_title="Intensity")
@@ -225,7 +268,7 @@ def run():
             tab1, tab2 = st.tabs(['Mapping', 'Spectrum'])
             with tab1:
                 plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber)
-                st.write('If the image is seriously distorted, first check that the image wavenumber is correct')
+                st.write('If the imaging results are bad, first check that the wave number selected is reasonable')
 
             with tab2:
                 if st.session_state['mode'] == 'time series':
