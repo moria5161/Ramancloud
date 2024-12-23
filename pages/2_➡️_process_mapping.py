@@ -126,7 +126,7 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
         
         imaging_type = st.selectbox(
         "Select imaging type",
-        ["Peak position imaging", ]
+        ["Peak intensity of the position selected for imaging", ]
                                     )
 
         if target_wavenumber is not None:
@@ -160,31 +160,31 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
 
             st.plotly_chart(fig, use_container_width=True)
     
-    def save_heatmap_as_image(data, file_name, colormap='viridis'):
-        norm_data = (data - np.min(data)) / (np.max(data) - np.min(data))
-        cmap = cm.get_cmap(colormap)
-        colored_data = cmap(norm_data)
+            def save_heatmap_as_image(data, file_name, colormap='viridis'):
+                norm_data = (data - np.min(data)) / (np.max(data) - np.min(data))
+                cmap = cm.get_cmap(colormap)
+                colored_data = cmap(norm_data)
 
-        img_array = (colored_data[:, :, :3] * 255).astype(np.uint8)
-        img = Image.fromarray(img_array)
-        img_buffer = io.BytesIO()
-        img.save(img_buffer, format="PNG")
-        img_buffer.seek(0)
+                img_array = (colored_data[:, :, :3] * 255).astype(np.uint8)
+                img = Image.fromarray(img_array)
+                img_buffer = io.BytesIO()
+                img.save(img_buffer, format="PNG")
+                img_buffer.seek(0)
 
-        return img_buffer
+                return img_buffer
 
-    st.download_button(
-        label="Download the raw mapping",
-        data=save_heatmap_as_image(raw_mapping_arr_z, "raw_heatmap.png"),
-        file_name="raw_heatmap.png",
-        mime="image/png"
-    )
+            st.download_button(
+                label="Download the raw mapping",
+                data=save_heatmap_as_image(raw_mapping_arr_z, "raw_heatmap.png"),
+                file_name="raw_heatmap.png",
+                mime="image/png"
+            )
 
-    st.download_button(
-        label="Download the processed mapping",
-        data=save_heatmap_as_image(demo_mapping_z, "processed_heatmap.png"),
-        file_name="processed_heatmap.png",
-        mime="image/png")
+            st.download_button(
+                label="Download the processed mapping",
+                data=save_heatmap_as_image(demo_mapping_z, "processed_heatmap.png"),
+                file_name="processed_heatmap.png",
+                mime="image/png")
 
 
 @st.cache_data
