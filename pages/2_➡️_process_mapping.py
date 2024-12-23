@@ -130,7 +130,7 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
                                     )
 
         if target_wavenumber is not None:
-            if imaging_type == "Peak position imaging":
+            if imaging_type == "Peak intensity of the position selected for imaging":
                 closest_index = np.abs(wavenumber_cut - target_wavenumber).argmin()
                 raw_mapping_arr_z = raw_mapping_arr[:, :, closest_index]
                 demo_mapping_z = demo_mapping[:, :, closest_index]
