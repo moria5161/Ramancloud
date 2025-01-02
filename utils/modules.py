@@ -20,8 +20,8 @@ def PEER_submodule(denoise_use_sidebar=False, mode='spectra'):
     if denoise_use_sidebar:
         with st.sidebar:
             col1, col2 = st.columns(2)
-            loops = col1.slider('loop times', 1, 5, 1, key='sidebar_loop')
-            hlaf_k_threshold = col2.slider('peak seaking', 0, 7, 1, key='sidebar_hlaf_k_threshold')
+            loops = col1.slider('loop times', 1, 5, 3, key='sidebar_loop')
+            hlaf_k_threshold = col2.slider('peak seaking', 0, 5, 3, key='sidebar_hlaf_k_threshold')
     else:
         col1, col2 = st.columns(2)
         loops = col1.slider('loop times', 1, 5, 1)
