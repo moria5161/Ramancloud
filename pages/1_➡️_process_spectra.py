@@ -88,7 +88,7 @@ def run():
         if not upload_file:
             st.markdown('<font size=5>**Or use demo data**</font>', unsafe_allow_html=True)
             demo_data = st.selectbox(label=' ', label_visibility='collapsed',
-                                     options=['-', 'Bacteria', 'Ultra low frequence Raman'])
+                                     options=['-', 'Bacteria', 'Ultra low frequency Raman'])
             if demo_data == '-':
                 st.session_state['raw_spec'] = None
             elif demo_data == 'Bacteria':
