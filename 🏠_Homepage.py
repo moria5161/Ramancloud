@@ -256,7 +256,7 @@ def our_recent_research():
                 '''
                 ##### Deep Learning-Assisted Spectrum–Structure Correlation: State-of-the-Art and Perspectives  
 
-                *Anal. Chem. 2024, 96, XXX, 7959-7975*  
+                *Anal. Chem. 2024, 96, 20, 7959-7975*  
                 [Learn more about it...](https://pubs.acs.org/doi/10.1021/acs.analchem.4c01639)
                 '''
             )
