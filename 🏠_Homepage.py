@@ -241,9 +241,21 @@ def our_recent_research():
             col1, col2 = st.columns([6, 4])
             col1.markdown(
                 '''
+                ##### Vib2Mol: from vibrational spectra to molecular structures — a versatile deep learning model  
+
+                *arXiv:2503.07014*  
+                [Learn more about it...](http://arxiv.org/abs/2503.07014)
+                '''
+            )
+            col2.image('/media/ramancloud_beta/static/spec_str3.png')
+
+        with st.container():
+            col1, col2 = st.columns([6, 4])
+            col1.markdown(
+                '''
                 ##### Deep Learning-Assisted Spectrum–Structure Correlation: State-of-the-Art and Perspectives  
 
-                *Anal. Chem. 2024, XXXX, XXX, XXX-XXX*  
+                *Anal. Chem. 2024, 96, XXX, 7959-7975*  
                 [Learn more about it...](https://pubs.acs.org/doi/10.1021/acs.analchem.4c01639)
                 '''
             )
