@@ -5,7 +5,7 @@ import threading
 
 
 st.set_page_config(
-    page_title="RamanCloud_Beta",
+    page_title="RamanCloud",
     page_icon=":cloud:",
     # layout="wide",
     initial_sidebar_state="expanded",
@@ -248,7 +248,7 @@ def our_recent_research():
                 [Learn more about it...](http://arxiv.org/abs/2503.07014)
                 '''
             )
-            col2.image('/media/ramancloud_beta/static/spec_str3.png')
+            col2.image('/media/ramancloud/static/spec_str3.png')
 
         with st.container():
             col1, col2 = st.columns([6, 4])
