@@ -8,9 +8,8 @@ import streamlit as st
 from markdownlit import mdlit
 
 from utils.functions import CNN_rPLS, Skip, cut, skip
-from utils.functions import sg, PEER, p2p
+from utils.functions import sg, PEER
 from utils.functions import airPLS, ModPoly, IModPoly, piecewiseFitting, auto_adaptive
-from utils.functions import min_max, max_, z_score
 
 
 #====================general submodules====================#
@@ -40,28 +39,6 @@ def PEER_submodule(denoise_use_sidebar=False, mode='spectra'):
 
         return {'loops': loops, 'hlaf_k_threshold': hlaf_k_threshold, 'mode': mode}
 
-
-def p2p_submodule(denoise_use_sidebar=False, mode='spectra'):
-    if denoise_use_sidebar:
-        with st.sidebar:
-            col1, col2 = st.columns(2)
-            ks = col1.st.slider('kernel_size', 1, 15, 3, key='sidebar_kernel_size')
-            Rc = col2.st.slider('Regularization coefficient', 0, 3, 1, key='sidebar_R')
-    else:
-        ks = st.slider('kernel_size', 1, 15, 3, key='sidebar_kernel_size')
-        Rc = st.slider('Regularization coefficient', 0.1, 10.0, 1.0, step=0.1, key='sidebar_R')
-
-    # st.info('This method was deployed latest, and the performance is not stable :smirk:')
-    with st.expander("See explanation"):
-        st.write(
-            """
-
-            **kernel_size:** It controls peak feature extraction and retention capabilities.   
-            **Regularization coefficient:** It controls the degree of noise reduction. 
-            This is [Peak2Peak](https://pubs.acs.org/doi/10.1021/acs.analchem.3c04608). You can find more details in [tutorial](/tutorial).
-            """)
-
-        return {'ks': ks, 'Rc':Rc, 'mode': mode}
 
 
 def sg_submodule(denoise_use_sidebar=False, mode='spectra'):
@@ -165,9 +142,6 @@ def AABS_submodule(baseline_use_sidebar=False, mode='spectra'):
     return {'Ln':Ln, 'Lb':Lb, 'mode':mode}
 
 
-# def min_max_submodule(normalize_use_sidebar=False):
-#     if normalize_use_sidebar:
-
 
 #====================modules for spectra====================#
 def spectra_cut_module(spec_df):
@@ -190,7 +164,7 @@ def spectra_cut_module(spec_df):
 
 
 def spectra_denoise_module(spec_df):
-    denoise_method_dict = {'PEER': PEER, 'Savitzky-Golay filter': sg, 'p2p': p2p, 'skip': skip}
+    denoise_method_dict = {'Savitzky-Golay filter': sg, 'PEER': PEER, 'skip': skip}
     denoise_args = {}  
 
     if 'processed' not in spec_df.columns:
@@ -208,14 +182,11 @@ def spectra_denoise_module(spec_df):
     if denoise_use_sidebar:
         st.sidebar.subheader('**smooth parameters**', divider='gray')
 
-    if denoise_method == 'PEER':
-        denoise_args = PEER_submodule(denoise_use_sidebar=denoise_use_sidebar, mode='spectra')
-
-    elif denoise_method == 'Savitzky-Golay filter':
+    if denoise_method == 'Savitzky-Golay filter':
         denoise_args = sg_submodule(denoise_use_sidebar=denoise_use_sidebar, mode='spectra')
 
-    elif denoise_method == 'p2p':
-        denoise_args = p2p_submodule(denoise_use_sidebar=denoise_use_sidebar, mode='spectra')
+    elif denoise_method == 'PEER':
+        denoise_args = PEER_submodule(denoise_use_sidebar=denoise_use_sidebar, mode='spectra')
 
     spec_df['processed'] = denoise_method_dict[denoise_method](spec_df['wavenumber'], spec_df['processed'], **denoise_args)
 
@@ -293,22 +264,6 @@ def spectra_baseline_module(spec_df):
     spec_df['baseline'] = cache - spec_df['processed']
 
     return spec_df, {'method':baseline_method_dict[baseline_method], 'args':baseline_args}
-
-
-def spectra_normalize_module(spec_df):
-    normalize_method_dict = {'min-max': min_max, 'max_': max_, 'z-score': z_score, 'skip': skip}
-    if 'processed' not in spec_df.columns:
-        spec_df['processed'] = spec_df['raw'].copy()
-    st.markdown('''<font size=5>**Step 4: normalize**</font>''', unsafe_allow_html=True)
-    col1, col2 = st.columns(2)
-    col1.write(
-        'The module is used to normalize the spectrum, please select a method to continue. If you want to skip this step, please select **skip**')
-
-    normalize_method = col2.selectbox('Select a method', normalize_method_dict.keys(), key='normalize',
-                                        label_visibility='collapsed')
-    spec_df['processed'] = normalize_method_dict[normalize_method](spec_df['wavenumber'], spec_df['processed'])
-    
-    return spec_df, {'method': normalize_method_dict[normalize_method]}
 
 #====================modules for mapping====================#
 def mapping_cut_module(mapping_data, wavenumber, mode='imaging'):

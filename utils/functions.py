@@ -10,7 +10,6 @@ from api.airPLS import ZhangFit
 from api.hpw.bgcorrected_hpw import reference
 from api.modpoly import mod_poly, imod_poly
 from api.AABS import aabs
-from api.p2p import P2P
 from api.SplitingFiting import PeakParsing, interplotation
 import streamlit as st
 import pymysql
@@ -191,11 +190,6 @@ def PEER(wa, x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
         processed_data = peer(x, loops, hlaf_k_threshold)
     return processed_data
 
-@st.cache_data
-def p2p(wa, x, ks=7, Rc=1, mode='spectra'):
-    net = P2P(input_spectrum=x, ks=ks, Rc=Rc) 
-    out = net.inference()
-    return out
 
 @st.cache_data
 def SF(wave, spec, epochs, imaging=False):
@@ -221,22 +215,6 @@ def SF(wave, spec, epochs, imaging=False):
 
 def ALRMADenoise():
     pass
-
-
-# ==================== Normalize ==================== #
-
-@st.cache_data
-def min_max(wa, x):
-    _range = np.max(x) - np.min(x)
-    return (x - np.min(x)) / _range
-
-@st.cache_data
-def max_(wa, x):
-    return x / np.max(x)
-
-@st.cache_data
-def z_score(wa, x):
-    return (x - np.mean(x)) / np.std(x)
 
 
 @st.cache_data

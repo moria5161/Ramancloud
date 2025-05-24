@@ -12,7 +12,7 @@ from plotly.subplots import make_subplots
 import streamlit as st
 import plotly.express as px
 
-from utils.modules import spectra_cut_module, spectra_denoise_module, spectra_baseline_module, spectra_normalize_module
+from utils.modules import spectra_cut_module, spectra_denoise_module, spectra_baseline_module
 # from utils.utils import generate_download_link, exec_mysql
 from utils.functions import SF
 from api.SplitingFiting import gaussian_cauchy
@@ -85,6 +85,7 @@ def run():
 
         # 初始化demo_data变量
         demo_data = '-'
+        raw_demo_spec = None
         if not upload_file:
             st.markdown('<font size=5>**Or use demo data**</font>', unsafe_allow_html=True)
             demo_data = st.selectbox(label=' ', label_visibility='collapsed',
@@ -95,7 +96,7 @@ def run():
                 raw_demo_spec = pd.read_csv('/media/ramancloud/samples/Bacteria.txt', delimiter='\t', header=None)
                 st.session_state['raw_spec'] = raw_demo_spec
                 raw_demo_spec.columns = ['wavenumber', 'raw']
-            elif demo_data == 'Ultra low frequence Raman':
+            elif demo_data == 'Ultra low frequency Raman':
                 raw_demo_spec = pd.read_csv('/media/ramancloud/samples/ULF.txt', delimiter='\t', header=None)
                 st.session_state['raw_spec'] = raw_demo_spec
                 raw_demo_spec.columns = ['wavenumber', 'raw']
@@ -112,15 +113,14 @@ def run():
             else:
                 raw_demo_spec = raw_specs[0]
 
-    if 'raw_spec' in st.session_state and st.session_state['raw_spec'] is not None:
-
+    # if 'raw_spec' in st.session_state and st.session_state['raw_spec'] is not None:
+    if raw_demo_spec is not None:
         # ================data processing container================ #
         with st.container(border=True):
             st.subheader('Data processing', divider='gray')
             demo_spec, cut_args = spectra_cut_module(raw_demo_spec)
             demo_spec, smooth_args = spectra_denoise_module(demo_spec)
             demo_spec, baseline_args = spectra_baseline_module(demo_spec)
-            demo_spec, normalize_args = spectra_normalize_module(demo_spec)
             demo_spec_fig = demo_spec.melt('wavenumber', var_name='category', value_name='intensity')
 
 
