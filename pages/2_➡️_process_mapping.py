@@ -9,7 +9,6 @@ from sklearn.cluster import KMeans
 from plotly.subplots import make_subplots
 import plotly.express as px
 import plotly.graph_objs as go
-
 from utils.modules import mapping_cut_module, mapping_denoise_module, mapping_baseline_module
 from utils.utils import generate_download_link, exec_mysql, load_time_series_file, load_imaging_file
 
@@ -118,25 +117,16 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
                         vertical_spacing=0.12, subplot_titles=('Raw mapping', 'Processed mapping'))
         wavenumber_cut = wavenumber[cut_start:cut_end]
         target_wavenumber = st.number_input(
-                            "Select the target wavenumber for imaging", 
+                            "Select the target wavenumber for peak position imaging", 
                             min_value=float(wavenumber_cut.min()), 
                             max_value=float(wavenumber_cut.max()), 
                             value=None, step=1.0, format='%f')
-        
-        imaging_type = st.selectbox(
-        "Select imaging type",
-        ["Peak intensity of the position selected for imaging", ]
-                                    )
 
         if target_wavenumber is not None:
-            if imaging_type == "Peak intensity of the position selected for imaging":
-                closest_index = np.abs(wavenumber_cut - target_wavenumber).argmin()
-                raw_mapping_arr_z = raw_mapping_arr[:, :, closest_index]
-                demo_mapping_z = demo_mapping[:, :, closest_index]
-            # elif imaging_type == "Peak area imaging":
-            #     raw_mapping_arr_z = peak_area_highspec_image(raw_mapping_arr, wavenumber_cut, target_wavenumber)
-            #     demo_mapping_z = peak_area_highspec_image(demo_mapping, wavenumber_cut, target_wavenumber)
-            
+            closest_index = np.abs(wavenumber_cut - target_wavenumber).argmin()
+            raw_mapping_arr_z = raw_mapping_arr[:, :, closest_index]
+            demo_mapping_z = demo_mapping[:, :, closest_index]
+
             heatmap1 = go.Heatmap(z=raw_mapping_arr_z, 
                                 colorbar=dict(y=0.75, len=0.4), name='raw')
             heatmap2 = go.Heatmap(z=demo_mapping_z, 
@@ -158,32 +148,6 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
             )
 
             st.plotly_chart(fig, use_container_width=True)
-    
-            def save_heatmap_as_image(data, file_name, colormap='viridis'):
-                norm_data = (data - np.min(data)) / (np.max(data) - np.min(data))
-                cmap = cm.get_cmap(colormap)
-                colored_data = cmap(norm_data)
-
-                img_array = (colored_data[:, :, :3] * 255).astype(np.uint8)
-                img = Image.fromarray(img_array)
-                img_buffer = io.BytesIO()
-                img.save(img_buffer, format="PNG")
-                img_buffer.seek(0)
-
-                return img_buffer
-
-            st.download_button(
-                label="Download the raw mapping",
-                data=save_heatmap_as_image(raw_mapping_arr_z, "raw_heatmap.png"),
-                file_name="raw_heatmap.png",
-                mime="image/png"
-            )
-
-            st.download_button(
-                label="Download the processed mapping",
-                data=save_heatmap_as_image(demo_mapping_z, "processed_heatmap.png"),
-                file_name="processed_heatmap.png",
-                mime="image/png")
 
 
 @st.cache_data
@@ -192,8 +156,8 @@ def plot_spectrum(demo_spec, __baseline_args):
         demo_spec['baseline'] = demo_spec['raw'] - demo_spec['processed']
     demo_spec_fig = demo_spec.melt(
         'wavenumber', var_name='category', value_name='intensity')
-    fig = px.line(demo_spec_fig, x="wavenumber",
-                  y="intensity", color='category')
+    fig = px.line(demo_spec_fig, x="wavenumber", y="intensity", color='category')
+    fig.for_each_trace(lambda t: t.update(line=dict(color='gray'), opacity=0.6) if t.name == 'raw' else None)
     return fig
 
 
@@ -259,7 +223,14 @@ def run():
                 avg_spectrum_raw = raw_mapping_arr.mean(axis=(0, 1))
                 avg_spectrum_processed = demo_mapping.mean(axis=(0, 1))
                 fig_avg = go.Figure() 
-                fig_avg.add_trace(go.Scatter(x=wavenumber[cut_start:cut_end], y=avg_spectrum_raw[cut_start:cut_end], mode='lines', name='Raw Mean Spectrum'))
+                fig_avg.add_trace(go.Scatter(
+                    x=wavenumber[cut_start:cut_end],
+                    y=avg_spectrum_raw[cut_start:cut_end],
+                    mode='lines',
+                    name='Raw Mean Spectrum',
+                    line=dict(color='gray'),
+                    opacity=0.6
+                ))
                 fig_avg.add_trace(go.Scatter(x=wavenumber[cut_start:cut_end], y=avg_spectrum_processed, mode='lines', name='Processed Mean Spectrum'))
                 fig_avg.update_layout(title="Average Spectrum", xaxis_title="Wavenumber", yaxis_title="Intensity")
                 st.plotly_chart(fig_avg)
