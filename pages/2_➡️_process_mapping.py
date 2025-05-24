@@ -10,7 +10,6 @@ from plotly.subplots import make_subplots
 import plotly.express as px
 import plotly.graph_objs as go
 
-from api.PeakArea_calcu import peak_area_highspec_image
 from utils.modules import mapping_cut_module, mapping_denoise_module, mapping_baseline_module
 from utils.utils import generate_download_link, exec_mysql, load_time_series_file, load_imaging_file
 
