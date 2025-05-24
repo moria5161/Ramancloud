@@ -11,3 +11,5 @@ tmp.*
 *.ipynb
 
 cache/
+
+fast_push.sh
