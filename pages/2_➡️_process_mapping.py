@@ -97,30 +97,38 @@ def downsample(input_img, scale_factor=None, return_scale_factor=False):
 def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
     if st.session_state['mode'] == 'time series':
         fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
-                        vertical_spacing=0.12, subplot_titles=('Raw mapping', 'Processed mapping'))
-        downsampled_raw = downsample(raw_mapping_arr[:, cut_start:cut_end], scale_factor=2)
-        downsampled_demo, downsample_scale_factor = downsample(demo_mapping, 
-                                                            scale_factor=2, return_scale_factor=True)
-        downsampled_x = wavenumber[cut_start:cut_end][::downsample_scale_factor][:downsampled_demo.shape[1]]
-        heatmap1 = go.Heatmap(z=downsampled_raw[:, :, 0], x=downsampled_x, 
-                            colorbar=dict(y=0.75, len=0.5), name='raw', colorscale='jet')
-        heatmap2 = go.Heatmap(z=downsampled_demo[:, :, 0], x=downsampled_x, 
-                            colorbar=dict(y=0.25, len=0.5), name='processed', colorscale='Jet')
-        
+                            vertical_spacing=0.12, subplot_titles=('Raw mapping', 'Processed mapping'))
+
+        full_x = wavenumber[cut_start:cut_end]
+        heatmap1 = go.Heatmap(z=raw_mapping_arr[:, cut_start:cut_end], 
+                              x=full_x, colorbar=dict(y=0.75, len=0.5), 
+                              name='raw', colorscale='jet')
+        heatmap2 = go.Heatmap(z=demo_mapping[:, cut_start:cut_end], 
+                              x=full_x, colorbar=dict(y=0.25, len=0.5), 
+                              name='processed', colorscale='jet')
+
         fig.add_trace(heatmap1, row=1, col=1)
         fig.add_trace(heatmap2, row=2, col=1)
         fig.update_xaxes(title_text="Wavenumber", row=2, col=1)
-        st.plotly_chart(fig, use_container_width=True)
+
+        fig.update_layout(
+            height=raw_mapping_arr.shape[0],
+            width=cut_end - cut_start,
+            autosize=False,
+            margin=dict(l=20, r=20, t=20, b=20),
+            yaxis_scaleanchor="x"
+        )
+        st.plotly_chart(fig, use_container_width=False)
 
     elif st.session_state['mode'] == 'imaging':
         fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
-                        vertical_spacing=0.12, subplot_titles=('Raw mapping', 'Processed mapping'))
+                            vertical_spacing=0.05, subplot_titles=('Raw mapping', 'Processed mapping'))
         wavenumber_cut = wavenumber[cut_start:cut_end]
         target_wavenumber = st.number_input(
-                            "Select the target wavenumber for peak position imaging", 
-                            min_value=float(wavenumber_cut.min()), 
-                            max_value=float(wavenumber_cut.max()), 
-                            value=None, step=1.0, format='%f')
+            "Select the target wavenumber for peak position imaging", 
+            min_value=float(wavenumber_cut.min()), 
+            max_value=float(wavenumber_cut.max()), 
+            value=None, step=1.0, format='%f')
 
         if target_wavenumber is not None:
             closest_index = np.abs(wavenumber_cut - target_wavenumber).argmin()
@@ -128,26 +136,27 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
             demo_mapping_z = demo_mapping[:, :, closest_index]
 
             heatmap1 = go.Heatmap(z=raw_mapping_arr_z, 
-                                colorbar=dict(y=0.75, len=0.4), name='raw', colorscale='Jet')
+                                  colorbar=dict(y=0.75, len=0.4), name='raw', colorscale='Jet')
             heatmap2 = go.Heatmap(z=demo_mapping_z, 
-                        colorbar=dict(y=0.25, len=0.4), name='processed', colorscale='Jet')
+                                  colorbar=dict(y=0.25, len=0.4), name='processed', colorscale='Jet')
 
             fig.add_trace(heatmap1, row=1, col=1)
             fig.add_trace(heatmap2, row=2, col=1)
 
-            fig.update_xaxes(title_text="Pixelx", row=1, col=1)
+            fig.update_xaxes(row=1, col=1)
+            fig.update_yaxes(row=1, col=1, autorange='reversed')
             fig.update_xaxes(title_text="Pixelx", row=2, col=1)
-            fig.update_yaxes(title_text="Pixely", row=1, col=1, autorange='reversed')
             fig.update_yaxes(title_text="Pixely", row=2, col=1, autorange='reversed')
 
             fig.update_layout(
-                    height=max(raw_mapping_arr.shape[0] * 24, 100),
-                    width=max(raw_mapping_arr.shape[1] * 6, 50), 
-                    autosize=False,
-                    margin=dict(l=20, r=20, t=20, b=20),
-                )
+                height=raw_mapping_arr.shape[0] * 10,
+                width=raw_mapping_arr.shape[1] * 10,
+                autosize=False,
+                margin=dict(l=20, r=20, t=20, b=20),
+                yaxis_scaleanchor="x"
+            )
+            st.plotly_chart(fig, use_container_width=False)
 
-            st.plotly_chart(fig)
 
 
 @st.cache_data
@@ -198,13 +207,13 @@ def run():
                 st.session_state['mode'] = 'time series'
 
             elif demo_data == 'imaging of Horiba':
-                content = open('samples/Horiba_imaging_Graphene.txt', 'rb').read()
+                content = open('samples/imaging_Horiba_Graphene.txt', 'rb').read()
                 _, indexs, wavenumber, raw_mapping_arr = load_imaging_file(content, instrument='Horiba')
                 st.session_state['raw_mapping'] = raw_mapping_arr
                 st.session_state['mode'] = 'imaging'
 
             elif demo_data == 'imaging of Nanophoton':
-                content = open('samples/imaging_Nanophoton2.txt', 'rb').read()
+                content = open('samples/imaging_Nanophoton_Hela.txt', 'rb').read()
                 _, indexs, wavenumber, raw_mapping_arr = load_imaging_file(content, instrument='Nanophoton')
                 st.session_state['raw_mapping'] = raw_mapping_arr
                 st.session_state['mode'] = 'imaging'
