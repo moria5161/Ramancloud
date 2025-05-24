@@ -9,10 +9,11 @@ from markdownlit import mdlit
 
 from utils.functions import CNN_rPLS, Skip, cut, skip
 from utils.functions import sg, PEER
-from utils.functions import airPLS, auto_adaptive
+from utils.functions import airPLS, asPLS, imodPoly, auto_adaptive
 
 
-#====================general submodules====================#
+#====================Denoising submodules====================#
+#====================Denoising submodules====================#
 
 def PEER_submodule(denoise_use_sidebar=False, mode='spectra'):
 
@@ -45,11 +46,11 @@ def sg_submodule(denoise_use_sidebar=False, mode='spectra'):
     if denoise_use_sidebar:
         with st.sidebar:
             col1, col2 = st.columns(2)
-            window_size = col1.slider('smooth window size', 3, 13, 7, key='sidebar_window_size')
+            window_size = col1.slider('smooth window size', 3, 33, 7, key='sidebar_window_size')
             order = col2.slider('smooth order', 1, 5, 3, key='sidebar_order')
     else:
         col1, col2 = st.columns(2)
-        window_size = col1.slider('smooth window size', 3, 13, 7)
+        window_size = col1.slider('smooth window size', 3, 33, 7)
         order = col2.slider('smooth order', 1, 5, 3)
     if order >= window_size:
         st.error('order must be less than window size')
@@ -67,6 +68,9 @@ def sg_submodule(denoise_use_sidebar=False, mode='spectra'):
             """)
     return {'window_size':window_size, 'order':order, 'mode':mode}     
 
+
+#====================Baseline Correction submodules====================#
+#====================Baseline Correction submodules====================#
 
 def airPLS_submodule(baseline_use_sidebar=False, mode='spectra'):
     if baseline_use_sidebar:
@@ -93,36 +97,66 @@ def airPLS_submodule(baseline_use_sidebar=False, mode='spectra'):
     return {'lambda_':lambda_, 'order_':order_, 'mode':mode}
 
 
-def CNN_rPLS_submodule(baseline_use_sidebar=False, mode='spectra'):
+def asPLS_submodule(baseline_use_sidebar=False, mode='spectra'):
     if baseline_use_sidebar:
         with st.sidebar:
             col1, col2 = st.columns(2)
-            # lambda_ = col1.slider('lambda', 1, 200, 100, key='sidebar_lambda')
-            # order_ = col2.slider('order', 1, 35, 15, key='sidebar_order')
+            lambda_list = [10**i for i in range(4, 11)]
+            lambda_ = col1.select_slider('lambda', options=lambda_list, value=1e7, format_func=lambda x: f"{x:.0e}", key='sidebar_lambda')
+            order_ = col2.slider('order', 1, 8, 3, key='sidebar_order')
     else:
         col1, col2 = st.columns(2)
+        lambda_list = [10**i for i in range(4, 11)]
+        lambda_ = col1.select_slider('lambda', options=lambda_list, value=1e7, format_func=lambda x: f"{x:.0e}")
+        order_ = col2.slider('order', 1, 8, 3)
 
     with st.expander("See explanation"):
         st.markdown(
             """
-            You can find more details in [tutorial](/tutorial).
+            The new baseline correction method will be supplemented and explained
             """)
-    return {'mode':mode}
+    return {'lambda_':lambda_, 'order_':order_, 'mode':mode}
 
 
-def ModPoly_submodule(baseline_use_sidebar=False, mode='spectra'):
+
+def imodPoly_submodule(baseline_use_sidebar=False, mode='spectra'):
     if baseline_use_sidebar:
         with st.sidebar:
-            order_ = st.slider('order', 1, 10, 2, key='sidebar_order')
+            poly_order = st.slider('order', 1, 5, 3, key='sidebar_poly_order')
     else:
-        order_ = st.slider('order', 1, 10, 2)
+        poly_order = st.slider('order', 1, 5, 3)
     with st.expander("See explanation"):
         mdlit(
             """This method is based on [ModPoly](https://doi.org/10.1366/000370203322554518) and [IModPoly](https://doi.org/10.1366/000370207782597003) 
             The parameters are the order of the polynomial used to fit the baseline. 
             [red]The higher the order, the greater the deduction of the baseline.[/red]
             """)
-    return {'order_':order_, 'mode':mode}
+    return {'poly_order':poly_order, 'mode':mode}
+
+
+def penalizedPoly_submodule(baseline_use_sidebar=False, mode='spectra'):
+    if baseline_use_sidebar:
+        with st.sidebar:
+            poly_order = st.slider('order', 1, 5, 3, key='sidebar_poly_order')
+    else:
+        poly_order = st.slider('order', 1, 5, 3)
+    with st.expander("See explanation"):
+        st.markdown(
+            """
+            The new baseline correction method will be supplemented and explained
+            """)
+    return {'poly_order':poly_order, 'mode':mode}
+
+
+
+
+
+
+
+
+
+
+
 
 def AABS_submodule(baseline_use_sidebar=False, mode='spectra'):
     if baseline_use_sidebar:
@@ -142,8 +176,24 @@ def AABS_submodule(baseline_use_sidebar=False, mode='spectra'):
     return {'Ln':Ln, 'Lb':Lb, 'mode':mode}
 
 
+def CNN_rPLS_submodule(baseline_use_sidebar=False, mode='spectra'):
+    if baseline_use_sidebar:
+        with st.sidebar:
+            col1, col2 = st.columns(2)
+    else:
+        col1, col2 = st.columns(2)
+
+    with st.expander("See explanation"):
+        st.markdown(
+            """
+            You can find more details in [tutorial](/tutorial).
+            """)
+    return {'mode': mode}
+
 
 #====================modules for spectra====================#
+#====================modules for spectra====================#
+
 def spectra_cut_module(spec_df):
 
     st.markdown('''<font size=5>**Step 1: cut**</font>''', unsafe_allow_html=True)
@@ -249,7 +299,7 @@ def mapping_cut_module(mapping_data, wavenumber, mode='imaging'):
 
 
 def mapping_denoise_module(mapping_data, mode='imaging'):
-    denoise_method_dict = {'Savitzky-Golay filter': sg, 'PEER':PEER, 'skip': skip}
+    denoise_method_dict = {'Savitzky-Golay filter': sg, 'skip': skip}
     denoise_args = {}
     st.subheader('Smooth')
     col1, col2 = st.columns(2)
@@ -261,9 +311,6 @@ def mapping_denoise_module(mapping_data, mode='imaging'):
         st.stop()
     elif denoise_method == 'Savitzky-Golay filter':
         denoise_args = sg_submodule(denoise_use_sidebar=False, mode=mode)
-    
-    elif denoise_method == 'PEER':
-        denoise_args = PEER_submodule(denoise_use_sidebar=False, mode=mode)
 
     elif denoise_method == 'ALRMA':
         col1, col2 = st.columns(2)
@@ -287,7 +334,7 @@ def mapping_denoise_module(mapping_data, mode='imaging'):
 
 
 def mapping_baseline_module(mapping_data, mode='imaging'):
-    baseline_method_dict = {'airPLS': airPLS, 'skip': skip}
+    baseline_method_dict = {'airPLS': airPLS, 'imodPoly': imodPoly, 'skip': skip}
     baseline_args = {}
     st.subheader('Baseline removal')
     col1, col2 = st.columns(2)
@@ -299,9 +346,11 @@ def mapping_baseline_module(mapping_data, mode='imaging'):
         st.stop()
     elif baseline_method == 'airPLS':
         baseline_args = airPLS_submodule(baseline_use_sidebar=False, mode=mode)
-    elif baseline_method in ['ModPoly', 'IModPoly']:
-        baseline_args = ModPoly_submodule(baseline_use_sidebar=False, mode=mode)   
-    
+
+    elif baseline_method == 'imodPoly':
+        baseline_args = imodPoly_submodule(baseline_use_sidebar=False, mode=mode)
+
     mapping_data_assist = 100
+    print('批次bc前', mapping_data.shape)
     mapping_data = baseline_method_dict[baseline_method](mapping_data_assist, mapping_data, **baseline_args)
     return mapping_data, {'method':baseline_method_dict[baseline_method], 'args':baseline_args}

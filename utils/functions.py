@@ -13,13 +13,11 @@ from api.SplitingFiting import PeakParsing, interplotation
 import streamlit as st
 import pymysql
 from concurrent.futures import ThreadPoolExecutor
-from multiprocessing import Pool, cpu_count
 from pathos.multiprocessing import ProcessingPool as Pool
 
 
 def skip(wa, x):
     return x
-
 
 def Skip(x):
     return x
@@ -36,45 +34,8 @@ def cut(x, values, wavenumber=[], mode='spectra'):
         return x[(x.wavenumber >= values[0]) & (x.wavenumber <= values[1])]
 
 
-# ==================== Baseline Correction ==================== #
-@st.cache_data
-def CNN_rPLS(wave, x, mode='spectra'):
-    if mode != 'spectra':
-        pass
 
-    else:
-        process_data = reference(wave, x)
-
-    return process_data
-
-
-
-@st.cache_data
-def airPLS(wa, x, lambda_, order_, mode='spectra'):
-    if mode != 'spectra':
-        data_payload = {
-            'data': x.tolist(),
-            'lambda': lambda_,
-            'order': order_,
-        }
-        response = requests.post("http://localhost:5000/airPLS", json=data_payload)
-        if response.status_code == 200:
-            result = response.json()
-            processed_data = np.array(result)  # 转换回 NumPy 数组
-        else:
-            print("Request failed with status code:", response.status_code)
-    else:
-        processed_data = airpls(x, lambda_, order_)
-
-    return processed_data
-
-
-def auto_adaptive(wa, x, Ln, Lb, mode='spectra'):
-    return aabs(wa, x, Ln, Lb)
-
-
-# ==================== Denoise ==================== #
-
+# ==================== Denoising methods ==================== #
 
 @st.cache_data
 def sg(wa, x, window_size, order, mode='spectra'):
@@ -140,6 +101,70 @@ def SF(wave, spec, epochs, imaging=False):
 def ALRMADenoise():
     pass
 
+
+# ==================== Baseline Correction methods ==================== #
+
+@st.cache_data
+def CNN_rPLS(wave, x, mode='spectra'):
+    if mode != 'spectra':
+        pass
+
+    else:
+        process_data = reference(wave, x)
+
+    return process_data
+
+
+@st.cache_data
+def airPLS(wa, x, lambda_, order_, mode='spectra'):
+    s_time= time.time()
+    if mode != 'spectra':
+        size = x.shape
+        processed_data = np.zeros(size)
+        for i in range(size[0]):
+            processed_data[i, :] = airpls(x[i, :], lambda_, order_)
+    else:
+        processed_data = airpls(x, lambda_, order_)
+    e_time = time.time()
+    print(f"airPLS time: {e_time - s_time}")
+    return processed_data
+
+
+@st.cache_data
+def asPLS(wa, x, lambda_, order_, mode='spectra'):
+    s_time= time.time()
+    if mode != 'spectra':
+        size = x.shape
+        processed_data = np.zeros(size)
+        for i in range(size[0]):
+            processed_data[i, :] = aspls(x[i, :], lambda_, order_)
+    else:
+        processed_data = aspls(x, lambda_, order_)
+    e_time = time.time()
+    print(f"asPLS time: {e_time - s_time}")
+    return processed_data
+
+
+@st.cache_data
+def imodPoly(wa, x, poly_order, mode='spectra'):
+    s_time= time.time()
+    if mode != 'spectra':
+        size = x.shape
+        processed_data = np.zeros(size)
+        for i in range(size[0]):
+            processed_data[i, :] = imod_poly(x[i, :], poly_order)
+    else:
+        processed_data = imod_poly(x, poly_order)
+    e_time = time.time()
+    print(f"imodPoly time: {e_time - s_time}")
+    return processed_data
+
+
+def auto_adaptive(wa, x, Ln, Lb, mode='spectra'):
+    return aabs(wa, x, Ln, Lb)
+
+
+# ==================== Other functions ==================== #
 
 @st.cache_data
 def generate_download_link(file, filename):
