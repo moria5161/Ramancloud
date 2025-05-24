@@ -9,7 +9,7 @@ from markdownlit import mdlit
 
 from utils.functions import CNN_rPLS, Skip, cut, skip
 from utils.functions import sg, PEER
-from utils.functions import airPLS, ModPoly, IModPoly, piecewiseFitting, auto_adaptive
+from utils.functions import airPLS, ModPoly, IModPoly, auto_adaptive
 
 
 #====================general submodules====================#
@@ -197,7 +197,7 @@ def spectra_baseline_module(spec_df):
     st.markdown('''<font size=5>**Step 3: baseline removal**</font>''', unsafe_allow_html=True)
 
     baseline_args = {}
-    baseline_method_dict = {'auto-adaptive':auto_adaptive, 'airPLS': airPLS, 'ModPoly':ModPoly, 'IModPoly': IModPoly, 'piecewiseFitting':piecewiseFitting, 'CNN-rPLS': CNN_rPLS, 'skip': skip}
+    baseline_method_dict = {'auto-adaptive':auto_adaptive, 'airPLS': airPLS, 'ModPoly':ModPoly, 'IModPoly': IModPoly, 'CNN-rPLS': CNN_rPLS, 'skip': skip}
     if 'processed' not in spec_df.columns:
         spec_df['processed'] = spec_df['raw'].copy()
 
@@ -220,34 +220,6 @@ def spectra_baseline_module(spec_df):
 
     elif baseline_method == 'baseline_hpw':
         baseline_args = CNN_rPLS_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
-
-    elif baseline_method == 'piecewiseFitting':
-        import numpy as np
-        col1, col2, col3, col4, col5 = st.columns(5)
-        with col1:
-            breakpoint_left = st.slider('breakpoint left', spec_df['wavenumber'].min(), float(50), float(15))
-            # find the index of the breakpoint
-            breakpoint_left = np.argmin(abs(spec_df['wavenumber'] - breakpoint_left))
-        with col2:
-            breakpoint_right = st.slider('breakpoint right', spec_df['wavenumber'].min(), float(150), float(26))
-            breakpoint_right = np.argmin(abs(spec_df['wavenumber'] - breakpoint_right))
-        with col3:
-            order_left = st.slider('order left', 1, 10, 3)
-        with col4:
-            order_right = st.slider('order right', 1, 10, 3)
-        with col5:
-            order_whole = st.slider('order whole', 0, 30, 15)
-        st.warning('''This method is customized for ultra-low frequency Raman spectroscopy.  
-                   This method is not stable.''')
-        if breakpoint_left >= breakpoint_right:
-            st.error('"breakpoint left" must be less than "breakpoint right"')
-            st.stop()
-        baseline_args.update({'breakpoint_left':int(breakpoint_left), 'breakpoint_right':int(breakpoint_right), 'order_left':order_left, 'order_right':order_right, 'order_whole':order_whole})
-
-        with st.expander("See explanation"):
-            mdlit(
-                """This method is homemade.
-                """)
 
     elif baseline_method == 'Auto-Adaptive':
 

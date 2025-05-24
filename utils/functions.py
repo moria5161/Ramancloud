@@ -119,36 +119,6 @@ def IModPoly(wa, x, order_, gradient=1e-3, repitition=9, mode='spectra'):
     return processed_data
 
 
-
-@st.cache_data
-def piecewiseFitting(wa, x, breakpoint_right, breakpoint_left, order_left, order_right, order_whole):
-    x = np.array(x)
-    left = ModPoly(wa, x[:breakpoint_right], order_left,
-                   gradient=1e-3, repitition=9)
-    left -= left.min()
-    right = IModPoly(wa, x[breakpoint_left:], order_right,
-                     gradient=1e-3, repitition=9)
-    right = right[breakpoint_right-breakpoint_left:]
-    # right -= right.min()
-
-    left_baseline = x[:breakpoint_right] - left
-    right_baseline = x[breakpoint_right:] - right
-    dif = left_baseline[-1]-right_baseline[0]
-    right -= dif
-
-    tmp = np.concatenate((left, right))
-    if order_whole:
-        target_baseline = (x - tmp)[:]
-        func = np.polyfit(np.arange(len(target_baseline)),
-                          target_baseline, order_whole)
-        target_baseline = np.polyval(func, np.arange(len(target_baseline)))
-        obj_baseline = x - tmp
-        obj_baseline[:] = target_baseline
-        tmp = x - obj_baseline
-    tmp = IModPoly(wa, tmp, 2)
-    # tmp = tmp - tmp.min()
-    return tmp
-
 # ==================== Denoise ==================== #
 
 
