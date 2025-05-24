@@ -13,9 +13,9 @@ def penalized_poly(y, poly_order=3):
     return y - bkg
 
 
-def airpls(y, lambda_=100, order_=3):
+def airpls(y, lam=1e7, diff_order=3):
     baseline_fitter = Baseline(x_data=np.linspace(0, len(y), len(y)))
-    bkg, _ = baseline_fitter.airpls(y, lam=lambda_, diff_order=order_)
+    bkg, _ = baseline_fitter.airpls(y, lam=lam, diff_order=diff_order)
     return y - bkg
 
 

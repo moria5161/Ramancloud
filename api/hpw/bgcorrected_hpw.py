@@ -101,7 +101,7 @@ def WhittakerSmooth(x,w,lambda_,differences=2):
     background=spsolve(A,B)
     return np.array(background)
 
-def test(model, device, keys, spectrum, spectrum_raw, spectrum_max):
+def test(model, device, spectrum, spectrum_raw, spectrum_max):
     model.eval()
     spectrum = Variable(spectrum).to(device)
     output = model(spectrum)
@@ -184,7 +184,7 @@ def reference(keys, spectrum):
     spectrum = spectrum.permute(1, 0, 2)
     net = build_net()
 
-    spectrum_processed = test(net, DEVICE, keys, spectrum, spectrum_raw, spectrum_max)
+    spectrum_processed = test(net, DEVICE, spectrum, spectrum_raw, spectrum_max)
     f_inv = interp1d(keys_new, spectrum_processed, kind='linear')
     spectrum_processed = f_inv(keys)
     end_time = time.perf_counter()

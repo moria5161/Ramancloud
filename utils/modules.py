@@ -9,7 +9,7 @@ from markdownlit import mdlit
 
 from utils.functions import CNN_rPLS, Skip, cut, skip
 from utils.functions import sg, PEER
-from utils.functions import airPLS, ModPoly, IModPoly, auto_adaptive
+from utils.functions import airPLS, auto_adaptive
 
 
 #====================general submodules====================#
@@ -72,15 +72,15 @@ def airPLS_submodule(baseline_use_sidebar=False, mode='spectra'):
     if baseline_use_sidebar:
         with st.sidebar:
             col1, col2 = st.columns(2)
-            lambda_ = col1.slider('lambda', 1, 200, 100, key='sidebar_lambda')
-            order_ = col2.slider('order', 1, 35, 15, key='sidebar_order')
+            lambda_list = [10**i for i in range(4, 11)]
+            lambda_ = col1.select_slider('lambda', options=lambda_list, value=1e7, format_func=lambda x: f"{x:.0e}", key='sidebar_lambda')
+            order_ = col2.slider('order', 1, 8, 3, key='sidebar_order')
     else:
         col1, col2 = st.columns(2)
-        lambda_ = col1.slider('lambda', 1, 200, 100)
-        order_ = col2.slider('order', 1, 35, 15)
-    # if order_ >= lambda_:
-    #     st.error('order must be less than lambda')
-    #     st.stop()
+        lambda_list = [10**i for i in range(4, 11)]
+        lambda_ = col1.select_slider('lambda', options=lambda_list, value=1e7, format_func=lambda x: f"{x:.0e}")
+        order_ = col2.slider('order', 1, 8, 3)
+
     with st.expander("See explanation"):
         st.markdown(
             """
@@ -197,7 +197,7 @@ def spectra_baseline_module(spec_df):
     st.markdown('''<font size=5>**Step 3: baseline removal**</font>''', unsafe_allow_html=True)
 
     baseline_args = {}
-    baseline_method_dict = {'auto-adaptive':auto_adaptive, 'airPLS': airPLS, 'ModPoly':ModPoly, 'IModPoly': IModPoly, 'CNN-rPLS': CNN_rPLS, 'skip': skip}
+    baseline_method_dict = {'auto-adaptive':auto_adaptive, 'airPLS': airPLS, 'CNN-rPLS': CNN_rPLS, 'skip': skip}
     if 'processed' not in spec_df.columns:
         spec_df['processed'] = spec_df['raw'].copy()
 
@@ -211,9 +211,6 @@ def spectra_baseline_module(spec_df):
     
     if baseline_method == 'airPLS':
         baseline_args = airPLS_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
-    
-    elif baseline_method in ['ModPoly', 'IModPoly']:
-        baseline_args = ModPoly_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')   
     
     elif baseline_method == 'auto-adaptive':
         baseline_args = AABS_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')   
@@ -290,7 +287,7 @@ def mapping_denoise_module(mapping_data, mode='imaging'):
 
 
 def mapping_baseline_module(mapping_data, mode='imaging'):
-    baseline_method_dict = {'airPLS': airPLS, 'ModPoly':ModPoly, 'IModPoly': IModPoly, 'skip': skip}
+    baseline_method_dict = {'airPLS': airPLS, 'skip': skip}
     baseline_args = {}
     st.subheader('Baseline removal')
     col1, col2 = st.columns(2)

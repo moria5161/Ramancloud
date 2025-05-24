@@ -6,9 +6,8 @@ import requests
 import numpy as np
 from scipy.signal import savgol_filter
 from api.PEER import peer
-from api.airPLS import ZhangFit
 from api.hpw.bgcorrected_hpw import reference
-from api.modpoly import mod_poly, imod_poly
+from api.baseline_corrected import imod_poly, penalized_poly, airpls, aspls, mormol, rolling_ball, irsqr, snip
 from api.AABS import aabs
 from api.SplitingFiting import PeakParsing, interplotation
 import streamlit as st
@@ -65,58 +64,13 @@ def airPLS(wa, x, lambda_, order_, mode='spectra'):
         else:
             print("Request failed with status code:", response.status_code)
     else:
-        processed_data = ZhangFit(x, lambda_, order_)
+        processed_data = airpls(x, lambda_, order_)
 
     return processed_data
 
 
 def auto_adaptive(wa, x, Ln, Lb, mode='spectra'):
     return aabs(wa, x, Ln, Lb)
-
-
-@st.cache_data
-def ModPoly(wa, x, order_, gradient=1e-3, repitition=9, mode='spectra'):
-    if mode != 'spectra':
-        data_payload = {
-            'data': x.tolist(),
-            'order': order_,
-            'gradient': gradient,
-            'repitition': repitition,
-        }
-
-        # 发送 POST 请求
-        response = requests.post("http://localhost:5000/modpoly", json=data_payload)
-        if response.status_code == 200:
-            result = response.json()
-            processed_data = np.array(result)
-        else:
-            print("Request failed with status code:", response.status_code)
-    else:
-        processed_data = mod_poly(x, order_, gradient, repitition)[0]
-    return processed_data
-
-
-@st.cache_data
-def IModPoly(wa, x, order_, gradient=1e-3, repitition=9, mode='spectra'):
-    if mode != 'spectra':
-        data_payload = {
-            'data': x.tolist(),
-            'order': order_,
-            'gradient': gradient,
-            'repitition': repitition,
-        }
-
-        # 发送 POST 请求
-        response = requests.post("http://localhost:5000/imodpoly", json=data_payload)
-        if response.status_code == 200:
-            result = response.json()
-            processed_data = np.array(result)
-        else:
-            print("Request failed with status code:", response.status_code)
-    else:
-        processed_data = imod_poly(x, order_, gradient, repitition)[0]
-    
-    return processed_data
 
 
 # ==================== Denoise ==================== #
