@@ -7,9 +7,9 @@ import pandas as pd
 import streamlit as st
 from markdownlit import mdlit
 
-from utils.functions import CNN_rPLS, Skip, cut, skip
+from utils.functions import cut, skip
 from utils.functions import sg, PEER
-from utils.functions import airPLS, asPLS, imodPoly, auto_adaptive
+from utils.functions import airPLS, asPLS, imodPoly, penalizedPoly, morMol, rollingBall, Irsqr, Snip, auto_adaptive, CNN_rPLS
 
 
 #====================Denoising submodules====================#
@@ -122,14 +122,14 @@ def asPLS_submodule(baseline_use_sidebar=False, mode='spectra'):
 def imodPoly_submodule(baseline_use_sidebar=False, mode='spectra'):
     if baseline_use_sidebar:
         with st.sidebar:
-            poly_order = st.slider('order', 1, 5, 3, key='sidebar_poly_order')
+            poly_order = st.slider('poly_order', 1, 5, 3, key='sidebar_poly_order')
     else:
-        poly_order = st.slider('order', 1, 5, 3)
+        poly_order = st.slider('poly_order', 1, 5, 3)
     with st.expander("See explanation"):
         mdlit(
             """This method is based on [ModPoly](https://doi.org/10.1366/000370203322554518) and [IModPoly](https://doi.org/10.1366/000370207782597003) 
-            The parameters are the order of the polynomial used to fit the baseline. 
-            [red]The higher the order, the greater the deduction of the baseline.[/red]
+            The parameters are the poly_order of the polynomial used to fit the baseline. 
+            [red]The higher the poly_order, the greater the deduction of the baseline.[/red]
             """)
     return {'poly_order':poly_order, 'mode':mode}
 
@@ -137,9 +137,9 @@ def imodPoly_submodule(baseline_use_sidebar=False, mode='spectra'):
 def penalizedPoly_submodule(baseline_use_sidebar=False, mode='spectra'):
     if baseline_use_sidebar:
         with st.sidebar:
-            poly_order = st.slider('order', 1, 5, 3, key='sidebar_poly_order')
+            poly_order = st.slider('poly_order', 1, 5, 3, key='sidebar_poly_order')
     else:
-        poly_order = st.slider('order', 1, 5, 3)
+        poly_order = st.slider('poly_order', 1, 5, 3)
     with st.expander("See explanation"):
         st.markdown(
             """
@@ -148,14 +148,70 @@ def penalizedPoly_submodule(baseline_use_sidebar=False, mode='spectra'):
     return {'poly_order':poly_order, 'mode':mode}
 
 
+def morMol_submodule(baseline_use_sidebar=False, mode='spectra'):
+    if baseline_use_sidebar:
+        with st.sidebar:
+            half_window = st.slider('half_window', 10, 100, 40, key='sidebar_half_window')
+    else:
+        half_window = st.slider('half_window', 10, 100, 40)
+    with st.expander("See explanation"):
+        st.markdown(
+            """
+            The new baseline correction method will be supplemented and explained
+            """)
+    return {'half_window':half_window, 'mode':mode}
 
 
+def rollingBall_submodule(baseline_use_sidebar=False, mode='spectra'):
+    if baseline_use_sidebar:
+        with st.sidebar:
+            half_window = st.slider('order', 10, 100, 40, key='sidebar_half_window')
+    else:
+        half_window = st.slider('order', 10, 100, 40)
+    with st.expander("See explanation"):
+        st.markdown(
+            """
+            The new baseline correction method will be supplemented and explained
+            """)
+    return {'half_window':half_window, 'mode':mode}
 
 
+def Irsqr_submodule(baseline_use_sidebar=False, mode='spectra'):
+    if baseline_use_sidebar:
+        with st.sidebar:
+            col1, col2 = st.columns(2)
+            lam = col2.slider('lam', 10, 100, 50, key='sidebar_lam')
+            quantile = col2.slider('quantile', 0.01, 0.5, 0.05, key='sidebar_quantile')
+    else:
+        col1, col2 = st.columns(2)
+        lam = col1.slider('lam', 10, 100, 50)
+        quantile = col2.slider('quantile', 0.01, 0.5, 0.05)
+
+    with st.expander("See explanation"):
+        st.markdown(
+            """
+            The new baseline correction method will be supplemented and explained
+            """)
+    return {'lam':lam, 'quantile':quantile, 'mode':mode}
 
 
+def Snip_submodule(baseline_use_sidebar=False, mode='spectra'):
+    if baseline_use_sidebar:
+        with st.sidebar:
+            col1, col2 = st.columns(2)
+            max_half_window = col2.slider('max_half_window', 5, 50, 20, key='sidebar_max_half_window')
+            smooth_half_window = col2.slider('smooth_half_window', 3, 20, 7, key='sidebar_smooth_half_window')
+    else:
+        col1, col2 = st.columns(2)
+        max_half_window = col1.slider('max_half_window', 5, 50, 20)
+        smooth_half_window = col2.slider('smooth_half_window', 3, 20, 7)
 
-
+    with st.expander("See explanation"):
+        st.markdown(
+            """
+            The new baseline correction method will be supplemented and explained
+            """)
+    return {'max_half_window':max_half_window, 'smooth_half_window':smooth_half_window, 'mode':mode}
 
 
 def AABS_submodule(baseline_use_sidebar=False, mode='spectra'):
@@ -247,7 +303,20 @@ def spectra_baseline_module(spec_df):
     st.markdown('''<font size=5>**Step 3: baseline removal**</font>''', unsafe_allow_html=True)
 
     baseline_args = {}
-    baseline_method_dict = {'auto-adaptive':auto_adaptive, 'airPLS': airPLS, 'CNN-rPLS': CNN_rPLS, 'skip': skip}
+    baseline_method_dict = {
+                                'airPLS': airPLS,
+                                'asPLS': asPLS,
+                                'imodPoly': imodPoly,
+                                'penalizedPoly': penalizedPoly,
+                                'morMol': morMol,
+                                'rollingBall': rollingBall,
+                                'Irsqr': Irsqr,
+                                'Snip': Snip,
+                                'auto_adaptive': auto_adaptive,
+                                'CNN_rPLS': CNN_rPLS,
+                                'skip': skip
+                            }
+    
     if 'processed' not in spec_df.columns:
         spec_df['processed'] = spec_df['raw'].copy()
 
@@ -261,21 +330,33 @@ def spectra_baseline_module(spec_df):
     
     if baseline_method == 'airPLS':
         baseline_args = airPLS_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
-    
-    elif baseline_method == 'auto-adaptive':
+
+    elif baseline_method == 'asPLS':
+        baseline_args = asPLS_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
+
+    elif baseline_method == 'imodPoly':
+        baseline_args = imodPoly_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
+
+    elif baseline_method == 'penalizedPoly':
+        baseline_args = penalizedPoly_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
+
+    elif baseline_method == 'morMol':
+        baseline_args = morMol_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
+
+    elif baseline_method == 'rollingBall':
+        baseline_args = rollingBall_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
+
+    elif baseline_method == 'Irsqr':
+        baseline_args = Irsqr_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
+
+    elif baseline_method == 'Snip':
+        baseline_args = Snip_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
+
+    elif baseline_method == 'auto_adaptive':
         baseline_args = AABS_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')   
 
-    elif baseline_method == 'baseline_hpw':
+    elif baseline_method == 'CNN_rPLS':
         baseline_args = CNN_rPLS_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
-
-    elif baseline_method == 'Auto-Adaptive':
-
-        with st.expander("See explanation"):
-            mdlit(
-                """This is [an auto-adaptive background subtraction method for Raman spectra](https://doi.org/10.1016/j.saa.2016.02.016) 
-                developed by Guokun Liu et. al. in Xiamen University.  
-                
-                """)
 
     cache = spec_df['processed'].copy()
 
@@ -334,7 +415,7 @@ def mapping_denoise_module(mapping_data, mode='imaging'):
 
 
 def mapping_baseline_module(mapping_data, mode='imaging'):
-    baseline_method_dict = {'airPLS': airPLS, 'imodPoly': imodPoly, 'skip': skip}
+    baseline_method_dict = {'airPLS': airPLS, 'imodPoly': imodPoly, 'rollingBall': rollingBall, 'Snip': Snip, 'skip': skip}
     baseline_args = {}
     st.subheader('Baseline removal')
     col1, col2 = st.columns(2)
@@ -350,7 +431,17 @@ def mapping_baseline_module(mapping_data, mode='imaging'):
     elif baseline_method == 'imodPoly':
         baseline_args = imodPoly_submodule(baseline_use_sidebar=False, mode=mode)
 
-    mapping_data_assist = 100
-    print('批次bc前', mapping_data.shape)
+    elif baseline_method == 'rollingBall':
+        baseline_args = rollingBall_submodule(baseline_use_sidebar=False, mode=mode)
+
+    elif baseline_method == 'Snip':
+        baseline_args = Snip_submodule(baseline_use_sidebar=False, mode=mode)
+
+    mapping_data_assist = 1  # No meaning, just for the function
+    
+    size = mapping_data.shape
+    mapping_data = mapping_data.reshape(-1, mapping_data.shape[-1])
     mapping_data = baseline_method_dict[baseline_method](mapping_data_assist, mapping_data, **baseline_args)
+    mapping_data = mapping_data.reshape(size)
+
     return mapping_data, {'method':baseline_method_dict[baseline_method], 'args':baseline_args}

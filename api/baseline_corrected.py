@@ -43,9 +43,9 @@ def irsqr(y, lam=50, quantile=0.05):
     return y - bkg
 
 
-def snip(y, max_half_window=20, decreasing=True, smooth_half_window=7):
+def snip(y, max_half_window=20, smooth_half_window=7):
     baseline_fitter = Baseline(x_data=np.linspace(0, len(y), len(y)))
-    bkg, _ = baseline_fitter.snip(y, max_half_window=max_half_window, decreasing=decreasing, smooth_half_window=smooth_half_window)
+    bkg, _ = baseline_fitter.snip(y, max_half_window=max_half_window, decreasing=True, smooth_half_window=smooth_half_window)
     return y - bkg
 
 

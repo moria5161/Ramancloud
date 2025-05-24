@@ -19,8 +19,6 @@ from pathos.multiprocessing import ProcessingPool as Pool
 def skip(wa, x):
     return x
 
-def Skip(x):
-    return x
 
 @st.cache_data
 def cut(x, values, wavenumber=[], mode='spectra'):
@@ -35,6 +33,7 @@ def cut(x, values, wavenumber=[], mode='spectra'):
 
 
 
+# ==================== Denoising methods ==================== #
 # ==================== Denoising methods ==================== #
 
 @st.cache_data
@@ -103,6 +102,7 @@ def ALRMADenoise():
 
 
 # ==================== Baseline Correction methods ==================== #
+# ==================== Baseline Correction methods ==================== #
 
 @st.cache_data
 def CNN_rPLS(wave, x, mode='spectra'):
@@ -160,10 +160,86 @@ def imodPoly(wa, x, poly_order, mode='spectra'):
     return processed_data
 
 
+@st.cache_data
+def penalizedPoly(wa, x, poly_order, mode='spectra'):
+    s_time= time.time()
+    if mode != 'spectra':
+        size = x.shape
+        processed_data = np.zeros(size)
+        for i in range(size[0]):
+            processed_data[i, :] = penalized_poly(x[i, :], poly_order)
+    else:
+        processed_data = penalized_poly(x, poly_order)
+    e_time = time.time()
+    print(f"penalizedPoly time: {e_time - s_time}")
+    return processed_data
+
+
+@st.cache_data
+def morMol(wa, x, half_window, mode='spectra'):
+    s_time= time.time()
+    if mode != 'spectra':
+        size = x.shape
+        processed_data = np.zeros(size)
+        for i in range(size[0]):
+            processed_data[i, :] = mormol(x[i, :], half_window)
+    else:
+        processed_data = mormol(x, half_window)
+    e_time = time.time()
+    print(f"morMol time: {e_time - s_time}")
+    return processed_data
+
+
+@st.cache_data
+def rollingBall(wa, x, half_window, mode='spectra'):
+    s_time= time.time()
+    if mode != 'spectra':
+        size = x.shape
+        processed_data = np.zeros(size)
+        for i in range(size[0]):
+            processed_data[i, :] = rolling_ball(x[i, :], half_window)
+    else:
+        processed_data = rolling_ball(x, half_window)
+    e_time = time.time()
+    print(f"rolling_ball time: {e_time - s_time}")
+    return processed_data
+
+
+@st.cache_data
+def Irsqr(wa, x, lam, quantile, mode='spectra'):
+    s_time= time.time()
+    if mode != 'spectra':
+        size = x.shape
+        processed_data = np.zeros(size)
+        for i in range(size[0]):
+            processed_data[i, :] = irsqr(x[i, :], lam, quantile)
+    else:
+        processed_data = irsqr(x, lam, quantile)
+    e_time = time.time()
+    print(f"Irsqr time: {e_time - s_time}")
+    return processed_data
+
+
+@st.cache_data
+def Snip(wa, x, max_half_window, smooth_half_window, mode='spectra'):
+    s_time= time.time()
+    if mode != 'spectra':
+        size = x.shape
+        processed_data = np.zeros(size)
+        for i in range(size[0]):
+            processed_data[i, :] = snip(x[i, :], max_half_window, smooth_half_window)
+    else:
+        processed_data = snip(x, max_half_window, smooth_half_window)
+    e_time = time.time()
+    print(f"Snip time: {e_time - s_time}")
+    return processed_data
+
+
 def auto_adaptive(wa, x, Ln, Lb, mode='spectra'):
     return aabs(wa, x, Ln, Lb)
 
 
+# ==================== Other functions ==================== #
 # ==================== Other functions ==================== #
 
 @st.cache_data
