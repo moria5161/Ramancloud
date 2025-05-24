@@ -1,259 +1,160 @@
-import os
-import uuid
+'''
+This page is used to process the spectra.
+'''
+
+import io
 import time
+import zipfile
+import pandas as pd
+import numpy as np
+                
+import streamlit as st
+from streamlit_extras.switch_page_button import switch_page
+from streamlit_extras.row import row
+
 import plotly.express  as px
 
-import streamlit as st
-from markdownlit import mdlit
+from utils.modules import spectra_cut_module, spectra_denoise_module, spectra_baseline_module
+from utils.utils import generate_download_link, exec_mysql
 
-import numpy as np
-import pandas as pd
 
-import zipfile
-import base64
-import urllib.parse
-
-from BaselineRemoval import BaselineRemoval as br
-from scipy.signal import savgol_filter as sg
-from scipy.signal import find_peaks
-from scipy.optimize import curve_fit
-
-# from streamlit_extras.switch_page_button import switch_page
 st.set_page_config(
-    initial_sidebar_state="collapsed",
+    page_title='RamanCloud',
+    page_icon=':cloud:',
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
-def cut(x, values):
-    return x[(x.wavenumber >= values[0])&(x.wavenumber <= values[1])]
+startTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-def minmax(x):
-    return (x - x.min()) / (x.max() - x.min())
+# @st.cache_data
+def load_data(file):
 
-def baseline(x, lambda_, order_):
-    obj = br(x)
-    return obj.ZhangFit(lambda_=lambda_, porder=order_)
+    # load data and convert to string
+    content = file.getvalue()
 
-def smooth(x, window, order):
-    x = sg(x, window, order)
-    return x
-
-def load_data(file, save_path=None):
-    if save_path:
-        with open (os.path.join(save_path, file.name), 'wb') as f:
-            f.write(file.getvalue())
-
-    # load data and remove text before the number by re 
+    # remove text before the number in this bytes file by re 
     import re
-    pattern = re.compile(b'^[-]?\d+[.]?')
-
-    with open (os.path.join(save_path, file.name), 'rb') as f:
-        lines = f.readlines()
-        lines = [line for line in lines if pattern.match(line)]
-    with open (os.path.join(save_path, file.name), 'wb') as f:
-        f.writelines(lines)
-
-    # recognize the delimiter
-    with open (os.path.join(save_path, file.name), 'r') as f:
-        line = f.readline()
-        if len(line.split('\t')) > 1:
-            delimiter = '\t'
-        elif len(line.split(',')) > 1:
-            delimiter = ','
-        else:
-            delimiter = ' '
+    pattern = re.compile(b'^[-]?\d+[.]?')    
     
-    # load data with delimiter '\t' and ',' automaticlly
-    spec = pd.read_csv(os.path.join(save_path, file.name), delimiter=delimiter, header=None)
-    spec.columns = ['wavenumber', 'raw']
-    st.session_state['raw_spec'] = spec
-    
-    return spec 
+    lines = content.split(b'\n')
+    lines = [line for line in lines if pattern.match(line)]
 
-def gaussian(x, amp, cen, wid):
-    return amp * np.exp(-(x - cen)**2 / wid)
+    # convert bytes to string
+    content = b'\n'.join(lines)
 
-def find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance, 
-                       start_points=None, end_points=None,
-                       extra_start_points=None, extra_end_points=None,if_extra=False, verbose=True):
-    
-    inp = spec_df['processed'] if verbose else spec_df['raw']
-
-    peaks, properties  = find_peaks(inp, height=height_threshold_ratio/100*inp.max(), prominence=1, width=peak_width, distance=peak_distance)
-
-    peak_x = spec_df['wavenumber'][peaks]
-    peak_y = inp[peaks]    
-    types = []
-    # Get the start and end points for each peak
-    if start_points is None and end_points is None:
-        start_points = []
-        end_points = []
-    
-        for peak_index in peaks:
-            # Find the left and right edges of the peak
-            left_edge, right_edge = peak_index, peak_index
-
-            # Move left until the value drops below a certain threshold or reaches the edge of the data
-            while left_edge > 0 and inp[left_edge] > edge_threshold:
-                left_edge -= 1
-
-            # Move right until the value drops below a certain threshold or reaches the edge of the data
-            while right_edge < len(inp) - 1 and inp[right_edge] > edge_threshold:
-                right_edge += 1
-
-            # Append the start and end points of the peak to their respective lists
-            start_points.append(left_edge)
-            end_points.append(right_edge)
-            types.append('auto')
-
-    elif start_points is not None and end_points is None:
-        raise ValueError('You must provide either both start and end points or neither.')
-    elif start_points is None and end_points is not None:
-        raise ValueError('You must provide either both start and end points or neither.')
-    
-    if if_extra:
-        start_points += extra_start_points
-        end_points += extra_end_points
-        types += ['manual'] * len(extra_start_points)
-    fit_results = []
-
-    # Define the fitting region around each peak (you can adjust the region based on your data)
-    
-    positions = []
-    intensities = []
-    areas = []
-
-    for i in range(len(start_points)):
-        # fit_region_width = np.ceil(properties['widths'][i]*1.5).astype(int)
-        # fit_region = range(-fit_region_width, fit_region_width + 1)
-
-        # Define the region of interest for this peak
-        x_peak = spec_df['wavenumber'][start_points[i]:end_points[i]].to_numpy()
-
-        # Extract the corresponding y-values for this peak
-        y_peak = inp[start_points[i]:end_points[i]].to_numpy()
-
-        # Initial guesses for the Gaussian fit parameters (amplitude, mean, stddev)
-        initial_guess = [y_peak.max(), x_peak[np.argmax(y_peak)], 1.0]
-        
-        # print(x_peak)
-        # Perform the curve fit for this peak
-        popt, _ = curve_fit(gaussian, x_peak, y_peak, p0=initial_guess)
-
-        # Append the fit results for this peak to the list
-        fit_results.append(popt)
-
-        intensities.append(y_peak.max())
-        positions.append(x_peak[np.argmax(y_peak)])
-        areas.append(gaussian(x_peak, *popt).sum())
-
-    if verbose:
-        return peak_x, peak_y, peaks, fit_results, start_points, end_points
+    # recognize the delimiter    
+    if len(lines[0].split(b'\t')) > 1:
+        delimiter = '\t'
+    elif len(lines[0].split(b',')) > 1:
+        delimiter = ','
     else:
-        res_df = pd.DataFrame({'Start':[spec_df['wavenumber'][start_points[i]] for i in range(len(start_points))],
-                                'End': [spec_df['wavenumber'][end_points[i]] for i in range(len(start_points))],
-                               'Peak position':positions,
-                               'Intensity':intensities, 
-                               'Peak area':areas,
-                               'Type':types
-                               },
-                               index=[i+1 for i in range(len(start_points))]
-        )
-        res_df['Index'] = res_df.index
-        return res_df 
-      
-def upload_module(upload_files, save_path):
+        delimiter = ' '
+
+    # load string with delimiter '\t' and ',' automaticlly to DataFrame
+    spec = pd.read_csv(io.BytesIO(content), delimiter=delimiter, header=None)
+    
+    if len(spec.columns) >= 4:
+        res = pd.DataFrame({'wavenumber':spec.iloc[:, -2], 'raw':spec.iloc[:, -1]})
+    else:
+        res = pd.DataFrame({'wavenumber':spec.iloc[:, 0], 'raw':spec.iloc[:, -1]})
+    # spec.columns = []
+    st.session_state['raw_spec'] = res
+    return res 
+
+def upload_module(files):
     specs = []
     names = []
-    # try:
-    for file in upload_files:
-        spec = load_data(file, save_path)
+
+    for file in files:
+        spec = load_data(file)
         specs.append(spec)
         names.append(file.name)
-    # except:
-    #     st.error('Please check your files, upload error')
-    # else:
+
     return specs, names
-    
-
-def cut_module(spec_df):
-
-    st.subheader('Cut')
-    st.caption("The module is used to cut the range of wavenumber, please drag the slider.")
-
-    MIN, MAX = spec_df.wavenumber.min(), spec_df.wavenumber.max()
-    values = st.slider('Select the range of wavenumber', min_value=MIN, max_value=MAX, value=(float(MIN), float(MAX)))
-    new_df = cut(spec_df, values)
-    return new_df , (values,)
 
 
-def smooth_module(spec_df):
-    if 'processed' not in spec_df.columns:
-        spec_df['processed'] = spec_df['raw'].copy()
-    st.subheader('Smooth')
-    col1, col2 = st.columns(2)
-    with col1:
-        st.caption('The module is used to smooth the spectrum, please drag the slider or click `skip button`.')
-    with col2:
-        skip_smooth = st.checkbox('Skip', key='smooth')
+def gaussian(x, mu, amp, sigma):
+    return np.abs(amp) * np.exp(-(x - mu)**2 / sigma)
 
-    window_size, order = None, None
-    if not skip_smooth:
-        col1, col2 = st.columns(2)
-        with col1:
-            window_size = st.slider('smooth window size', 3, 13, 7)
-        with col2:
-            order = st.slider('smooth order', 1, 5, 3)
-        if order >= window_size:
-            st.error('order must be less than window size')
-            st.stop()
-        spec_df['processed'] = smooth(spec_df['processed'], window_size, order)
-    
-        with st.expander("See explanation"):
-            mdlit(
-                """ This method is based on [Savitzky-Golay filter](https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter).  
-                The parameters are the window size of filter and the order of the polynomial used to fit the samples.  
-                The window size must be a [red]positive odd integer[/red]. The order must be less than the window size.  
-                The signal is smoothed by convolution with a window function. The data within the window is
-                then approximated by a polynomial function. [red]The higher the polynomial order, the smoother the signal
-                will be.[/red] The Savitzky-Golay is a type of low-pass filter, which may affect the intensity of raw spectra.
-                """)
+
+# 定义gaussian函数作为拟合模型
+def sum_of_gaussian(x, *args):
+    index =int(args[-1]) 
+    mu_list = args[:index]
+    A_list = args[index:2*index]
+    sigma_list = args[2*index:-1]
+
+    result = 0
+    for i in range(index):
+        result += gaussian(x, mu=mu_list[i], amp=A_list[i], sigma=sigma_list[i])
+
+    return np.array(result).astype(np.float64)
+
+
+def find_and_fit_peaks(spec_df, verbose=True):
+
+    from scipy.optimize import curve_fit
+    from scipy.signal import argrelextrema
+
+    # find peaks
         
-    return spec_df, (skip_smooth, window_size, order)
+    inp = spec_df['raw'].to_numpy() 
+    wavenumber = spec_df['wavenumber'].to_numpy()
 
+    # find peaks
 
-def baseline_module(spec_df):
-    if 'processed' not in spec_df.columns:
-        spec_df['processed'] = spec_df['raw'].copy()
-    st.subheader('Baseline removal')
-    col1, col2 = st.columns(2)
-    with col1:
-        st.caption('The module is used to remove the baseline, please drag the slider or click `skip button`.')
-    with col2:
-        skip_baseline = st.checkbox('Skip', key='skip_baseline')
-    # with col3:
-    #     download_baseline = st.checkbox('Download baseline', key='download_baseline')
-    lambda_, order_ = None, None
-    if not skip_baseline:
-        col1, col2 = st.columns(2)
-        with col1:
-            lambda_ = st.slider('lambda', 1, 200, 15)
-        with col2:
-            order_ = st.slider('order', 1, 4, 2)
-        if order_ >= lambda_:
-            st.error('order must be less than lambda')
-            st.stop()
-        cache = spec_df['processed'].copy()
-        spec_df['processed'] = baseline(spec_df['processed'], lambda_, order_)
-        spec_df['baseline'] = cache - spec_df['processed']
-        with st.expander("See explanation"):
-            mdlit(
-                """This method is based on [airPLS](https://doi.org/10.1039/B922045C) created by Zhi-Min Zhang in Central South University.  
-                The parameters are the lambda and the order of the polynomial used to fit the baseline. 
-                [red]The smaller the lambda, the greater the deduction of the baseline.[/red]
-                The order is the order of the polynomial used to fit the baseline, which must be less than the lambda.
-                """)
-    return spec_df, (skip_baseline, lambda_, order_)
+    peak_idx = argrelextrema(inp, np.greater, order=40)[0]
 
+    peak_x = [wavenumber[item] for item in peak_idx]
+    peak_y = [inp[item] for item in peak_idx]
 
+    sigma_list = []
+    for peak_id in peak_idx:
+        half_max_height = inp[peak_id] / 2
+
+        for i in range(peak_id, len(inp)):
+            
+            if inp[i] > half_max_height:  # 未找到半高宽
+                
+                if i == (len(inp)-1): # 如果是最后一个点
+                    tmp_sigma = 2 * (wavenumber[i] - wavenumber[peak_id]) /2.355 # 
+                    sigma_list.append(tmp_sigma)
+                    break
+
+            else:  # 找到半高宽
+                tmp_sigma = 2 * (wavenumber[i] - wavenumber[peak_id]) / 2.355
+                sigma_list.append(tmp_sigma)
+                break
+
+    # optimize the parameters
+    init_param=np.array(np.abs(peak_x+peak_y+sigma_list+[len(peak_idx)])).astype(np.float64)
+
+    popt_gauss, _ = curve_fit(sum_of_gaussian, wavenumber, inp, p0=init_param, maxfev = 10000)
+
+    # readout results   
+    peak_position = []
+    height = []
+    sigma = []
+    for i in range(len(peak_idx)):
+        tmp_mu = popt_gauss[i]
+        tmp_amp = popt_gauss[i + len(peak_idx)]
+        tmp_sigma = popt_gauss[i + 2 * len(peak_idx)]
+        peak_position.append(tmp_mu)
+        height.append(tmp_amp)
+        sigma.append(tmp_sigma)
+    
+    areas = []
+    if verbose:  
+        processed_df = spec_df.copy()
+        for id, item in enumerate(zip(peak_position, height, sigma)):
+            processed_df['peak%s' %id] = gaussian(wavenumber, *item)
+            areas.append(gaussian(wavenumber, *item).sum())
+        st.line_chart(processed_df, x='wavenumber')
+        st.table(pd.DataFrame({'Peak peak_position':peak_position, 'Intensity':height, 'Peak area':areas}))
+    else:
+        for id, item in enumerate(zip(peak_position, height, sigma)):
+            areas.append(gaussian(wavenumber, *item).sum())
+        return peak_position, height, areas
 
 
 def peak_analysis_module(spec_df):
@@ -272,18 +173,18 @@ def peak_analysis_module(spec_df):
 
         col1, col2 = st.columns(2)
         with col1:
-            peak_width = st.slider('Select the width of specific peak', min_value=1, max_value=20, value=10)
+            peak_sigmath = st.slider('Select the sigmath of specific peak', min_value=1, peak_value=20, value=10)
 
         with col2:        
-            peak_distance = st.slider('Select the distance between peaks', min_value=1, max_value=100, value=50)
+            peak_distance = st.slider('Select the distance between peaks', min_value=1, peak_value=100, value=50)
         
         col1, col2 = st.columns(2)
         with col1:
-            height_threshold_ratio = st.slider('Select the height threshold of peaks (%)', min_value=1, max_value=100, value=50)
+            height_threshold_ratio = st.slider('Select the height threshold of peaks (%)', min_value=1, peak_value=100, value=50)
         with col2:
-            edge_threshold = st.slider('Select the edge threshold of peaks', min_value=-1, max_value=10, value=0,)
+            edge_threshold = st.slider('Select the edge threshold of peaks', min_value=-1, peak_value=10, value=0,)
         
-        peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_width, peak_distance)
+        peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, peak_sigmath, peak_distance)
 
         areas = []
 
@@ -291,7 +192,7 @@ def peak_analysis_module(spec_df):
         peak_points = px.scatter(pd.DataFrame({'wavenumber':peak_x, 'y':peak_y}), x="wavenumber", y='y', color_discrete_sequence=['red'], size_max=8, size=np.ones_like(peak_x))
         
         spec_line.add_trace(peak_points.data[0])
-        # st.plotly_chart(spec_line, use_container_width=True)
+        # st.plotly_chart(spec_line, use_container_sigmath=True)
 
         setting_df = pd.DataFrame({'Start':[spec_df.wavenumber[p].round(2) for p in start_points], 
                                'End':[spec_df.wavenumber[p].round(2) for p in end_points], 
@@ -324,7 +225,7 @@ def peak_analysis_module(spec_df):
 
         if len(modified_rows) > 0:
             peak_x, peak_y, peaks, fit_results, start_points, end_points = find_and_fit_peaks(spec_df, height_threshold_ratio, edge_threshold, 
-                                                                                              peak_width, peak_distance, start_points, end_points)
+                                                                                              peak_sigmath, peak_distance, start_points, end_points)
         
         for i, (peak_index, peak_params) in enumerate(zip(peaks, fit_results)):
             x_peak_fit = spec_df['wavenumber'][start_points[i]:end_points[i]]
@@ -334,12 +235,12 @@ def peak_analysis_module(spec_df):
             fit_line = px.line(pd.DataFrame({'wavenumber':x_peak_fit, 'y':y_peak_fit}), x="wavenumber", y='y', color_discrete_sequence=['red'])
             spec_line.add_trace(fit_line.data[0])
             
-        st.plotly_chart(spec_line, use_container_width=True)
+        st.plotly_chart(spec_line, use_container_sigmath=True)
         
         st.subheader('Analysis results')
         res_df = pd.DataFrame({'Start': [spec_df['wavenumber'][start_points[i]] for i in range(len(start_points))],  
                                 "End": [spec_df['wavenumber'][end_points[i]] for i in range(len(start_points))],
-                                'Peak position':spec_df['wavenumber'][peaks],
+                                'Peak peak_position':spec_df['wavenumber'][peaks],
                                 'Intensity':peak_y, 
                                 'Peak area':areas,
                                 }
@@ -350,182 +251,134 @@ def peak_analysis_module(spec_df):
 
         if len(modified_rows) > 0:
             return (skip_peak, {'height_threshold_ratio':height_threshold_ratio,'edge_threshold':edge_threshold, 
-                    'peak_width':peak_width, 'peak_distance':peak_distance, 
+                    'peak_sigmath':peak_sigmath, 'peak_distance':peak_distance, 
                     'extra_start_points':extra_start_points, 'extra_end_points':extra_end_points, 'if_extra':True})
         else:
             return (skip_peak, 
                     {'height_threshold_ratio':height_threshold_ratio,'edge_threshold':edge_threshold, 
-                    'peak_width':peak_width, 'peak_distance':peak_distance, 
+                    'peak_sigmath':peak_sigmath, 'peak_distance':peak_distance, 
                     })
     else:
         return (skip_peak,)
 
 def process(file:pd.DataFrame, cut_args, smooth_args, baseline_args):
-    res_df = cut(file, *cut_args)
-    res_df['raw'] = smooth(res_df['raw'], *smooth_args[1:]) if not smooth_args[0] else res_df['raw']
-    before_baseline = res_df['raw'].copy()
-    res_df['raw'] = baseline(res_df['raw'], *baseline_args[1:]) if not baseline_args[0] else res_df['raw']
-    if not baseline_args[0]: res_df['baseline'] = before_baseline - res_df['raw'] 
-    return res_df
+    pass
+    # res_df = cut(file, *cut_args)
+    # res_df['raw'] = smooth(res_df['raw'], *smooth_args[1:]) if not smooth_args[0] else res_df['raw']
+    # before_baseline = res_df['raw'].copy()
+    # res_df['raw'] = baseline(res_df['raw'], *baseline_args[1:]) if not baseline_args[0] else res_df['raw']
+    # if not baseline_args[0]: res_df['baseline'] = before_baseline - res_df['raw'] 
+    # return res_df
 
-
-def generate_download_link(file, filename):
-    # check the file type
-    file_type = filename.split('.')[-1]
-    download_string = file_type.upper() if 'baseline_' not in filename else 'baseline'
-    encoded = base64.b64encode(file).decode()
-    quoted_filename = urllib.parse.quote(filename)
-    href = f'<a href="data:application/{file_type};base64, {encoded}" download="{quoted_filename}">Download {download_string} File</a>'
-    st.markdown(href, unsafe_allow_html=True)
     
 def run():
-    received_dir = '/data/received/spectra'
-    startTime = time.time()
-    startTime = time.strftime('%Y-%m-%d_%H:%M:%S', time.localtime(startTime))
-
-    dir_name = f"{startTime}_{uuid.uuid4().hex}"
+    
+    st.image("https://img.shields.io/badge/Ramancloud-processing%20the%20spectra-blue?style=for-the-badge", )
     
     raw_specs = st.session_state['raw_spec'] if 'raw_spec' in st.session_state else None
     
-    st.subheader('Upload spectrum')
+    # ==============================================data input container=============================================== #
+    with st.container(border=True):
+        st.subheader('Import data', divider='gray')
+        st.markdown('<font size=5>**Upload your spectra**</font>', unsafe_allow_html=True)
 
+        upload_file = st.file_uploader(label=' ', accept_multiple_files=True, type=['txt', 'asc'], label_visibility='collapsed')    
+        
+        demo_data = '-'
+        if not upload_file:
+            st.markdown('<font size=5>**Or use demo data**</font>', unsafe_allow_html=True)
+            demo_data = st.selectbox(label=' ', label_visibility='collapsed', 
+                                     options=['-', 'Bacteria','Ultra low frequence Raman'])
+            if demo_data == '-':
+                st.session_state['raw_spec'] = None
+            elif demo_data == 'Bacteria':
+                raw_demo_spec = pd.read_csv('/media/ramancloud/samples/Bacteria.txt', delimiter='\t', header=None)
+                st.session_state['raw_spec'] = raw_demo_spec
+                raw_demo_spec.columns = ['wavenumber', 'raw']
+            elif demo_data == 'Ultra low frequence Raman':
+                raw_demo_spec = pd.read_csv('/media/ramancloud/samples/ULF.txt', delimiter='\t', header=None)
+                st.session_state['raw_spec'] = raw_demo_spec
+                raw_demo_spec.columns = ['wavenumber', 'raw']
 
-    upload_file = st.file_uploader("Upload your files", accept_multiple_files=True)    
+        
+        else:
+
+            raw_specs, filenames = upload_module(upload_file)
+            time.sleep(1)
+            st.error('Here is our [user item and privacy policy.](privacy_policy)')
+            # save_unlabeled_spectra_to_mysql(raw_specs)
+
+            if len(raw_specs) > 1:
+                demo_file = st.selectbox(
+                'Select a spectrum for preprocessing', filenames)
+                st.write('You selected:', demo_file)
+                raw_demo_spec = raw_specs[filenames.index(demo_file)]
+            else:
+                raw_demo_spec = raw_specs[0]
+
     
-    st.subheader('Or use demo data')
-    demo_data = st.selectbox(
-        'Select a demo data', ['-', 'Bacteria',])
-    if demo_data == 'Bacteria':
-            demo_spec = pd.read_csv('./samples/Bacteria.txt', delimiter='\t', header=None)
-            demo_spec.columns = ['wavenumber', 'raw']
-            st.session_state['raw_spec'] = demo_spec
-    else:
-        st.session_state['raw_spec'] = None
-    
-        
-    if upload_file:
-        os.mkdir(os.path.join(received_dir, dir_name))
-        save_path = os.path.join(received_dir, dir_name)
-        raw_specs, filenames = upload_module(upload_file, save_path=save_path)
-        
-
-        demo_file = st.selectbox(
-        'Select a spectrum for preprocessing', filenames)
-        st.write('You selected:', demo_file)
-        demo_spec = raw_specs[filenames.index(demo_file)]
-        
     if 'raw_spec' in st.session_state and st.session_state['raw_spec'] is not None:
-        demo_spec, cut_args = cut_module(demo_spec)
-        demo_spec, smooth_args = smooth_module(demo_spec)
-        demo_spec, baseline_args = baseline_module(demo_spec)
-        demo_spec_fig = demo_spec.melt('wavenumber', var_name='category', value_name='intensity')
         
-        # change the charet color
-        col1, col2 = st.columns(2)
-        with col1:
-            pre_color = st.color_picker('Pick A Color for processed spectrum', '#FF0000')            
-        
-        custom_colors = {
-                'raw': 'blue',
-                'processed': pre_color,
-            }
+        # ================data processing container================ #
+        with st.container(border=True):
+            st.subheader('Data processing', divider='gray')
+            # demo_spec, cut_args = spectra_cut_module(raw_demo_spec)
+            # demo_spec, smooth_args = spectra_denoise_module(demo_spec)
+            # demo_spec, baseline_args = spectra_baseline_module(demo_spec)
+            find_and_fit_peaks(raw_demo_spec)
+            # demo_spec_fig = demo_spec.melt('wavenumber', var_name='category', value_name='intensity')
+                   
+        # ================download container================ #
+        with st.container(border=True):
+            st.subheader('Download', divider='gray')
+            download_button = False
+            domain = st.radio(' ',
+                                  [':red[Please select the domain of your sample]:point_down:',
+                                   'electro chemistry:battery:', 
+                                   'TERS:rotating_light:',
+                                '2D materials:large_yellow_square:',
+                                'bacteria:worm:', 
+                                'biology:stethoscope:', 
+                                'drug:radioactive_sign:',
+                                'inorganic materials:coin:',
+                                'organic materials:pill:',
+                                'plant:seedling:', 
+                                'food:rice_ball:',
+                                ],
+                                label_visibility='collapsed',
+                                horizontal=False,)
 
-        if not baseline_args[0]:
-            with col2:
-                baseline_color = st.color_picker('Pick A Color for baseline', '#22CE12')
-            custom_colors['baseline'] = baseline_color
+            if domain != ':red[Please select the domain of your sample]:point_down:':
+                col1, col2 = st.columns(2)
+                download_button =  col1.button(':+1: :blue[process and download]')
+            if download_button:            
+                if demo_data != '-':
+                    st.error('Downloading demo data is not supported. Please upload your own data.')
+                    st.stop()
 
-        fig = px.line(demo_spec_fig, x="wavenumber", y="intensity", color='category', color_discrete_map=custom_colors)
-        st.plotly_chart(fig, use_container_width=True)
+                res_filenames, res_pos, res_heights, res_areas = [], [], [], []
 
-        peak_analysis_args = peak_analysis_module(demo_spec)
+                for file_count, file in enumerate(raw_specs):
+                    res = find_and_fit_peaks(file, verbose=False)
+                    res_filenames += [filenames[file_count]]*len(res[0])
+                    res_pos += res[0]
+                    res_heights += res[1]
+                    res_areas += res[2]
 
-        col1, col2 = st.columns(2)
-        with col2:
-            download_baseline = st.checkbox('Download baseline', key='show_peak_analysis')
-        with col1:
-            if st.button('process and download'):
-                if not os.path.exists(os.path.join(received_dir, dir_name, 'pre')):
-                    os.mkdir(os.path.join(received_dir, dir_name, 'pre'))
-
-                with st.spinner(text="processing..."):
-                    for file_count, file in enumerate(raw_specs):
-                        res = process(file, cut_args, smooth_args, baseline_args)
-                        np.savetxt(f'{received_dir}/{dir_name}/pre/pre_{filenames[file_count]}', res[['wavenumber', 'raw']], fmt='%.4f', delimiter='\t')
-                        if download_baseline:
-                            np.savetxt(f'{received_dir}/{dir_name}/pre/baseline_{filenames[file_count]}', res[['wavenumber', 'baseline']], fmt='%.4f', delimiter='\t')
-                        if peak_analysis_args[0] == False:
-                            tmp_df = find_and_fit_peaks(res, **peak_analysis_args[1], verbose=False)
-                            tmp_df['filename'] = filenames[file_count]
-                            # merge all results
-                            if file_count == 0:
-                                res_df = tmp_df
-                            if file_count != 0:
-                                res_df = pd.concat([res_df, tmp_df], axis=0)
-
-                    if peak_analysis_args[0] == False:
-                        res_df.to_csv(f'{received_dir}/{dir_name}/pre/peak_analysis.csv', index=True)
-                    
-                    pre_dir = os.path.join(received_dir, dir_name, 'pre')
-                    file_name_list = os.listdir(f'{pre_dir}')
-                    file_name_list = [f for f in file_name_list if f[-3:]=='txt']
-                    if file_count >= 1:
-                        # zip all files
-                        zip_name = os.path.join(pre_dir, 'pre.zip')
-                        zip_file = zipfile.ZipFile(zip_name,'w')
-                        for file in file_name_list:
-                            zip_file.write(os.path.join(pre_dir, file) , compress_type=zipfile.ZIP_DEFLATED, arcname=file)
-                            os.remove(os.path.join(pre_dir, file))
-                        zip_file.close()
-
-                    st.success('Done!')
-
-                save_time = time.strftime('%Y-%m-%d_%H-%M-%S', time.localtime())
-                if file_count >= 1:
-                # Read the contents of the ZIP file
-                    with open(zip_name, "rb") as file:
-                        zip_contents = file.read()
-                    filename = f"{save_time}_results.zip"  
-                    generate_download_link(zip_contents, filename)                    
-                        
-                else:
-                    # when file count is 1 directly output the txt file
-                    with open(os.path.join(pre_dir, file_name_list[-1]), "rb") as file:
-                        txt_contents = file.read()
-                    generate_download_link(txt_contents, file_name_list[-1])
-                    if download_baseline:
-                        with open(os.path.join(pre_dir, file_name_list[0]), "rb") as file:
-                            baseline_file = file.read()
-                        generate_download_link(baseline_file, file_name_list[0])
-
-                if peak_analysis_args[0] == False:
-                    csv_file = res_df.to_csv(index=False).encode()
-                    filename = f"{save_time}_peak_analysis.csv"  
-                    generate_download_link(csv_file, filename)
-                    
-    
+                res_df = pd.DataFrame({'filename':res_filenames, 'peak position':res_pos, 'peak intensity':res_heights, 'peak area':res_areas})            
+                
+                st.success('It is notable that the link is temporary, **and will be invalid after closing the page.**')
+                with st.container():
+                    st.dataframe(res_df, use_container_width=True)
         
 if __name__ == "__main__":
+    import traceback
     try:
         run()
     except:
+        print(traceback.format_exc())
         st.error('Opps! something went wrong, please check again or contact us.')
 
     # feedback
     st.subheader('Feedback')
     st.caption('If you have any questions or suggestions, please [contact us.](mailto:luxinyu@stu.xmu.edu.cn)')
-    # citation
-    st.subheader('Citation')
-    mdlit('''The baseline substrtction methods are refered to [airPLS]() and [123]().  
-          You can cite this web page if you find help in your research. ''')
-
-
-    st.code('''@misc{yourlastname2023,  
-author       = {...},  
-title        = {Raman cloud},  
-howpublished = {Web Page},  
-url          = {https://124.222.26.24:8501},  
-year         = {2023},  
-note         = {Accessed on September 14, 2023}  
-}  ''', 
-language='markdown')

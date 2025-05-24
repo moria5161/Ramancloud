@@ -3,7 +3,7 @@ from multiprocessing import Pool
 import numpy as np
 from api.airPLS import ZhangFit
 from api.modpoly import mod_poly, imod_poly
-from api.PEER import peer, weight_resultX2
+from api.PEER import peer
 
 app = Flask(__name__)
 
