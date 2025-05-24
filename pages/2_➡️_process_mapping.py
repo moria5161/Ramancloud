@@ -103,9 +103,9 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
                                                             scale_factor=2, return_scale_factor=True)
         downsampled_x = wavenumber[cut_start:cut_end][::downsample_scale_factor][:downsampled_demo.shape[1]]
         heatmap1 = go.Heatmap(z=downsampled_raw[:, :, 0], x=downsampled_x, 
-                            colorbar=dict(y=0.75, len=0.5), name='raw')
+                            colorbar=dict(y=0.75, len=0.5), name='raw', colorscale='jet')
         heatmap2 = go.Heatmap(z=downsampled_demo[:, :, 0], x=downsampled_x, 
-                            colorbar=dict(y=0.25, len=0.5), name='processed')
+                            colorbar=dict(y=0.25, len=0.5), name='processed', colorscale='Jet')
         
         fig.add_trace(heatmap1, row=1, col=1)
         fig.add_trace(heatmap2, row=2, col=1)
@@ -128,9 +128,9 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
             demo_mapping_z = demo_mapping[:, :, closest_index]
 
             heatmap1 = go.Heatmap(z=raw_mapping_arr_z, 
-                                colorbar=dict(y=0.75, len=0.4), name='raw')
+                                colorbar=dict(y=0.75, len=0.4), name='raw', colorscale='Jet')
             heatmap2 = go.Heatmap(z=demo_mapping_z, 
-                        colorbar=dict(y=0.25, len=0.4), name='processed')
+                        colorbar=dict(y=0.25, len=0.4), name='processed', colorscale='Jet')
 
             fig.add_trace(heatmap1, row=1, col=1)
             fig.add_trace(heatmap2, row=2, col=1)
@@ -140,14 +140,14 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
             fig.update_yaxes(title_text="Pixely", row=1, col=1, autorange='reversed')
             fig.update_yaxes(title_text="Pixely", row=2, col=1, autorange='reversed')
 
-            fig.update_layout(  
-                height=raw_mapping_arr.shape[0] * 2.4 * 10, 
-                width=raw_mapping_arr.shape[1] * 6, 
-                autosize=False, 
-                margin=dict(l=20, r=20, t=20, b=20),  
-            )
+            fig.update_layout(
+                    height=max(raw_mapping_arr.shape[0] * 24, 100),
+                    width=max(raw_mapping_arr.shape[1] * 6, 50), 
+                    autosize=False,
+                    margin=dict(l=20, r=20, t=20, b=20),
+                )
 
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig)
 
 
 @st.cache_data
@@ -187,6 +187,7 @@ def run():
             demo_data = st.selectbox(label=' ', label_visibility='collapsed', index=None, 
                                      placeholder='select a demo data', 
                                      options=['time series of Horiba', 
+                                              'imaging of Horiba',
                                               'imaging of Nanophoton',
                                               ])
 
@@ -195,6 +196,12 @@ def run():
                 _, indexs, wavenumber, raw_mapping_arr = load_time_series_file(content, instrument='Horiba')
                 st.session_state['raw_mapping'] = raw_mapping_arr
                 st.session_state['mode'] = 'time series'
+
+            elif demo_data == 'imaging of Horiba':
+                content = open('samples/Horiba_imaging_Graphene.txt', 'rb').read()
+                _, indexs, wavenumber, raw_mapping_arr = load_imaging_file(content, instrument='Horiba')
+                st.session_state['raw_mapping'] = raw_mapping_arr
+                st.session_state['mode'] = 'imaging'
 
             elif demo_data == 'imaging of Nanophoton':
                 content = open('samples/imaging_Nanophoton2.txt', 'rb').read()
