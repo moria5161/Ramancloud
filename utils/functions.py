@@ -6,6 +6,7 @@ import requests
 import numpy as np
 from scipy.signal import savgol_filter
 from api.PEER import peer
+from api.TSVD import tsvd
 from api.hpw.bgcorrected_hpw import reference
 from api.baseline_corrected import imod_poly, penalized_poly, airpls, aspls, mormol, rolling_ball, irsqr, snip
 from api.AABS import aabs
@@ -55,36 +56,24 @@ def sg(wa, x, window_size, order, mode='spectra'):
 
 @st.cache_data
 def PEER(wa, x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
+    if type(x) != np.ndarray:
+        x = np.array(x)
+    if type(hlaf_k_threshold) != int:
+        hlaf_k_threshold = int(hlaf_k_threshold)
+
+    def peer_func(inp):
+        out = peer(inp, loops, hlaf_k_threshold)
+        return out
+    
     if mode != 'spectra':
-        data_payload = {
-            'data': x.tolist(),
-            'loops': loops,
-            'hlaf_k_threshold': hlaf_k_threshold,
-        }
-        # 发送 POST 请求
-        response = requests.post("http://localhost:5000/PEER", json=data_payload)
-        if response.status_code == 200:
-            result = response.json()
-            processed_data = np.array(result)
-        else:
-            print("Request failed with status code:", response.status_code)
+        size = x.shape
+        res = np.apply_along_axis(peer_func, 1, x.reshape(-1, size[-1]))
+        res = res.reshape(size)
     else:
-        if type(x) != np.ndarray:
-            x = np.array(x)
-        if type(hlaf_k_threshold) != int:
-            hlaf_k_threshold = int(hlaf_k_threshold)
+        res = peer_func(x)
 
-        processed_data = peer(x, loops, hlaf_k_threshold)
-    return processed_data
+    return res
 
-
-@st.cache_data
-def SF(wave, spec, epochs, imaging=False):
-    parsing = PeakParsing(spec, device='cpu', epochs=epochs, lr=0.05)
-    wave = interplotation(wave)
-    spec = parsing.predict_spectrum()
-    optim_params = parsing.get_params()
-    return wave, spec, optim_params
 
 # def wavelet(data):
 #     # 小波去燥
@@ -98,6 +87,12 @@ def SF(wave, spec, epochs, imaging=False):
 #     smooth_data = pywt.waverec(data, "db8")
 #     smooth_data = smooth_data.tolist()
 #     return smooth_data
+
+def TSVD(wa, x, threshold=1e-3, mode='spectra'):
+    if type(x) != np.ndarray:
+        x = np.array(x)
+    res = tsvd(x, threshold=threshold)
+    return res
 
 
 def ALRMADenoise():
@@ -244,6 +239,17 @@ def auto_adaptive(wa, x, Ln, Lb, mode='spectra'):
 
 # ==================== Other functions ==================== #
 # ==================== Other functions ==================== #
+
+
+@st.cache_data
+def SF(wave, spec, epochs, imaging=False):
+    parsing = PeakParsing(spec, device='cpu', epochs=epochs, lr=0.05)
+    wave = interplotation(wave)
+    spec = parsing.predict_spectrum()
+    optim_params = parsing.get_params()
+    return wave, spec, optim_params
+
+
 
 @st.cache_data
 def generate_download_link(file, filename):

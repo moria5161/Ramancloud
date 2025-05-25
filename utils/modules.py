@@ -8,38 +8,12 @@ import streamlit as st
 from markdownlit import mdlit
 
 from utils.functions import cut, skip
-from utils.functions import sg, PEER
+from utils.functions import sg, PEER, TSVD
 from utils.functions import airPLS, asPLS, imodPoly, penalizedPoly, morMol, rollingBall, Irsqr, Snip, auto_adaptive, CNN_rPLS
 
 
 #====================Denoising submodules====================#
 #====================Denoising submodules====================#
-
-def PEER_submodule(denoise_use_sidebar=False, mode='spectra'):
-
-    if denoise_use_sidebar:
-        with st.sidebar:
-            col1, col2 = st.columns(2)
-            loops = col1.slider('loop times', 1, 5, 1, key='sidebar_loop')
-            hlaf_k_threshold = col2.slider('peak seaking', 0, 7, 1, key='sidebar_hlaf_k_threshold')
-    else:
-        col1, col2 = st.columns(2)
-        loops = col1.slider('loop times', 1, 5, 1)
-        hlaf_k_threshold = col2.slider('peak seaking parameter', 0, 7, 1)
-    
-    with st.expander("See explanation"):
-        st.write(
-            """
-
-            **Loop times:** the number of times to repeat denoising.  
-            **Peak seaking parameter:** key parameter for peak identification, which can be set according to the level of noise.  
-            The greater the noise level, the smaller the value.   
-            This is Peak Extraction and Retention Algorithm [(PEER)](https://pubs.acs.org/doi/10.1021/acs.analchem.0c05391). You can find more details in [tutorial](/tutorial).
-            
-            """)
-
-        return {'loops': loops, 'hlaf_k_threshold': hlaf_k_threshold, 'mode': mode}
-
 
 
 def sg_submodule(denoise_use_sidebar=False, mode='spectra'):
@@ -66,7 +40,67 @@ def sg_submodule(denoise_use_sidebar=False, mode='spectra'):
             will be.] This method is based on [Savitzky-Golay filter](https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter). 
             You can find more details in [tutorial](/tutorial).
             """)
-    return {'window_size':window_size, 'order':order, 'mode':mode}     
+    return {'window_size':window_size, 'order':order, 'mode':mode} 
+
+
+def PEER_submodule(denoise_use_sidebar=False, mode='spectra'):
+
+    if denoise_use_sidebar:
+        with st.sidebar:
+            col1, col2 = st.columns(2)
+            loops = col1.slider('loop times', 1, 11, 3, key='sidebar_loop')
+            hlaf_k_threshold = col2.slider('peak seaking', 0, 5, 2, key='sidebar_hlaf_k_threshold')
+    else:
+        col1, col2 = st.columns(2)
+        loops = col1.slider('loop times', 1, 11, 3)
+        hlaf_k_threshold = col2.slider('peak seaking parameter', 0, 7, 2)
+    
+    with st.expander("See explanation"):
+        st.write(
+            """
+
+            **Loop times:** the number of times to repeat denoising.  
+            **Peak seaking parameter:** key parameter for peak identification, which can be set according to the level of noise.  
+            The greater the noise level, the smaller the value.   
+            This is Peak Extraction and Retention Algorithm [(PEER)](https://pubs.acs.org/doi/10.1021/acs.analchem.0c05391). You can find more details in [tutorial](/tutorial).
+            
+            """)
+
+        return {'loops': loops, 'hlaf_k_threshold': hlaf_k_threshold, 'mode': mode}
+
+    
+def TSVD_submodule(denoise_use_sidebar=False, mode='spectra'):
+
+    if denoise_use_sidebar:
+        with st.sidebar:
+            threshold_list = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1]
+
+            threshold = st.select_slider(
+                'Threshold',
+                options=threshold_list,
+                value=1e-3,
+                format_func=lambda x: f"{x:.0e}",
+                key='threshold_slider'
+            )
+    else:
+        threshold_list = [1e-5, 1e-4, 1e-3, 1e-2, 1e-1]
+
+        threshold = st.select_slider(
+            'Threshold',
+            options=threshold_list,
+            value=1e-3,
+            format_func=lambda x: f"{x:.0e}",
+            key='threshold_slider'
+        )
+
+    with st.expander("See explanation"):
+        st.write(
+            """
+            The new baseline correction method will be supplemented and explained
+            """)
+
+        return {'threshold': threshold, 'mode': mode}
+
 
 
 #====================Baseline Correction submodules====================#
@@ -247,6 +281,8 @@ def CNN_rPLS_submodule(baseline_use_sidebar=False, mode='spectra'):
     return {'mode': mode}
 
 
+
+
 #====================modules for spectra====================#
 #====================modules for spectra====================#
 
@@ -304,17 +340,17 @@ def spectra_baseline_module(spec_df):
 
     baseline_args = {}
     baseline_method_dict = {
-                                'airPLS': airPLS,
-                                'asPLS': asPLS,
-                                'imodPoly': imodPoly,
-                                'penalizedPoly': penalizedPoly,
-                                'morMol': morMol,
-                                'rollingBall': rollingBall,
-                                'Irsqr': Irsqr,
-                                'Snip': Snip,
-                                'auto_adaptive': auto_adaptive,
-                                'CNN_rPLS': CNN_rPLS,
-                                'skip': skip
+                            'airPLS': airPLS,
+                            'asPLS': asPLS,
+                            'imodPoly': imodPoly,
+                            'penalizedPoly': penalizedPoly,
+                            'morMol': morMol,
+                            'rollingBall': rollingBall,
+                            'Irsqr': Irsqr,
+                            'Snip': Snip,
+                            'auto_adaptive': auto_adaptive,
+                            'CNN_rPLS': CNN_rPLS,
+                            'skip': skip
                             }
     
     if 'processed' not in spec_df.columns:
@@ -365,7 +401,12 @@ def spectra_baseline_module(spec_df):
 
     return spec_df, {'method':baseline_method_dict[baseline_method], 'args':baseline_args}
 
+
+
+
 #====================modules for mapping====================#
+#====================modules for mapping====================#
+
 def mapping_cut_module(mapping_data, wavenumber, mode='imaging'):
 
     st.subheader('Cut')
@@ -379,7 +420,7 @@ def mapping_cut_module(mapping_data, wavenumber, mode='imaging'):
 
 
 def mapping_denoise_module(mapping_data, mode='imaging'):
-    denoise_method_dict = {'Savitzky-Golay filter': sg, 'skip': skip}
+    denoise_method_dict = {'Savitzky-Golay filter': sg, 'TSVD': TSVD, 'skip': skip}
     denoise_args = {}
     st.subheader('Smooth')
     col1, col2 = st.columns(2)
@@ -391,6 +432,8 @@ def mapping_denoise_module(mapping_data, mode='imaging'):
         st.stop()
     elif denoise_method == 'Savitzky-Golay filter':
         denoise_args = sg_submodule(denoise_use_sidebar=False, mode=mode)
+    elif denoise_method == 'TSVD':
+        denoise_args = TSVD_submodule(denoise_use_sidebar=False, mode=mode)
 
     elif denoise_method == 'ALRMA':
         col1, col2 = st.columns(2)
@@ -408,8 +451,12 @@ def mapping_denoise_module(mapping_data, mode='imaging'):
             st.markdown(
                 """ This method is based on [Collaborative Low-Rank Matrix Approximation-Assisted Fast Hyperspectral Raman Imaging and Tip-Enhanced Raman Spectroscopic Imaging](https://doi.org/10.1021/acs.analchem.1c02071).
                 """)
-    mapping_data_assist = 100      
+    mapping_data_assist = 1  # No meaning, just for the function
+    
+    size = mapping_data.shape
+    mapping_data = mapping_data.reshape(-1, mapping_data.shape[-1])     
     mapping_data = denoise_method_dict[denoise_method](mapping_data_assist, mapping_data, **denoise_args)
+    mapping_data = mapping_data.reshape(size)
     return mapping_data, {'method':denoise_method_dict[denoise_method], 'args':denoise_args}
 
 
