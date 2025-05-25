@@ -94,16 +94,16 @@ def downsample(input_img, scale_factor=None, return_scale_factor=False):
 
 
 # @st.cache_data(experimental_allow_widgets=True)
-def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
+def plot_mapping(raw_mapping_cut, cut_start, cut_end, demo_mapping, wavenumber):
     if st.session_state['mode'] == 'time series':
         fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
-                            vertical_spacing=0.12, subplot_titles=('Raw mapping', 'Processed mapping'))
+                            vertical_spacing=0.05, subplot_titles=('Raw mapping', 'Processed mapping'))
 
         full_x = wavenumber[cut_start:cut_end]
-        heatmap1 = go.Heatmap(z=raw_mapping_arr[:, cut_start:cut_end], 
+        heatmap1 = go.Heatmap(z=raw_mapping_cut, 
                               x=full_x, colorbar=dict(y=0.75, len=0.5), 
                               name='raw', colorscale='jet')
-        heatmap2 = go.Heatmap(z=demo_mapping[:, cut_start:cut_end], 
+        heatmap2 = go.Heatmap(z=demo_mapping, 
                               x=full_x, colorbar=dict(y=0.25, len=0.5), 
                               name='processed', colorscale='jet')
 
@@ -112,7 +112,7 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
         fig.update_xaxes(title_text="Wavenumber", row=2, col=1)
 
         fig.update_layout(
-            height=raw_mapping_arr.shape[0],
+            height=raw_mapping_cut.shape[0],
             width=cut_end - cut_start,
             autosize=False,
             margin=dict(l=20, r=20, t=20, b=20),
@@ -124,6 +124,7 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
         fig = make_subplots(rows=2, cols=1, shared_xaxes=True,
                             vertical_spacing=0.05, subplot_titles=('Raw mapping', 'Processed mapping'))
         wavenumber_cut = wavenumber[cut_start:cut_end]
+
         target_wavenumber = st.number_input(
             "Select the target wavenumber for peak position imaging", 
             min_value=float(wavenumber_cut.min()), 
@@ -132,9 +133,8 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
 
         if target_wavenumber is not None:
             closest_index = np.abs(wavenumber_cut - target_wavenumber).argmin()
-            raw_mapping_arr_z = raw_mapping_arr[:, :, closest_index]
+            raw_mapping_arr_z = raw_mapping_cut[:, :, closest_index]
             demo_mapping_z = demo_mapping[:, :, closest_index]
-
             heatmap1 = go.Heatmap(z=raw_mapping_arr_z, 
                                   colorbar=dict(y=0.75, len=0.4), name='raw', colorscale='Jet')
             heatmap2 = go.Heatmap(z=demo_mapping_z, 
@@ -149,8 +149,8 @@ def plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber):
             fig.update_yaxes(title_text="Pixely", row=2, col=1, autorange='reversed')
 
             fig.update_layout(
-                height=raw_mapping_arr.shape[0] * 10,
-                width=raw_mapping_arr.shape[1] * 10,
+                height=raw_mapping_cut.shape[0] * 10,
+                width=raw_mapping_cut.shape[1] * 10,
                 autosize=False,
                 margin=dict(l=20, r=20, t=20, b=20),
                 yaxis_scaleanchor="x"
@@ -177,6 +177,7 @@ def run():
     st.session_state['raw_mapping'] = None
     raw_mapping_arr = st.session_state['raw_mapping']
 
+    # ==============================================data input container==============================================#
     # ==============================================data input container==============================================#
     with st.container(border=True):
         st.subheader('Import data', divider='gray')
@@ -222,38 +223,40 @@ def run():
 
     if 'raw_mapping' in st.session_state and st.session_state['raw_mapping'] is not None:
 
-        # ================data processing container================ #
+        # ====================================data processing container==================================== #
+        # ====================================data processing container==================================== #
         with st.container(border=True):
             st.subheader('Data processing', divider='gray')
-            demo_mapping, (cut_start, cut_end) = mapping_cut_module(raw_mapping_arr, wavenumber, mode=st.session_state['mode'])
-
+            raw_mapping_cut, (cut_start, cut_end) = mapping_cut_module(raw_mapping_arr, wavenumber, mode=st.session_state['mode'])
             with st.spinner("processing"):
-                demo_mapping, denoise_args = mapping_denoise_module(demo_mapping, mode=st.session_state['mode'])
+                demo_mapping, denoise_args = mapping_denoise_module(raw_mapping_cut, mode=st.session_state['mode'])
             with st.spinner("processing"):
                 demo_mapping, baseline_args = mapping_baseline_module(demo_mapping, mode=st.session_state['mode'])
 
-        # ================data visualization container================ #
+        # ====================================data visualization container==================================== #
+        # ====================================data visualization container==================================== #
         with st.container(border=True):
             st.subheader('Data visualization', divider=False)
             if st.session_state['mode'] == 'imaging':
-                avg_spectrum_raw = raw_mapping_arr.mean(axis=(0, 1))
+                avg_spectrum_raw = raw_mapping_cut.mean(axis=(0, 1))
                 avg_spectrum_processed = demo_mapping.mean(axis=(0, 1))
                 fig_avg = go.Figure() 
-                fig_avg.add_trace(go.Scatter(
-                    x=wavenumber[cut_start:cut_end],
-                    y=avg_spectrum_raw[cut_start:cut_end],
-                    mode='lines',
-                    name='Raw Mean Spectrum',
-                    line=dict(color='gray'),
-                    opacity=0.6
-                ))
-                fig_avg.add_trace(go.Scatter(x=wavenumber[cut_start:cut_end], y=avg_spectrum_processed, mode='lines', name='Processed Mean Spectrum'))
+                fig_avg.add_trace(go.Scatter(x=wavenumber[cut_start:cut_end], 
+                                             y=avg_spectrum_raw, mode='lines', 
+                                             name='Raw Mean Spectrum',
+                                             line=dict(color='gray'),
+                                             opacity=0.6))
+                
+                fig_avg.add_trace(go.Scatter(x=wavenumber[cut_start:cut_end], 
+                                             y=avg_spectrum_processed, mode='lines', 
+                                             name='Processed Mean Spectrum'))
+                
                 fig_avg.update_layout(title="Average Spectrum", xaxis_title="Wavenumber", yaxis_title="Intensity")
-                st.plotly_chart(fig_avg)
+                st.plotly_chart(fig_avg, use_container_width=False)
             
             tab1, tab2 = st.tabs(['Mapping', 'Spectrum'])
             with tab1:
-                plot_mapping(raw_mapping_arr, cut_start, cut_end, demo_mapping, wavenumber)
+                plot_mapping(raw_mapping_cut, cut_start, cut_end, demo_mapping, wavenumber)
                 st.write('If the imaging results are bad, first check that the wave number selected is reasonable')
 
             with tab2:
@@ -281,6 +284,7 @@ def run():
                         
                         fig = plot_spectrum(demo_spec, baseline_args)
                         st.plotly_chart(fig, use_container_width=True)
+        # ================download container================ #
         # ================download container================ #
         with st.container(border=True):
             st.subheader('Download', divider='gray')

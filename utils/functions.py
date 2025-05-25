@@ -22,14 +22,17 @@ def skip(wa, x):
 
 @st.cache_data
 def cut(x, values, wavenumber=[], mode='spectra'):
+    wavenumber = np.array(wavenumber)
+    idx = np.where((wavenumber >= min(values)) & (wavenumber <= max(values)))[0]
+
     if mode != 'spectra':
         x = np.array(x) if type(x) != np.ndarray else x
         if mode == 'time series':
-            return x[:, (wavenumber >= values[0]) & (wavenumber <= values[1])]
+            return x[:, idx]
         elif mode == 'imaging':
-            return x[:, :, (wavenumber >= values[0]) & (wavenumber <= values[1])]
+            return x[:, :, idx]
     else:
-        return x[(x.wavenumber >= values[0]) & (x.wavenumber <= values[1])]
+        return x[(x.wavenumber >= min(values)) & (x.wavenumber <= max(values))]
 
 
 

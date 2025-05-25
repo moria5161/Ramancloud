@@ -46,11 +46,11 @@ def sg_submodule(denoise_use_sidebar=False, mode='spectra'):
     if denoise_use_sidebar:
         with st.sidebar:
             col1, col2 = st.columns(2)
-            window_size = col1.slider('smooth window size', 3, 33, 7, key='sidebar_window_size')
+            window_size = col1.slider('smooth window size', 5, 55, 7, key='sidebar_window_size')
             order = col2.slider('smooth order', 1, 5, 3, key='sidebar_order')
     else:
         col1, col2 = st.columns(2)
-        window_size = col1.slider('smooth window size', 3, 33, 7)
+        window_size = col1.slider('smooth window size', 5, 55, 7)
         order = col2.slider('smooth order', 1, 5, 3)
     if order >= window_size:
         st.error('order must be less than window size')
@@ -374,9 +374,8 @@ def mapping_cut_module(mapping_data, wavenumber, mode='imaging'):
     MIN, MAX = wavenumber.min(), wavenumber.max()
     values = st.slider('Select the range of wavenumber', min_value=MIN, max_value=MAX, value=(float(MIN), float(MAX)))
     new_array = cut(x=mapping_data, values=values, wavenumber=wavenumber, mode=mode)
-    start_idx = len(wavenumber)-len(np.where(wavenumber >= values[0])[0])
-    end_idx = len(np.where(wavenumber <= values[1])[0])
-    return new_array , (start_idx, end_idx)
+    idx = np.where((wavenumber >= min(values)) & (wavenumber <= max(values)))[0]
+    return new_array, (idx[0], idx[-1] + 1)
 
 
 def mapping_denoise_module(mapping_data, mode='imaging'):
