@@ -111,12 +111,12 @@ def airPLS_submodule(baseline_use_sidebar=False, mode='spectra'):
         with st.sidebar:
             col1, col2 = st.columns(2)
             lambda_list = [10**i for i in range(4, 11)]
-            lambda_ = col1.select_slider('lambda', options=lambda_list, value=1e7, format_func=lambda x: f"{x:.0e}", key='sidebar_lambda')
+            lambda_ = col1.select_slider('lambda', options=lambda_list, value=1e8, format_func=lambda x: f"{x:.0e}", key='sidebar_lambda')
             order_ = col2.slider('order', 1, 8, 3, key='sidebar_order')
     else:
         col1, col2 = st.columns(2)
         lambda_list = [10**i for i in range(4, 11)]
-        lambda_ = col1.select_slider('lambda', options=lambda_list, value=1e7, format_func=lambda x: f"{x:.0e}")
+        lambda_ = col1.select_slider('lambda', options=lambda_list, value=1e8, format_func=lambda x: f"{x:.0e}")
         order_ = col2.slider('order', 1, 8, 3)
 
     with st.expander("See explanation"):
