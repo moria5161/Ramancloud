@@ -112,11 +112,11 @@ def plot_mapping(raw_mapping_cut, cut_start, cut_end, demo_mapping, wavenumber):
         fig.update_xaxes(title_text="Wavenumber", row=2, col=1)
 
         fig.update_layout(
-            height=raw_mapping_cut.shape[0],
-            width=cut_end - cut_start,
+            height=min(800, 40 * raw_mapping_cut.shape[0]),  # 每个时间点 40px，高不超800
+            width=min(1000, 2 * (cut_end - cut_start)),       # 每个波数 2px，宽不超1000
             autosize=False,
             margin=dict(l=20, r=20, t=20, b=20),
-            yaxis_scaleanchor="x"
+            yaxis_scaleanchor=None
         )
         st.plotly_chart(fig, use_container_width=False)
 
@@ -257,7 +257,7 @@ def run():
             tab1, tab2 = st.tabs(['Mapping', 'Spectrum'])
             with tab1:
                 plot_mapping(raw_mapping_cut, cut_start, cut_end, demo_mapping, wavenumber)
-                st.write('If the imaging results are bad, first check that the wave number selected is reasonable')
+                # st.write('If the imaging results are bad, first check that the wave number selected is reasonable')
 
             with tab2:
                 if st.session_state['mode'] == 'time series':
