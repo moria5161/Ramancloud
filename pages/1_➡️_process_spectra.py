@@ -245,7 +245,8 @@ def run():
                                 df_file = io.BytesIO(df_bytes)
 
                                 # Add the in-memory file to the zip file
-                                zip_file.writestr(f'pre_{filenames[i]}.txt', df_file.getvalue())
+                                filename_base = filenames[i].rsplit('.', 1)[0]
+                                zip_file.writestr(f'pre_{filename_base}.txt', df_file.getvalue())
                         href = generate_download_link(zip_buffer, 'pre.zip')
                         st.markdown(href, unsafe_allow_html=True)
 
