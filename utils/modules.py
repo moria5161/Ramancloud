@@ -327,7 +327,12 @@ def spectra_cut_module(spec_df):
 
 
 def spectra_denoise_module(spec_df):
-    denoise_method_dict = {'Savitzky-Golay filter': sg, 'PEER': PEER, 'WTD':WTD, 'skip': skip}
+    denoise_method_dict = {
+    'Savitzky-Golay filter': sg,
+    'WTD': WTD,
+    'PEER': PEER,
+    'skip': skip
+    }
     denoise_args = {}  
 
     if 'processed' not in spec_df.columns:
@@ -364,18 +369,19 @@ def spectra_baseline_module(spec_df):
 
     baseline_args = {}
     baseline_method_dict = {
-                            'airPLS': airPLS,
-                            'asPLS': asPLS,
-                            'imodPoly': imodPoly,
-                            'penalizedPoly': penalizedPoly,
-                            'morMol': morMol,
-                            'rollingBall': rollingBall,
-                            'Irsqr': Irsqr,
-                            'Snip': Snip,
-                            'auto_adaptive': auto_adaptive,
-                            'CNN_rPLS': CNN_rPLS,
-                            'skip': skip
-                            }
+        'auto_adaptive': auto_adaptive,
+        'CNN_rPLS': CNN_rPLS,
+        'airPLS': airPLS,
+        'asPLS': asPLS,
+        'imodPoly': imodPoly,
+        'penalizedPoly': penalizedPoly,
+        'morMol': morMol,
+        'rollingBall': rollingBall,
+        'Irsqr': Irsqr,
+        'Snip': Snip,
+        'skip': skip
+    }
+
     
     if 'processed' not in spec_df.columns:
         spec_df['processed'] = spec_df['raw'].copy()
