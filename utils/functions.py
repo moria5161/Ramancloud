@@ -13,6 +13,7 @@ from api.AABS import aabs
 from api.SplitingFiting import PeakParsing, interplotation
 import streamlit as st
 import pymysql
+import pywt
 from concurrent.futures import ThreadPoolExecutor
 from pathos.multiprocessing import ProcessingPool as Pool
 
@@ -75,18 +76,13 @@ def PEER(wa, x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
     return res
 
 
-# def wavelet(data):
-#     # 小波去燥
-#     data = np.array(data)
-#     w = pywt.Wavelet("db8")
-#     maxlev = pywt.dwt_max_level(len(data), w.dec_len)
-#     data = pywt.wavedec(data, "db8", level=maxlev)
-#     threshold = 0.5
-#     for i in range(1, len(data)):
-#         data[i] = pywt.threshold(data[i], threshold * max(data[i]))
-#     smooth_data = pywt.waverec(data, "db8")
-#     smooth_data = smooth_data.tolist()
-#     return smooth_data
+def WTD(wa, x, wavelet='db3', level=3, mode='spectra'):
+    coeffs = pywt.wavedec(x, wavelet, level=level)
+    threshold = 0.8 * np.sqrt(2 * np.log(len(x))) * np.median(np.abs(coeffs[-1])) / 0.6745
+    coeffs_denoised = [pywt.threshold(c, threshold, mode='soft') if i > 0 else c for i, c in enumerate(coeffs)]
+    res = pywt.waverec(coeffs_denoised, wavelet)[:len(x)]
+    return res
+
 
 def TSVD(wa, x, threshold=1e-3, mode='spectra'):
     if type(x) != np.ndarray:

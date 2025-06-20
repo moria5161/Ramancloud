@@ -8,7 +8,7 @@ import streamlit as st
 from markdownlit import mdlit
 
 from utils.functions import cut, skip
-from utils.functions import sg, PEER, TSVD
+from utils.functions import sg, PEER, WTD, TSVD
 from utils.functions import airPLS, asPLS, imodPoly, penalizedPoly, morMol, rollingBall, Irsqr, Snip, auto_adaptive, CNN_rPLS
 
 
@@ -67,6 +67,27 @@ def PEER_submodule(denoise_use_sidebar=False, mode='spectra'):
             """)
 
         return {'loops': loops, 'hlaf_k_threshold': hlaf_k_threshold, 'mode': mode}
+    
+def WTD_submodule(denoise_use_sidebar=False, mode='spectra'):
+
+    if denoise_use_sidebar:
+        with st.sidebar:
+            col1, col2 = st.columns(2)
+            wavelet = col1.slider('wavelet', 2, 9, 5, key='sidebar_wavelet')
+            level = col2.slider('level', 2, 9, 3, key='sidebar_level')
+    else:
+        col1, col2 = st.columns(2)
+        wavelet = col1.slider('wavelet', 2, 9, 5)
+        level = col2.slider('level', 2, 9, 3)
+
+    with st.expander("See explanation"):
+        st.write(
+            """
+            The new baseline correction method will be supplemented and explained
+            
+            """)
+
+        return {'wavelet': f'db{wavelet}', 'level': level, 'mode': mode}
 
     
 def TSVD_submodule(denoise_use_sidebar=False, mode='spectra'):
@@ -306,7 +327,7 @@ def spectra_cut_module(spec_df):
 
 
 def spectra_denoise_module(spec_df):
-    denoise_method_dict = {'Savitzky-Golay filter': sg, 'PEER': PEER, 'skip': skip}
+    denoise_method_dict = {'Savitzky-Golay filter': sg, 'PEER': PEER, 'WTD':WTD, 'skip': skip}
     denoise_args = {}  
 
     if 'processed' not in spec_df.columns:
@@ -329,6 +350,9 @@ def spectra_denoise_module(spec_df):
 
     elif denoise_method == 'PEER':
         denoise_args = PEER_submodule(denoise_use_sidebar=denoise_use_sidebar, mode='spectra')
+
+    elif denoise_method == 'WTD':
+        denoise_args = WTD_submodule(denoise_use_sidebar=denoise_use_sidebar, mode='spectra')
 
     spec_df['processed'] = denoise_method_dict[denoise_method](spec_df['wavenumber'], spec_df['processed'], **denoise_args)
 
