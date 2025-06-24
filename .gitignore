@@ -8,6 +8,7 @@ nohup.out
 tmp.*
 
 *.pth
+*.pt
 *.ipynb
 
 cache/
