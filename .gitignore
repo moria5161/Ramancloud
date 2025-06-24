@@ -13,4 +13,4 @@ tmp.*
 
 cache/
 
-fast_push.sh
+*.sh
