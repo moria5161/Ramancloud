@@ -9,6 +9,7 @@ from api.PEER import peer
 from api.TSVD import tsvd
 from api.hpw.bgcorrected_hpw import reference
 from api.baseline_corrected import imod_poly, penalized_poly, airpls, aspls, mormol, rolling_ball, irsqr, snip
+from api.airPLS import airpls_old
 from api.AABS import aabs
 from api.SplitingFiting import PeakParsing, interplotation
 import streamlit as st
@@ -123,6 +124,19 @@ def airPLS(wa, x, lambda_, order_, mode='spectra'):
     print(f"airPLS time: {e_time - s_time}")
     return processed_data
 
+@st.cache_data
+def airPLS_old(wa, x, lambda_, order_, mode='spectra'):
+    s_time= time.time()
+    if mode != 'spectra':
+        size = x.shape
+        processed_data = np.zeros(size)
+        for i in range(size[0]):
+            processed_data[i, :] = airpls_old(x[i, :], lambda_, order_)
+    else:
+        processed_data = airpls_old(x, lambda_, order_)
+    e_time = time.time()
+    print(f"airPLS_old time: {e_time - s_time}")
+    return processed_data
 
 @st.cache_data
 def asPLS(wa, x, lambda_, order_, mode='spectra'):
@@ -137,7 +151,6 @@ def asPLS(wa, x, lambda_, order_, mode='spectra'):
     e_time = time.time()
     print(f"asPLS time: {e_time - s_time}")
     return processed_data
-
 
 @st.cache_data
 def imodPoly(wa, x, poly_order, mode='spectra'):

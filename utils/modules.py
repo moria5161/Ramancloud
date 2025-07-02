@@ -9,7 +9,7 @@ from markdownlit import mdlit
 
 from utils.functions import cut, skip
 from utils.functions import sg, PEER, WTD, TSVD
-from utils.functions import airPLS, asPLS, imodPoly, penalizedPoly, morMol, rollingBall, Irsqr, Snip, auto_adaptive, CNN_rPLS
+from utils.functions import airPLS_old, airPLS, asPLS, imodPoly, penalizedPoly, morMol, rollingBall, Irsqr, Snip, auto_adaptive, CNN_rPLS
 
 
 #====================Denoising submodules====================#
@@ -140,6 +140,30 @@ def airPLS_submodule(baseline_use_sidebar=False, mode='spectra'):
         lambda_ = col1.select_slider('lambda', options=lambda_list, value=1e8, format_func=lambda x: f"{x:.0e}")
         order_ = col2.slider('order', 1, 8, 3)
 
+    with st.expander("See explanation"):
+        st.markdown(
+            """
+            The parameters are the lambda and the order of the polynomial used to fit the baseline.
+            :red[The smaller the lambda, the greater the deduction of the baseline.]
+            The order is the order of the polynomial used to fit the baseline, which must be less than the lambda.
+            This method is based on [airPLS](https://doi.org/10.1039/B922045C) developed by Zhi-Min Zhang et. al. in Central South University.
+            You can find more details in [tutorial](/tutorial).
+            """)
+    return {'lambda_':lambda_, 'order_':order_, 'mode':mode}
+
+def airPLS_old_submodule(baseline_use_sidebar=False, mode='spectra'):
+    if baseline_use_sidebar:
+        with st.sidebar:
+            col1, col2 = st.columns(2)
+            lambda_ = col1.slider('lambda', 1, 200, 99, key='sidebar_lambda')
+            order_ = col2.slider('order', 1, 35, 15, key='sidebar_order')
+    else:
+        col1, col2 = st.columns(2)
+        lambda_ = col1.slider('lambda', 1, 200, 99)
+        order_ = col2.slider('order', 1, 35, 15)
+    # if order_ >= lambda_:
+    #     st.error('order must be less than lambda')
+    #     st.stop()
     with st.expander("See explanation"):
         st.markdown(
             """
@@ -371,6 +395,7 @@ def spectra_baseline_module(spec_df):
     baseline_method_dict = {
         'auto_adaptive': auto_adaptive,
         'CNN_rPLS': CNN_rPLS,
+        'airPLS_old': airPLS_old,
         'airPLS': airPLS,
         'asPLS': asPLS,
         'imodPoly': imodPoly,
@@ -393,7 +418,10 @@ def spectra_baseline_module(spec_df):
         
     if baseline_use_sidebar:
         st.sidebar.subheader('**baseline parameters**', divider='gray')
-    
+
+    if baseline_method == 'airPLS_old':
+        baseline_args = airPLS_old_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
+
     if baseline_method == 'airPLS':
         baseline_args = airPLS_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
 
