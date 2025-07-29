@@ -126,7 +126,7 @@ def move_average(data, weight):
     return result
 
 
-def find_extreme(data, d_data, d2_data, hlaf_k_threshold=2):
+def find_extreme(data, d_data, d2_data, half_k_threshold=2):
     big = []
     small = []
     big_mis = []
@@ -145,7 +145,7 @@ def find_extreme(data, d_data, d2_data, hlaf_k_threshold=2):
         half_k = (big[s][0][1] - big[s][0][0]) // 2
         #####################################kye#############################################################
         if half_k >= 5:  #####重要参数，二阶导的选取比例
-            half_k = hlaf_k_threshold
+            half_k = half_k_threshold
         for w in range(half_k):
             if big[s][1] + w < len(d2_data) and big[s][1] - w > 0:
                 if d2_data[big[s][1] + w] >= 0 or d2_data[big[s][1] - w] >= 0:
@@ -215,9 +215,9 @@ def find_extreme(data, d_data, d2_data, hlaf_k_threshold=2):
     return big_new, data_temp
 
 
-def weight_resultX2(data, hlaf_k_threshold=2):  # PEER
+def weight_resultX2(data, half_k_threshold=2):  # PEER
     d_data, d2_data = derivative(data)
-    big_new, data_temp = find_extreme(data, d_data, d2_data, hlaf_k_threshold)
+    big_new, data_temp = find_extreme(data, d_data, d2_data, half_k_threshold)
     new_data = weight_result(data_temp, 7)  # 窗口参数
     for l in big_new:
         new_data[l] = data[l]
@@ -239,9 +239,9 @@ def read(filename):
     return orign_keys, orign_values
 
 
-def peer(data, loops=1, hlaf_k_threshold=2):
+def peer(data, loops=1, half_k_threshold=2):
     for _ in range(loops):
-        data = weight_resultX2(data, hlaf_k_threshold)
+        data = weight_resultX2(data, half_k_threshold)
     return data
 
 
