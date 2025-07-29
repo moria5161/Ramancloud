@@ -116,18 +116,35 @@ def load_model(model_path='/media/ramancloud/api/Flask/methods/model_pt/f2p_ps16
 
 def f2p_process(spectra_noisy_orig, wavenumbers, model, device):
     spectrum_length = 1600
-
     original_length = len(spectra_noisy_orig)
-    spectra_resampled = resample(spectra_noisy_orig, spectrum_length)
-    min_val = np.min(spectra_resampled)
-    max_val = np.max(spectra_resampled)
-    spectra_norm = (spectra_resampled - min_val) / (max_val - min_val + 1e-8)
+
+    input_tensor = torch.from_numpy(spectra_noisy_orig).to(device, dtype=torch.float32)
+
+    resampled_tensor = torch.nn.functional.interpolate(
+        input_tensor.view(1, 1, -1),
+        size=spectrum_length,
+        mode='linear',
+        align_corners=False
+    )
+
+    min_val = torch.min(resampled_tensor)
+    max_val = torch.max(resampled_tensor)
+    range_val = max_val - min_val
+    normalized_tensor = (resampled_tensor - min_val) / (range_val + 1e-8)
 
     with torch.no_grad():
-        input_tensor = torch.from_numpy(spectra_norm).unsqueeze(0).unsqueeze(0).to(device, dtype=torch.float32)
-        denoised_norm = model(input_tensor).squeeze().cpu().numpy()
+        denoised_norm = model(normalized_tensor)
 
-    denoised_unscaled = denoised_norm * (max_val - min_val + 1e-8) + min_val
-    denoised_resampled = resample(denoised_unscaled, original_length)
+    denoised_unscaled = denoised_norm * (range_val + 1e-8) + min_val
+
+    denoised_resampled = torch.nn.functional.interpolate(
+        denoised_unscaled,
+        size=original_length,
+        mode='linear',
+        align_corners=False
+    ).squeeze().cpu().numpy()
+
     denoised_final = spectra_correction(spectra_noisy_orig, denoised_resampled)
+    
     return denoised_final, wavenumbers
+
