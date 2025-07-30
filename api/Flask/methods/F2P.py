@@ -148,3 +148,67 @@ def f2p_process(spectra_noisy_orig, wavenumbers, model, device):
     
     return denoised_final, wavenumbers
 
+def f2p_process_batch(spectra_batch, model, device):
+    if not spectra_batch:
+        return []
+    
+    spectrum_length = 1600 # 模型固定的输入长度
+    
+    # 记录每条光谱的原始长度，用于后续恢复
+    original_lengths = [len(s) for s in spectra_batch]
+    
+    # --- 1. 批量预处理 ---
+    
+    # a. 将每条光谱插值到模型所需的固定长度(1600)
+    # 因为原始长度可能不同，这里需要先单独处理再合并成批次
+    resampled_list = [
+        torch.nn.functional.interpolate(
+            torch.from_numpy(spec).view(1, 1, -1),
+            size=spectrum_length,
+            mode='linear',
+            align_corners=False
+        ) for spec in spectra_batch
+    ]
+    
+    # b. 将插值后的张量列表合并成一个大的批次张量
+    # 形状变为: [批次大小, 1, 1600]
+    batch_tensor = torch.cat(resampled_list, dim=0).to(device, dtype=torch.float32)
+
+    # c. 向量化归一化：对批次中的每条光谱进行min-max归一化
+    # keepdim=True 保持维度，便于后续广播计算
+    min_vals, _ = torch.min(batch_tensor, dim=2, keepdim=True)
+    max_vals, _ = torch.max(batch_tensor, dim=2, keepdim=True)
+    ranges = max_vals - min_vals
+    # 防止除以零
+    ranges[ranges == 0] = 1e-8
+    normalized_batch = (batch_tensor - min_vals) / ranges
+
+    # --- 2. 批量模型推理 ---
+    with torch.no_grad():
+        denoised_norm_batch = model(normalized_batch)
+
+    # --- 3. 批量后处理 ---
+
+    # a. 向量化反归一化
+    denoised_unscaled_batch = denoised_norm_batch * ranges + min_vals
+
+    # b. 将结果插值回各自的原始长度
+    # 由于原始长度不同，这一步必须逐一处理
+    results = []
+    for i in range(len(spectra_batch)):
+        denoised_unscaled = denoised_unscaled_batch[i:i+1] # 切片以保持形状 [1, 1, 1600]
+        original_len = original_lengths[i]
+        
+        # 插值回原始长度
+        denoised_resampled = torch.nn.functional.interpolate(
+            denoised_unscaled,
+            size=original_len,
+            mode='linear',
+            align_corners=False
+        ).squeeze().cpu().numpy()
+        
+        # 应用最终校正
+        final_spectrum = spectra_correction(spectra_batch[i], denoised_resampled)
+        results.append(final_spectrum)
+        
+    return results
