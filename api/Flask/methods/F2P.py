@@ -145,6 +145,7 @@ def f2p_process(spectra_noisy_orig, wavenumbers, model, device):
     ).squeeze().cpu().numpy()
 
     denoised_final = spectra_correction(spectra_noisy_orig, denoised_resampled)
+    denoised_final = np.round(denoised_final, 3)
     
     return denoised_final, wavenumbers
 
@@ -209,6 +210,6 @@ def f2p_process_batch(spectra_batch, model, device):
         
         # 应用最终校正
         final_spectrum = spectra_correction(spectra_batch[i], denoised_resampled)
-        results.append(final_spectrum)
+        results.append(np.round(final_spectrum, 3))
         
     return results
