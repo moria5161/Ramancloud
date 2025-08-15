@@ -290,7 +290,6 @@ if __name__ == "__main__":
     
     st.image('/media/ramancloud/static/logo.png',  use_column_width=True)
 
-    # Set the font size for st.tabs using HTML styling
     css = '''
     <style>
         .stTabs [data-baseweb="tab-list"] button [data-testid="stMarkdownContainer"] p {
@@ -315,5 +314,15 @@ if __name__ == "__main__":
     with col1:
         feedback()
     with col2:
+        # st.markdown("##### 网站访问统计")
         from streamlit.components.v1 import html
-        html('''<a href='https://clustrmaps.com/site/1bxqy'  title='Visit tracker'><img src='//clustrmaps.com/map_v2.png?cl=ffffff&w=a&t=tt&d=IYobjN-Mu1pChSxslZv7Z5QG-hGiH_WbPUJNPPml1q0&co=2d78ad&ct=ffffff'/></a>''')
+        html('''
+            <div style="text-align: center;">
+                <a href='https://clustrmaps.com/site/1bxqy' target='_blank' title='View visitor statistics'>
+                    <img src='//clustrmaps.com/map_v2.png?cl=ffffff&w=a&t=n&d=IYobjN-Mu1pChSxslZv7Z5QG-hGiH_WbPUJNPPml1q0&co=2d78ad&ct=ffffff' style="width: 100%; max-width: 250px;"/>
+                </a>
+                <p style="font-size:0.9rem; margin-top:0.5rem;">
+                  
+                </p>
+            </div>
+        ''', height=220)

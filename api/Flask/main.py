@@ -20,6 +20,9 @@ logging.basicConfig(
         TimedRotatingFileHandler(log_file_path, when='D', interval=1, backupCount=180, encoding='utf-8')
     ]
 )
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.WARNING)
+
 
 app = Flask(__name__)
 
@@ -147,4 +150,4 @@ if __name__ == '__main__':
     """
     threaded=True: 启用多线程模式，可以同时处理多个请求
     """
-    app.run(host='0.0.0.0', port=5039, threaded=True)
+    app.run(host='0.0.0.0', port=5066, threaded=True)
