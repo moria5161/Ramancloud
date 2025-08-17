@@ -2,7 +2,6 @@
 This file contains the functions and algorithms used in the modules.
 '''
 import time
-import requests
 import numpy as np
 from scipy.signal import savgol_filter
 from api.PEER import peer
@@ -15,8 +14,6 @@ from api.SplitingFiting import PeakParsing, interplotation
 import streamlit as st
 import pymysql
 import pywt
-from concurrent.futures import ThreadPoolExecutor
-from pathos.multiprocessing import ProcessingPool as Pool
 
 
 def skip(wa, x):
@@ -272,32 +269,3 @@ def generate_download_link(file, filename):
     href = f'<a href="data:application/{file_type};base64, {encoded}" download="{quoted_filename}">Download {download_string} File</a>'
     return href
 
-
-@st.cache_data
-def exec_mysql(sql):
-
-    # Define the database connection parameters
-    db_config = {
-        "host": "127.0.0.1",  # Use Docker container hostname or IP address if needed
-        "user": "root",
-        "password": "moria5161",
-        "db": "ramancloud_db",  # Use your database name
-        "port": 3306,  # This should match the port mapping you used when running the container
-    }
-
-    # Create a connection to the database
-    try:
-        connection = pymysql.connect(**db_config)
-        if connection.open:
-            cursor = connection.cursor()
-            cursor.execute(sql)
-        connection.commit()
-
-    except pymysql.Error as e:
-        print(f"Error: {e}")
-    finally:
-        # Close the cursor and database connection
-        if 'cursor' in locals():
-            cursor.close()
-        if 'connection' in locals() and connection.open:
-            connection.close()
