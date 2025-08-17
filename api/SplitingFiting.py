@@ -115,8 +115,6 @@ class PeakParsing:
             loss.backward()
             optimizer.step()
 
-            fit_bar.set_description(f'EPOCH: {i + 1}, LOSS: {loss.item():.4f}')
-
     def predict_spectrum(self):
         x = torch.arange(len(self.spectrum), dtype=torch.float32).to(self.device)
         return self.model(x, mu=self.model.mu).cpu().detach().numpy()

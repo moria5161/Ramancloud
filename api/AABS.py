@@ -166,26 +166,20 @@ def dg(background, Ln, Lb):
 def peak_region(background, Ln, Lb):
     lens = len(background)
     dgs = dg(background, Ln, Lb)
-    j = 0
+
     peaks = np.where(np.diff(np.sign(dgs)) < 0)[0] + 1
-    regions = np.zeros((lens, 2)).tolist()
-    is_smoothed = [0]*lens
+    
+    if len(peaks) == 0:
+        return np.array([]), [], []
 
-    for i in range(1, lens):
-        if dgs[i - 1] >= 0 >= dgs[i]:
-            peaks[j] = i
-            if abs(dgs[i-1] - dgs[i]) < 0.01:
-                is_smoothed[j] = 1
-            else:
-                is_smoothed[j] = 0
-            j += 1
-
-    peak_sum = j
-    for p in range(peak_sum):
+    regions = np.zeros((len(peaks), 2), dtype=int).tolist()
+    
+    for p in range(len(peaks)):
         i = peaks[p] - 1
         while i > 0 and dgs[i - 1] >= 0:
             i -= 1
         regions[p][0] = i
+
         i = peaks[p] + 1
         while i < lens - 1 and dgs[i + 1] <= 0:
             i += 1
@@ -193,8 +187,15 @@ def peak_region(background, Ln, Lb):
             regions[p][1] = i
         else:
             regions[p][1] = i + 1
+
     peak_sum = adjust(peaks, regions, background, len(peaks), Ln)
-    return peaks[:peak_sum], regions[:peak_sum], is_smoothed[:peak_sum]
+    
+    final_peaks = peaks[:peak_sum]
+    final_regions = regions[:peak_sum]
+    
+    is_smoothed = [1 if abs(dgs[p - 1] - dgs[p]) < 0.01 else 0 for p in final_peaks]
+
+    return final_peaks, final_regions, is_smoothed
 
 
 def get_background(regions, is_smoothed, smoothed_values,  show, peak_sum, Ln, Lb):

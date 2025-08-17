@@ -278,10 +278,10 @@ def exec_mysql(sql):
 
     # Define the database connection parameters
     db_config = {
-        "host": "10.26.50.228",  # Use Docker container hostname or IP address if needed
+        "host": "127.0.0.1",  # Use Docker container hostname or IP address if needed
         "user": "root",
-        "password": "123456",
-        "db": "ramancloud_database",  # Use your database name
+        "password": "moria5161",
+        "db": "ramancloud_db",  # Use your database name
         "port": 3306,  # This should match the port mapping you used when running the container
     }
 
