@@ -9,22 +9,7 @@ INSERT INTO
         smooth_args,
         baseline_method,
         baseline_args,
-        domain,
-        data_hash
-
-
+        domain
     )
 VALUES
-    (
-        "{}",
-        "{}", 
-        "{}", 
-        "{}", 
-        "{}", 
-        "{}", 
-        "{}", 
-        "{}", 
-        "{}",
-        "{}",
-        SHA1(raw_spectrum)  
-    );
+    (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);

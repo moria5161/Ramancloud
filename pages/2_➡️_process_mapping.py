@@ -1,11 +1,9 @@
 import io
 import time
-from PIL import Image
-from matplotlib import cm
+import json
 import numpy as np
 import pandas as pd
 import streamlit as st
-from sklearn.cluster import KMeans
 from plotly.subplots import make_subplots
 import plotly.express as px
 import plotly.graph_objs as go
@@ -285,7 +283,6 @@ def run():
                         fig = plot_spectrum(demo_spec, baseline_args)
                         st.plotly_chart(fig, use_container_width=True)
         # ================download container================ #
-        # ================download container================ #
         with st.container(border=True):
             st.subheader('Download', divider='gray')
             download_button = False
@@ -339,24 +336,17 @@ def run():
 
                 # =================save data to mysql================ #
                 try:
-                    sql = open(
-                    '/media/ramancloud/utils/add_labeled_spectra.sql', 'r').read()
+                    sql_template = open('/media/ramancloud/utils/add_unlabeled_mapping.sql', 'r').read()
 
-                    raw_wavenumber = wavenumber.tolist()
-                    raw_spectrum = raw_mapping_arr[demo_index-1]
-                    pre_spectrum = demo_spec.processed.to_list()
-                    sql = sql.format(
+                    raw_wavenumber_json = json.dumps(wavenumber.tolist()) 
+                    raw_mapping_json = json.dumps(raw_mapping_arr.tolist())
+                    params = (
                         startTime,
-                        raw_wavenumber,
-                        raw_spectrum,
-                        pre_spectrum,
-                        {'values': (wavenumber[cut_start], wavenumber[cut_end-1])},
-                        denoise_args['method'].__name__,
-                        denoise_args['args'],
-                        baseline_args['method'].__name__,
-                        baseline_args['args'],
+                        raw_wavenumber_json,
+                        raw_mapping_json
                     )
-                    exec_mysql(sql)
+                    exec_mysql(sql_template, params)
+
                 except Exception as e:
                     print(e)
 

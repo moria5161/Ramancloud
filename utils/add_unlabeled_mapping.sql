@@ -2,13 +2,7 @@ INSERT INTO
     unlabeled_mapping_database (
         ds,
         raw_wavenumber,
-        raw_mapping,
-        data_hash
+        raw_mapping
     )
 VALUES
-    (
-        "{}",
-        "{}", 
-        "{}", 
-        SHA1(raw_mapping)  
-    );
+    (%s, %s, %s);

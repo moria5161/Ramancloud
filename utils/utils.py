@@ -127,33 +127,33 @@ def generate_download_link(file, filename):
     return href
 
 
-def exec_mysql(sql):
-
-    # Define the database connection parameters
+def exec_mysql(sql, params):
+    print("--- DEBUG: exec_mysql函数被调用。---")
     db_config = {
-        "host": "127.0.0.1",  # Use Docker container hostname or IP address if needed
+        "host": "127.0.0.1",
         "user": "root",
         "password": "moria5161",
-        "db": "ramancloud_db",  # Use your database name
-        "port": 3306,  # This should match the port mapping you used when running the container
+        "db": "ramancloud_db",
+        "port": 3306,
+        "connect_timeout": 5
     }
 
-    # Create a connection to the database
+    connection = None
     try:
         connection = pymysql.connect(**db_config)
-        if connection.open:
-            cursor = connection.cursor()
-            cursor.execute(sql)
+        cursor = connection.cursor()
+        # 将sql和params分开传递给execute方法
+        cursor.execute(sql, params)
         connection.commit()
+        print("--- DEBUG: SQL命令成功提交。---")
 
-    except pymysql.Error as e:
-        print(f"Error: {e}")
+    except Exception as e:
+        print("--- ERROR: 数据库操作发生错误！---")
+        print(e) 
     finally:
-        # Close the cursor and database connection
-        if 'cursor' in locals():
-            cursor.close()
-        if 'connection' in locals() and connection.open:
+        if connection:
             connection.close()
+
 
 def stream_data(words):
     for word in words.split(" "):

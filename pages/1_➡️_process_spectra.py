@@ -4,6 +4,7 @@ This page is used to process the spectra.
 
 import io
 import time
+import json
 import zipfile
 import pandas as pd
 import numpy as np
@@ -199,6 +200,8 @@ def run():
                 download_button = col1.button(':+1: :blue[process and download]')
                 download_baseline = col2.toggle('Download baseline', key='show_peak_analysis')
             if download_button:
+                print("--- DEBUG: 'process and download' 按钮被点击，代码块开始执行。 ---")
+                st.info("按钮已点击，正在处理并保存数据...")
                 if demo_data != '-':
                     # 如果使用演示数据，则提示不支持下载演示数据
                     st.error('Downloading demo data is not supported. Please upload your own data.')
@@ -250,24 +253,32 @@ def run():
                         st.markdown(href, unsafe_allow_html=True)
 
                         # =================save data to mysql================ #
-                sql = open('/media/ramancloud/utils/add_labeled_spectra.sql', 'r').read()
+                sql_template = open('/media/ramancloud/utils/add_labeled_spectra.sql', 'r').read()
                 
-                raw_wavenumber = raw_demo_spec.wavenumber.to_list()
-                raw_spectrum = raw_demo_spec.raw.to_list()
-                pre_spectrum = demo_spec.processed.to_list()
-                sql = sql.format(
+                # 2. 准备数据，和之前一样转换为JSON字符串
+                raw_wavenumber_json = json.dumps(raw_demo_spec.wavenumber.to_list())
+                raw_spectrum_json = json.dumps(raw_demo_spec.raw.to_list())
+                pre_spectrum_json = json.dumps(demo_spec.processed.to_list())
+                cut_args_json = json.dumps(cut_args['args'])
+                smooth_args_json = json.dumps(smooth_args['args'])
+                baseline_args_json = json.dumps(baseline_args['args'])
+
+                # 3. 创建一个包含所有参数的元组，顺序必须和SQL文件中的列完全一致
+                params = (
                     startTime,
-                    raw_wavenumber,
-                    raw_spectrum,
-                    pre_spectrum,
-                    cut_args['args'],
+                    raw_wavenumber_json,
+                    raw_spectrum_json,
+                    pre_spectrum_json,
+                    cut_args_json,
                     smooth_args['method'].__name__,
-                    smooth_args['args'],
+                    smooth_args_json,
                     baseline_args['method'].__name__,
-                    baseline_args['args'],
+                    baseline_args_json,
                     domain
-                    )
-                exec_mysql(sql)
+                )
+
+                # 4. 调用新的exec_mysql函数
+                exec_mysql(sql_template, params)
 
     # =================reference================ #
     st.markdown('''
