@@ -2,6 +2,7 @@
 This page is used to process the spectra.
 '''
 
+
 import io
 import time
 import zipfile
@@ -29,10 +30,7 @@ startTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 # @st.cache_data
 def load_data(file):
 
-    # load data and convert to string
     content = file.getvalue()
-
-    # remove text before the number in this bytes file by re 
     import re
     pattern = re.compile(b'^[-]?\d+[.]?')    
     
