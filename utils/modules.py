@@ -393,10 +393,10 @@ def spectra_baseline_module(spec_df):
 
     baseline_args = {}
     baseline_method_dict = {
-        'auto_adaptive': auto_adaptive,
-        'CNN_rPLS': CNN_rPLS,
-        'airPLS_old': airPLS_old,
         'airPLS': airPLS,
+        'CNN_rPLS': CNN_rPLS,
+        'auto_adaptive': auto_adaptive,
+        'airPLS_old': airPLS_old,
         'asPLS': asPLS,
         'imodPoly': imodPoly,
         'penalizedPoly': penalizedPoly,

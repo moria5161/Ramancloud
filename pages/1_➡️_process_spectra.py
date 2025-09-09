@@ -200,56 +200,56 @@ def run():
                 download_button = col1.button(':+1: :blue[process and download]')
                 download_baseline = col2.toggle('Download baseline', key='show_peak_analysis')
             if download_button:
-                print("--- DEBUG: 'process and download' 按钮被点击，代码块开始执行。 ---")
-                st.info("按钮已点击，正在处理并保存数据...")
                 if demo_data != '-':
-                    # 如果使用演示数据，则提示不支持下载演示数据
                     st.error('Downloading demo data is not supported. Please upload your own data.')
                     st.stop()
 
                 res_list = []
-                if download_baseline:
-                    baseline_list = []
+                baseline_list = []
 
                 for file_count, file in enumerate(raw_specs):
-                    # 对每个上传的光谱数据进行处理，包括切割、去噪、基线校正等，并保存处理后的数据
                     res = process(file, cut_args, smooth_args, baseline_args)
-                    res_list.append(res[['wavenumber', 'raw']])  # 添加dataframe的列名
-
+                    res_list.append(res[['wavenumber', 'raw']])
+                    
                     if download_baseline:
                         baseline_list.append(res[['wavenumber', 'baseline']])
 
                 st.success('It is notable that the link is temporary, **and will be invalid after closing the page.**')
 
                 if file_count == 0:  # only one file
-                    # 如果只有一个文件，则直接将处理后的数据保存为文件并提供下载链接
                     cache_file = io.BytesIO()
+                    filename_base, ext = filenames[0].rsplit('.', 1)
+                    processed_filename = f"processed_{filename_base}.{ext}"
+                    
                     res_list[0].to_csv(cache_file, sep='\t', index=False, header=False)
-                    href = generate_download_link(cache_file.getvalue(), filenames[-1])
+                    href = generate_download_link(cache_file.getvalue(), processed_filename)
                     st.markdown(href, unsafe_allow_html=True)
 
                     if download_baseline:
                         cache_file.seek(0)
                         cache_file.truncate(0)
+                        baseline_filename = f"baseline_{filename_base}.{ext}"
+                        
                         baseline_list[0].to_csv(cache_file, sep='\t', index=False, header=False)
-                        href = generate_download_link(cache_file.getvalue(), filenames[0])
+                        href = generate_download_link(cache_file.getvalue(), baseline_filename)
                         st.markdown(href, unsafe_allow_html=True)
 
                 else:  # more than one file
-                    # 如果有多个文件，则将处理后的数据保存为压缩文件并提供下载链接
-                    with io.BytesIO() as zip_buffer:  # Create an in-memory zip file
+                    with io.BytesIO() as zip_buffer:
                         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED, False) as zip_file:
                             for i, df in enumerate(res_list):
-                                # Convert the pandas DataFrame to bytes
                                 df_bytes = df.to_csv(sep='\t', index=False, header=False).encode()
-
-                                # Create an in-memory file-like object for each array
-                                df_file = io.BytesIO(df_bytes)
-
-                                # Add the in-memory file to the zip file
                                 filename_base = filenames[i].rsplit('.', 1)[0]
-                                zip_file.writestr(f'pre_{filename_base}.txt', df_file.getvalue())
-                        href = generate_download_link(zip_buffer, 'pre.zip')
+                                zip_file.writestr(f'processed_spectra/processed_{filename_base}.txt', df_bytes)
+                            
+                            if download_baseline:
+                                for i, df_baseline in enumerate(baseline_list):
+                                    df_baseline_bytes = df_baseline.to_csv(sep='\t', index=False, header=False).encode()
+                                    filename_base = filenames[i].rsplit('.', 1)[0]
+                                    zip_file.writestr(f'baselines/baseline_{filename_base}.txt', df_baseline_bytes)
+
+                        zip_filename = "processed_results.zip"
+                        href = generate_download_link(zip_buffer, zip_filename) 
                         st.markdown(href, unsafe_allow_html=True)
 
                         # =================save data to mysql================ #
@@ -286,7 +286,6 @@ def run():
         ##### Denoise
         - [Savitzky-Golay filter](https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter)  
         - [PEER](https://pubs.acs.org/doi/10.1021/acs.analchem.0c05391): Developing a Peak Extraction and Retention (PEER) Algorithm for Improving the Temporal Resolution of Raman Spectroscopy, *Anal. Chem. 2021, 93, 24, 8408–8413* 
-        - [p2p](https://pubs.acs.org/doi/10.1021/acs.analchem.3c04608): Revealing the Denoising Principle of Zero-Shot N2N-Based Algorithm from 1D Spectrum to 2D Image, *Anal. Chem. 2024, 96, 10, 4086–4092* 
         ##### Baseline correction
         - [auto-adaptive](https://doi.org/10.1016/j.saa.2016.02.016): An auto-adaptive background subtraction method for Raman spectra 
         - [airPLS](https://doi.org/10.1039/B922045C): Baseline correction using adaptive iteratively reweighted penalized least squares, *Analyst, 2010,135, 1138-1146* 
