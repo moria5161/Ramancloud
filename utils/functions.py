@@ -93,6 +93,27 @@ def ALRMADenoise():
     pass
 
 
+def F2P(wa, x, model, device, mode='spectra'):
+    import torch
+    from api.Flask.methods.F2P import f2p_process
+
+    if type(x) != np.ndarray:
+        x = np.array(x)
+
+    def f2p_func(inp):
+        denoised, _ = f2p_process(inp, wa, model, device)
+        return denoised
+
+    if mode != 'spectra':
+        size = x.shape
+        res = np.apply_along_axis(f2p_func, 1, x.reshape(-1, size[-1]))
+        res = res.reshape(size)
+    else:
+        res = f2p_func(x)
+
+    return res
+
+
 # ==================== Baseline Correction methods ==================== #
 # ==================== Baseline Correction methods ==================== #
 

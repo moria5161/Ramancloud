@@ -240,7 +240,7 @@ def run():
                             for i, df in enumerate(res_list):
                                 df_bytes = df.to_csv(sep='\t', index=False, header=False).encode()
                                 filename_base = filenames[i].rsplit('.', 1)[0]
-                                zip_file.writestr(f'processed_spectra/processed_{filename_base}.txt', df_bytes)
+                                zip_file.writestr(f'processed_spectra/{filename_base}.txt', df_bytes)
                             
                             if download_baseline:
                                 for i, df_baseline in enumerate(baseline_list):

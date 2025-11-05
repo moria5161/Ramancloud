@@ -4,10 +4,11 @@ import torch
 import torch.nn as nn
 from numpy import linalg as la
 
+
 # =====================================================================================
 # 1. 模型定义
 # =====================================================================================
-def sincos_pos_embed(embed_dim, num_patches):
+def position_embedding(embed_dim, num_patches):
     pos = np.arange(num_patches, dtype=np.float64).reshape(-1, 1)
     dim_t = np.arange(embed_dim // 2, dtype=np.float64)
     dim_t = 1. / (10000.**(dim_t / (embed_dim // 2)))
@@ -17,6 +18,7 @@ def sincos_pos_embed(embed_dim, num_patches):
         emb = np.concatenate((emb, np.zeros((num_patches, 1))), axis=1)
     return torch.from_numpy(emb).float()
 
+
 class PatchEmbedding(nn.Module):
     def __init__(self, patch_size, embed_dim):
         super().__init__()
@@ -24,6 +26,7 @@ class PatchEmbedding(nn.Module):
 
     def forward(self, x):
         return self.proj(x).transpose(1, 2)
+
 
 class Attention(nn.Module):
     def __init__(self, dim, heads=8):
@@ -41,6 +44,7 @@ class Attention(nn.Module):
         out = (attn @ v).transpose(1, 2).reshape(x.shape)
         return self.to_out(out)
 
+
 class TransformerBlock(nn.Module):
     def __init__(self, dim, heads):
         super().__init__()
@@ -54,6 +58,7 @@ class TransformerBlock(nn.Module):
         x = x + self.ffn(self.norm2(x))
         return x
 
+
 class SpecTransformer(nn.Module):
     def __init__(self, spectrum_length, patch_size, embed_dim, depth, heads):
         super().__init__()
@@ -61,13 +66,14 @@ class SpecTransformer(nn.Module):
             raise ValueError("光谱长度必须能被patch大小整除")
         self.num_patches = spectrum_length // patch_size
         self.patch_embed = PatchEmbedding(patch_size, embed_dim)
-        self.pos_embed = nn.Parameter(sincos_pos_embed(embed_dim, self.num_patches), requires_grad=False)
+        self.pos_embed = nn.Parameter(position_embedding(embed_dim, self.num_patches), requires_grad=False)
         self.transformer_blocks = nn.ModuleList([TransformerBlock(embed_dim, heads) for _ in range(depth)])
         self.decoder = nn.Sequential(
                             nn.Linear(embed_dim, embed_dim * 2),
                             nn.GELU(),
                             nn.Linear(embed_dim * 2, patch_size)
                                     )
+        # self.head = nn.Linear(embed_dim, patch_size)
         self.patch_size = patch_size
 
     def unpatchify(self, patches):
@@ -80,6 +86,7 @@ class SpecTransformer(nn.Module):
         patches = self.patch_embed(x) + self.pos_embed
         for blk in self.transformer_blocks:
             patches = blk(patches)
+        # pred_patches = self.head(patches)
         pred_patches = self.decoder(patches)
         return self.unpatchify(pred_patches)
 
@@ -97,7 +104,7 @@ def spectra_correction(raw_spec, denoised_spec):
 # =====================================================================================
 # 3. f2p单谱去噪处理函数
 # =====================================================================================
-def load_model(model_path='/media/ramancloud/api/Flask/methods/model_pt/f2p_ps16.pth'):
+def load_model(model_path='/media/ramancloud/api/Flask/methods/model_pt/F2P_ps16_dp8_mr0.05.pth'):
     spectrum_length = 1600
     patch_size = 16
     embed_dim = 256
