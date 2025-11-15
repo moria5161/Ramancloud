@@ -9,8 +9,6 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 
-from utils.functions import SF
-from api.SplitingFiting import gaussian_cauchy
 from utils.utils import generate_download_link, exec_mysql, load_spectrum_data
 from utils.modules import spectra_cut_module
 from sklearn.decomposition import PCA
@@ -91,12 +89,7 @@ def run():
             raw_specs, filenames = upload_module(upload_file)
             time.sleep(1)
             st.warning('Here is our [user item and privacy policy.](privacy_policy)')
-            if len(raw_specs) > 1:
-                demo_file = st.selectbox('Select a spectrum for peak fitting', filenames)
-                st.write('You selected:', demo_file)
-                raw_demo_spec = raw_specs[filenames.index(demo_file)]
-            else:
-                raw_demo_spec = raw_specs[0]
+            raw_demo_spec = raw_specs[0]
 
     if 'raw_spec' in st.session_state and st.session_state['raw_spec'] is not None:
 
@@ -104,44 +97,6 @@ def run():
         with st.container(border=True):
             st.subheader('Data Cropping', divider='gray')
             demo_spec, cut_args = spectra_cut_module(raw_demo_spec)
-
-
-        # ================partial peak fitting================ #
-        with st.container(border=True):
-            st.subheader('Partial peak fitting', divider='gray')
-            original_spec = pd.DataFrame({'wavenumber': demo_spec['wavenumber'], 'raw': demo_spec['raw']})
-            original_spec_fig = original_spec.melt('wavenumber', var_name='category', value_name='intensity')
-            original_fig = px.line(original_spec_fig, x="wavenumber", y="intensity", color='category')
-            st.plotly_chart(original_fig, use_container_width=True)
-            perform_peak_fitting = st.checkbox("Whether to perform peak fitting")
-            if perform_peak_fitting:
-                wavenumber, spectrum, optim_params = SF(demo_spec['wavenumber'], demo_spec['raw'], 3000, imaging=False)
-                spliting_spec = pd.DataFrame({'wavenumber': wavenumber, 'raw': spectrum})
-                peaks_data = []
-                for i in range(optim_params['mu'].shape[0]):
-                    spliting_spec[f'raw{i}'] = gaussian_cauchy(np.arange(len(spectrum)), optim_params['mu'][i], optim_params['sigma'][i], optim_params['amp'][i], optim_params['weight'][i])
-                    spliting_spec_subfig = spliting_spec.melt('wavenumber', var_name='category', value_name='intensity')
-                    position = optim_params['mu'][i]
-                    peak_position = wavenumber[int(position)]
-                    peak_height = optim_params['amp'][i]
-                    peak_width = optim_params['sigma'][i]
-                    peak_function = lambda x: gaussian_cauchy(x, optim_params['mu'][i], optim_params['sigma'][i], 
-                                              optim_params['amp'][i], optim_params['weight'][i])
-                    peak_area, _ = integrate.quad(peak_function, 0, len(spectrum) - 1)
-                    peaks_data.append({
-                            'Position': peak_position,
-                            'Height': peak_height,
-                            'Width': peak_width,
-                            'Area': peak_area
-                        })    
-                subfig = px.line(spliting_spec_subfig, x="wavenumber", y="intensity", color='category')
-                subfig.update_layout(showlegend=False)
-                st.plotly_chart(subfig, use_container_width=True)
-
-                peaks_df = pd.DataFrame(peaks_data)
-                st.markdown("### Peak Information")
-                st.dataframe(peaks_df, use_container_width=True)
-
 
         # =========================== 降维特征分析 ========================== #
         with st.container(border=True):
@@ -159,11 +114,6 @@ def run():
                     from sklearn.decomposition import PCA
                     model = PCA(n_components=2)
                     D_reduced = model.fit_transform(D)
-                # elif method == 'LDA':
-                #     labels = np.concatenate([np.ones(len(data[i])) * (i + 1) for i in range(len(raw_specs) - 1)])                   
-                #     from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
-                #     model = LDA(n_components=2)
-                #     D_reduced = model.fit_transform(D, labels)
 
                 df_reduced = pd.DataFrame(D_reduced, columns=['Feature1', 'Feature2'])
                 df_reduced['labels'] = labels

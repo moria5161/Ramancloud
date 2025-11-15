@@ -4,16 +4,39 @@ This file contains the functions and algorithms used in the modules.
 import time
 import numpy as np
 from scipy.signal import savgol_filter
-from api.PEER import peer
-from api.TSVD import tsvd
-from api.hpw.bgcorrected_hpw import reference
-from api.baseline_corrected import imod_poly, penalized_poly, airpls, aspls, mormol, rolling_ball, irsqr, snip
-from api.airPLS import airpls_old
-from api.AABS import aabs
-from api.SplitingFiting import PeakParsing, interplotation
+from api.denoising.PEER import peer
+from api.denoising.TSVD import tsvd
+from api.baseline_cor.AirNet import AirNet_process
+from api.baseline_cor.baseline_correction import imod_poly, penalized_poly, airpls, aspls, mormol, rolling_ball, irsqr, snip
+from api.baseline_cor.airPLS import airpls_old
+from api.baseline_cor.AABS import aabs
 import streamlit as st
 import pymysql
 import pywt
+import requests
+
+
+# API_BASE_URL = "http://127.0.0.1:5050"  # 本地测试使用本地ip
+API_BASE_URL = "http://219.229.100.24:5050"  # 访问网页时, 请确保直接访问服务器ip而非本地ip
+
+def _call_api(endpoint, payload, timeout=120):
+    """通用API调用函数"""
+    api_url = f"{API_BASE_URL}/{endpoint}"
+    try:
+        response = requests.post(api_url, json=payload, timeout=timeout)
+        response.raise_for_status()
+        result = response.json()
+        if result.get('code') == 0:
+            data = result.get('data', {})
+            if 'y' in data:
+                return np.array(data['y'])
+            return data # Or handle cases where 'y' is not in data
+        else:
+            st.error(f"API错误 ({endpoint}): {result.get('msg')}")
+            return None
+    except requests.exceptions.RequestException as e:
+        st.error(f"无法连接到API端点 '{endpoint}': {e}")
+        return None
 
 
 def skip(wa, x):
@@ -55,25 +78,18 @@ def sg(wa, x, window_size, order, mode='spectra'):
 
 @st.cache_data
 def PEER(wa, x, loops: int = 1, hlaf_k_threshold: int = 2, mode='spectra'):
-    if type(x) != np.ndarray:
-        x = np.array(x)
-    if type(hlaf_k_threshold) != int:
-        hlaf_k_threshold = int(hlaf_k_threshold)
+    payload = {
+        "x": np.asarray(wa).tolist(),
+        "y": np.asarray(x).tolist(),
+        "loops": loops,
+        "hlaf_k_threshold": hlaf_k_threshold
+    }
+    result = _call_api("peer", payload)
+    if result is not None and 'y' in result:
+        return np.array(result['y'])
+    return x # Return original on failure
 
-    def peer_func(inp):
-        out = peer(inp, loops, hlaf_k_threshold)
-        return out
-    
-    if mode != 'spectra':
-        size = x.shape
-        res = np.apply_along_axis(peer_func, 1, x.reshape(-1, size[-1]))
-        res = res.reshape(size)
-    else:
-        res = peer_func(x)
-
-    return res
-
-
+@st.cache_data
 def WTD(wa, x, wavelet='db3', level=3, mode='spectra'):
     coeffs = pywt.wavedec(x, wavelet, level=level)
     threshold = 0.8 * np.sqrt(2 * np.log(len(x))) * np.median(np.abs(coeffs[-1])) / 0.6745
@@ -82,201 +98,100 @@ def WTD(wa, x, wavelet='db3', level=3, mode='spectra'):
     return res
 
 
+@st.cache_data
 def TSVD(wa, x, threshold=1e-3, mode='spectra'):
-    if type(x) != np.ndarray:
-        x = np.array(x)
-    res = tsvd(x, threshold=threshold)
-    return res
+    if mode != 'spectra':
+        # TSVD API expects a 2D array for batch processing
+        payload = {"y": np.asarray(x).tolist(), "threshold": threshold}
+        return _call_api("tsvd", payload)
+    else:
+        # For a single spectrum, wrap it in a list to make it a "batch" of one
+        payload = {"y": [np.asarray(x).tolist()], "threshold": threshold}
+        result = _call_api("tsvd", payload)
+        return result[0] if result is not None and len(result) > 0 else x
 
 
+@st.cache_data
 def ALRMADenoise():
     pass
 
 
-def F2P(wa, x, model, device, mode='spectra'):
-    import torch
-    from api.Flask.methods.F2P import f2p_process
-
-    if type(x) != np.ndarray:
-        x = np.array(x)
-
-    def f2p_func(inp):
-        denoised, _ = f2p_process(inp, wa, model, device)
-        return denoised
-
-    if mode != 'spectra':
-        size = x.shape
-        res = np.apply_along_axis(f2p_func, 1, x.reshape(-1, size[-1]))
-        res = res.reshape(size)
-    else:
-        res = f2p_func(x)
-
-    return res
-
+@st.cache_data
+def F2P(wa, x, mode='spectra'):
+    payload = {"y": np.asarray(x).tolist()}
+    return _call_api("f2p", payload)
 
 # ==================== Baseline Correction methods ==================== #
 # ==================== Baseline Correction methods ==================== #
+
+def _baseline_api_call(endpoint, wa, x, params, mode='spectra'):
+    """通用的基线校正API调用函数"""
+    payload = {
+        "y": np.asarray(x).tolist(),
+        **params
+    }
+    if wa is not None:
+        payload["x"] = np.asarray(wa).tolist()
+
+    return _call_api(f"baseline_cor/{endpoint}", payload)
+
 
 @st.cache_data
-def CNN_rPLS(wave, x, mode='spectra'):
-    if mode != 'spectra':
-        pass
-
-    else:
-        process_data = reference(wave, x)
-
-    return process_data
+def AirNet(wave, x, mode='spectra'):
+    return _baseline_api_call("airnet", wave, x, {}, mode)
 
 
 @st.cache_data
 def airPLS(wa, x, lambda_, order_, mode='spectra'):
-    s_time= time.time()
-    if mode != 'spectra':
-        size = x.shape
-        processed_data = np.zeros(size)
-        for i in range(size[0]):
-            processed_data[i, :] = airpls(x[i, :], lambda_, order_)
-    else:
-        processed_data = airpls(x, lambda_, order_)
-    e_time = time.time()
-    print(f"airPLS time: {e_time - s_time}")
-    return processed_data
+    return _baseline_api_call("airpls", wa, x, {'lam': lambda_, 'diff_order': order_}, mode)
+
 
 @st.cache_data
 def airPLS_old(wa, x, lambda_, order_, mode='spectra'):
-    s_time= time.time()
-    if mode != 'spectra':
-        size = x.shape
-        processed_data = np.zeros(size)
-        for i in range(size[0]):
-            processed_data[i, :] = airpls_old(x[i, :], lambda_, order_)
-    else:
-        processed_data = airpls_old(x, lambda_, order_)
-    e_time = time.time()
-    print(f"airPLS_old time: {e_time - s_time}")
-    return processed_data
+    return _baseline_api_call("airpls_old", wa, x, {'lambda_': lambda_, 'order_': order_}, mode)
+
 
 @st.cache_data
 def asPLS(wa, x, lambda_, order_, mode='spectra'):
-    s_time= time.time()
-    if mode != 'spectra':
-        size = x.shape
-        processed_data = np.zeros(size)
-        for i in range(size[0]):
-            processed_data[i, :] = aspls(x[i, :], lambda_, order_)
-    else:
-        processed_data = aspls(x, lambda_, order_)
-    e_time = time.time()
-    print(f"asPLS time: {e_time - s_time}")
-    return processed_data
+    return _baseline_api_call("aspls", wa, x, {'lambda_': lambda_, 'order_': order_}, mode)
+
 
 @st.cache_data
 def imodPoly(wa, x, poly_order, mode='spectra'):
-    s_time= time.time()
-    if mode != 'spectra':
-        size = x.shape
-        processed_data = np.zeros(size)
-        for i in range(size[0]):
-            processed_data[i, :] = imod_poly(x[i, :], poly_order)
-    else:
-        processed_data = imod_poly(x, poly_order)
-    e_time = time.time()
-    print(f"imodPoly time: {e_time - s_time}")
-    return processed_data
+    return _baseline_api_call("imod_poly", wa, x, {'poly_order': poly_order}, mode)
 
 
 @st.cache_data
 def penalizedPoly(wa, x, poly_order, mode='spectra'):
-    s_time= time.time()
-    if mode != 'spectra':
-        size = x.shape
-        processed_data = np.zeros(size)
-        for i in range(size[0]):
-            processed_data[i, :] = penalized_poly(x[i, :], poly_order)
-    else:
-        processed_data = penalized_poly(x, poly_order)
-    e_time = time.time()
-    print(f"penalizedPoly time: {e_time - s_time}")
-    return processed_data
+    return _baseline_api_call("penalized_poly", wa, x, {'poly_order': poly_order}, mode)
 
 
 @st.cache_data
 def morMol(wa, x, half_window, mode='spectra'):
-    s_time= time.time()
-    if mode != 'spectra':
-        size = x.shape
-        processed_data = np.zeros(size)
-        for i in range(size[0]):
-            processed_data[i, :] = mormol(x[i, :], half_window)
-    else:
-        processed_data = mormol(x, half_window)
-    e_time = time.time()
-    print(f"morMol time: {e_time - s_time}")
-    return processed_data
+    return _baseline_api_call("mormol", wa, x, {'half_window': half_window}, mode)
 
 
 @st.cache_data
 def rollingBall(wa, x, half_window, mode='spectra'):
-    s_time= time.time()
-    if mode != 'spectra':
-        size = x.shape
-        processed_data = np.zeros(size)
-        for i in range(size[0]):
-            processed_data[i, :] = rolling_ball(x[i, :], half_window)
-    else:
-        processed_data = rolling_ball(x, half_window)
-    e_time = time.time()
-    print(f"rolling_ball time: {e_time - s_time}")
-    return processed_data
+    return _baseline_api_call("rolling_ball", wa, x, {'half_window': half_window}, mode)
 
 
 @st.cache_data
 def Irsqr(wa, x, lam, quantile, mode='spectra'):
-    s_time= time.time()
-    if mode != 'spectra':
-        size = x.shape
-        processed_data = np.zeros(size)
-        for i in range(size[0]):
-            processed_data[i, :] = irsqr(x[i, :], lam, quantile)
-    else:
-        processed_data = irsqr(x, lam, quantile)
-    e_time = time.time()
-    print(f"Irsqr time: {e_time - s_time}")
-    return processed_data
+    return _baseline_api_call("irsqr", wa, x, {'lam': lam, 'quantile': quantile}, mode)
 
 
 @st.cache_data
 def Snip(wa, x, max_half_window, smooth_half_window, mode='spectra'):
-    s_time= time.time()
-    if mode != 'spectra':
-        size = x.shape
-        processed_data = np.zeros(size)
-        for i in range(size[0]):
-            processed_data[i, :] = snip(x[i, :], max_half_window, smooth_half_window)
-    else:
-        processed_data = snip(x, max_half_window, smooth_half_window)
-    e_time = time.time()
-    print(f"Snip time: {e_time - s_time}")
-    return processed_data
+    return _baseline_api_call("snip", wa, x, {'max_half_window': max_half_window, 'smooth_half_window': smooth_half_window}, mode)
 
 
 def auto_adaptive(wa, x, Ln, Lb, mode='spectra'):
-    return aabs(wa, x, Ln, Lb)
+    return _baseline_api_call("aabs", wa, x, {'Ln': Ln, 'Lb': Lb}, mode)
 
 
 # ==================== Other functions ==================== #
 # ==================== Other functions ==================== #
-
-
-@st.cache_data
-def SF(wave, spec, epochs, imaging=False):
-    parsing = PeakParsing(spec, device='cpu', epochs=epochs, lr=0.05)
-    wave = interplotation(wave)
-    spec = parsing.predict_spectrum()
-    optim_params = parsing.get_params()
-    return wave, spec, optim_params
-
-
 
 @st.cache_data
 def generate_download_link(file, filename):

@@ -8,8 +8,8 @@ import streamlit as st
 from markdownlit import mdlit
 
 from utils.functions import cut, skip
-from utils.functions import sg, PEER, WTD, TSVD
-from utils.functions import airPLS_old, airPLS, asPLS, imodPoly, penalizedPoly, morMol, rollingBall, Irsqr, Snip, auto_adaptive, CNN_rPLS
+from utils.functions import F2P, sg, PEER, WTD, TSVD
+from utils.functions import airPLS_old, airPLS, asPLS, imodPoly, penalizedPoly, morMol, rollingBall, Irsqr, Snip, auto_adaptive, AirNet
 
 
 #====================Denoising submodules====================#
@@ -83,7 +83,7 @@ def WTD_submodule(denoise_use_sidebar=False, mode='spectra'):
     with st.expander("See explanation"):
         st.write(
             """
-            The new baseline correction method will be supplemented and explained
+            WTD (Wavelet Transform Denoising) is a common denoising method based on wavelet transform.
             
             """)
 
@@ -117,10 +117,21 @@ def TSVD_submodule(denoise_use_sidebar=False, mode='spectra'):
     with st.expander("See explanation"):
         st.write(
             """
-            The new baseline correction method will be supplemented and explained
+            TSVD (Truncated Singular Value Decomposition) is a common denoising method based on matrix decomposition.
             """)
 
         return {'threshold': threshold, 'mode': mode}
+
+
+def F2P_submodule(denoise_use_sidebar=False, mode='spectra'):
+
+    with st.expander("See explanation"):
+        st.write(
+            """
+            The new spectra denoising method : self-supervised learning based on transformer architecture.
+            """)
+
+        return {'mode': mode}
 
 
 
@@ -311,7 +322,7 @@ def AABS_submodule(baseline_use_sidebar=False, mode='spectra'):
     return {'Ln':Ln, 'Lb':Lb, 'mode':mode}
 
 
-def CNN_rPLS_submodule(baseline_use_sidebar=False, mode='spectra'):
+def AirNet_submodule(baseline_use_sidebar=False, mode='spectra'):
     if baseline_use_sidebar:
         with st.sidebar:
             col1, col2 = st.columns(2)
@@ -352,6 +363,7 @@ def spectra_cut_module(spec_df):
 
 def spectra_denoise_module(spec_df):
     denoise_method_dict = {
+    'Fast2Peak': F2P,
     'Savitzky-Golay filter': sg,
     'WTD': WTD,
     'PEER': PEER,
@@ -374,7 +386,10 @@ def spectra_denoise_module(spec_df):
     if denoise_use_sidebar:
         st.sidebar.subheader('**smooth parameters**', divider='gray')
 
-    if denoise_method == 'Savitzky-Golay filter':
+    if denoise_method == 'Fast2Peak':
+        denoise_args = F2P_submodule(denoise_use_sidebar=denoise_use_sidebar, mode='spectra')
+
+    elif denoise_method == 'Savitzky-Golay filter':
         denoise_args = sg_submodule(denoise_use_sidebar=denoise_use_sidebar, mode='spectra')
 
     elif denoise_method == 'PEER':
@@ -393,8 +408,8 @@ def spectra_baseline_module(spec_df):
 
     baseline_args = {}
     baseline_method_dict = {
+        'AirNet': AirNet,
         'airPLS': airPLS,
-        'CNN_rPLS': CNN_rPLS,
         'auto_adaptive': auto_adaptive,
         'airPLS_old': airPLS_old,
         'asPLS': asPLS,
@@ -449,8 +464,8 @@ def spectra_baseline_module(spec_df):
     elif baseline_method == 'auto_adaptive':
         baseline_args = AABS_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')   
 
-    elif baseline_method == 'CNN_rPLS':
-        baseline_args = CNN_rPLS_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
+    elif baseline_method == 'AirNet':
+        baseline_args = AirNet_submodule(baseline_use_sidebar=baseline_use_sidebar, mode='spectra')
 
     cache = spec_df['processed'].copy()
 
@@ -478,7 +493,12 @@ def mapping_cut_module(mapping_data, wavenumber, mode='imaging'):
 
 
 def mapping_denoise_module(mapping_data, mode='imaging'):
-    denoise_method_dict = {'Savitzky-Golay filter': sg, 'TSVD': TSVD, 'skip': skip}
+    denoise_method_dict = {
+        'Fast2Peak': F2P, 
+        'Savitzky-Golay filter': sg, 
+        'TSVD': TSVD, 
+        'skip': skip
+                        }
     denoise_args = {}
     st.subheader('Smooth')
     col1, col2 = st.columns(2)
@@ -488,6 +508,9 @@ def mapping_denoise_module(mapping_data, mode='imaging'):
                                     index=None, placeholder='select a method')
     if denoise_method is None:
         st.stop()
+        
+    if denoise_method == 'Fast2Peak':
+        denoise_args = F2P_submodule(denoise_use_sidebar=False, mode=mode)
     elif denoise_method == 'Savitzky-Golay filter':
         denoise_args = sg_submodule(denoise_use_sidebar=False, mode=mode)
     elif denoise_method == 'TSVD':
@@ -519,7 +542,12 @@ def mapping_denoise_module(mapping_data, mode='imaging'):
 
 
 def mapping_baseline_module(mapping_data, mode='imaging'):
-    baseline_method_dict = {'airPLS': airPLS, 'imodPoly': imodPoly, 'rollingBall': rollingBall, 'Snip': Snip, 'skip': skip}
+    baseline_method_dict = {'airPLS': airPLS, 
+                            # 'AirNet': AirNet, 
+                            'imodPoly': imodPoly, 
+                            'rollingBall': rollingBall, 
+                            'Snip': Snip, 
+                            'skip': skip}
     baseline_args = {}
     st.subheader('Baseline removal')
     col1, col2 = st.columns(2)
@@ -537,6 +565,9 @@ def mapping_baseline_module(mapping_data, mode='imaging'):
 
     elif baseline_method == 'rollingBall':
         baseline_args = rollingBall_submodule(baseline_use_sidebar=False, mode=mode)
+
+    elif baseline_method == 'AirNet':
+        baseline_args = AirNet_submodule(baseline_use_sidebar=False, mode=mode)
 
     elif baseline_method == 'Snip':
         baseline_args = Snip_submodule(baseline_use_sidebar=False, mode=mode)

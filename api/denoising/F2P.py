@@ -93,18 +93,32 @@ class SpecTransformer(nn.Module):
 # =====================================================================================
 # 2. 辅助函数 (Utilities)
 # =====================================================================================
-def spectra_correction(raw_spec, denoised_spec):
-    A = np.vstack([denoised_spec, np.ones(len(denoised_spec))]).T
-    a, b = la.lstsq(A, raw_spec, rcond=None)[0]
-    corrected_spec = a * denoised_spec + b
-    mean_shift = np.mean(raw_spec) - np.mean(corrected_spec)
-    return corrected_spec + mean_shift
+def spectra_correction(original_spectra, denoised_spectra):
+    corrected_results = []
+    
+    # 遍历批次中的每一行 (即每一条光谱)
+    for i in range(original_spectra.shape[0]):
+        raw_spec = original_spectra[i]      # 得到1D原始光谱
+        denoised_spec = denoised_spectra[i]  # 得到1D去噪光谱
+        
+        # --- 以下是您提供的单谱处理逻辑 ---
+        A = np.vstack([denoised_spec, np.ones(len(denoised_spec))]).T
+        a, b = la.lstsq(A, raw_spec, rcond=None)[0]
+        corrected_spec = a * denoised_spec + b
+        mean_shift = np.mean(raw_spec) - np.mean(corrected_spec)
+        final_spec = corrected_spec + mean_shift
+        # --- 原始逻辑结束 ---
+        
+        corrected_results.append(final_spec)
+    
+    # 将校正后的光谱列表重新堆叠成一个2D NumPy数组
+    return np.array(corrected_results)
 
 
 # =====================================================================================
 # 3. f2p单谱去噪处理函数
 # =====================================================================================
-def load_model(model_path='/media/ramancloud/api/Flask/methods/model_pt/F2P_ps16_dp8_mr0.05.pth'):
+def load_model(model_path='/media/ramancloud/api/denoising/model_pt/F2P_ps16_dp8_mr0.05.pth'):
     spectrum_length = 1600
     patch_size = 16
     embed_dim = 256
@@ -118,105 +132,69 @@ def load_model(model_path='/media/ramancloud/api/Flask/methods/model_pt/F2P_ps16
         state_dict = {key.replace("module.", ""): value for key, value in state_dict.items()}
     model.load_state_dict(state_dict)
     model.to(device).eval()
+    print("F2P model loaded successfully.")
     return model, device
 
 
-def f2p_process(spectra_noisy_orig, wavenumbers, model, device):
-    spectrum_length = 1600
-    original_length = len(spectra_noisy_orig)
+def f2p_process(spectra, model, device, target_length=1600, max_batch_size=1024):  # 
+    model.eval()
 
-    input_tensor = torch.from_numpy(spectra_noisy_orig).to(device, dtype=torch.float32)
+    is_single_input = isinstance(spectra, np.ndarray) and spectra.ndim == 1
+    if is_single_input:
+        spectra = [spectra]
 
-    resampled_tensor = torch.nn.functional.interpolate(
-        input_tensor.view(1, 1, -1),
-        size=spectrum_length,
-        mode='linear',
-        align_corners=False
-    )
+    if not spectra:
+        return np.array([])
 
-    min_val = torch.min(resampled_tensor)
-    max_val = torch.max(resampled_tensor)
-    range_val = max_val - min_val
-    normalized_tensor = (resampled_tensor - min_val) / (range_val + 1e-8)
+    num_spectra = len(spectra)
+    processed_chunks = []
 
-    with torch.no_grad():
-        denoised_norm = model(normalized_tensor)
-
-    denoised_unscaled = denoised_norm * (range_val + 1e-8) + min_val
-
-    denoised_resampled = torch.nn.functional.interpolate(
-        denoised_unscaled,
-        size=original_length,
-        mode='linear',
-        align_corners=False
-    ).squeeze().cpu().numpy()
-
-    denoised_final = spectra_correction(spectra_noisy_orig, denoised_resampled)
-    denoised_final = np.round(denoised_final, 3)
-    
-    return denoised_final, wavenumbers
-
-def f2p_process_batch(spectra_batch, model, device):
-    if not spectra_batch:
-        return []
-    
-    spectrum_length = 1600 # 模型固定的输入长度
-    
-    # 记录每条光谱的原始长度，用于后续恢复
-    original_lengths = [len(s) for s in spectra_batch]
-    
-    # --- 1. 批量预处理 ---
-    
-    # a. 将每条光谱插值到模型所需的固定长度(1600)
-    # 因为原始长度可能不同，这里需要先单独处理再合并成批次
-    resampled_list = [
-        torch.nn.functional.interpolate(
-            torch.from_numpy(spec).view(1, 1, -1),
-            size=spectrum_length,
-            mode='linear',
-            align_corners=False
-        ) for spec in spectra_batch
-    ]
-    
-    # b. 将插值后的张量列表合并成一个大的批次张量
-    # 形状变为: [批次大小, 1, 1600]
-    batch_tensor = torch.cat(resampled_list, dim=0).to(device, dtype=torch.float32)
-
-    # c. 向量化归一化：对批次中的每条光谱进行min-max归一化
-    # keepdim=True 保持维度，便于后续广播计算
-    min_vals, _ = torch.min(batch_tensor, dim=2, keepdim=True)
-    max_vals, _ = torch.max(batch_tensor, dim=2, keepdim=True)
-    ranges = max_vals - min_vals
-    # 防止除以零
-    ranges[ranges == 0] = 1e-8
-    normalized_batch = (batch_tensor - min_vals) / ranges
-
-    # --- 2. 批量模型推理 ---
-    with torch.no_grad():
-        denoised_norm_batch = model(normalized_batch)
-
-    # --- 3. 批量后处理 ---
-
-    # a. 向量化反归一化
-    denoised_unscaled_batch = denoised_norm_batch * ranges + min_vals
-
-    # b. 将结果插值回各自的原始长度
-    # 由于原始长度不同，这一步必须逐一处理
-    results = []
-    for i in range(len(spectra_batch)):
-        denoised_unscaled = denoised_unscaled_batch[i:i+1] # 切片以保持形状 [1, 1, 1600]
-        original_len = original_lengths[i]
+    for i in range(0, num_spectra, max_batch_size):
+        chunk_list = spectra[i : i + max_batch_size]
+        chunk = np.asarray(chunk_list, dtype=np.float32)
         
-        # 插值回原始长度
-        denoised_resampled = torch.nn.functional.interpolate(
-            denoised_unscaled,
-            size=original_len,
-            mode='linear',
-            align_corners=False
-        ).squeeze().cpu().numpy()
+        original_length = chunk.shape[1]
+        processing_mode = 'none'
+        pad_left = 0
         
-        # 应用最终校正
-        final_spectrum = spectra_correction(spectra_batch[i], denoised_resampled)
-        results.append(np.round(final_spectrum, 3))
+        if original_length > target_length:
+            processing_mode = 'resample'
+            spectra_processed = resample(chunk, target_length, axis=1)
+        elif original_length < target_length:
+            processing_mode = 'pad'
+            total_padding = target_length - original_length
+            pad_left = total_padding // 2
+            pad_right = total_padding - pad_left
+            padding_width = ((0, 0), (pad_left, pad_right))
+            spectra_processed = np.pad(chunk, padding_width, mode='edge')
+        else:
+            spectra_processed = chunk.copy()
+
+        min_vals = np.min(spectra_processed, axis=1, keepdims=True)
+        max_vals = np.max(spectra_processed, axis=1, keepdims=True)
+        ranges = max_vals - min_vals + 1e-8
+        spectra_norm = (spectra_processed - min_vals) / ranges
         
-    return results
+        input_tensor = torch.from_numpy(spectra_norm).unsqueeze(1).to(device, dtype=torch.float32)
+        
+        with torch.no_grad():
+            denoised_norm_tensor = model(input_tensor)
+
+        denoised_norm = denoised_norm_tensor.squeeze(1).cpu().numpy()
+        denoised_extended = denoised_norm * ranges + min_vals
+        
+        if processing_mode == 'resample':
+            denoised_final_chunk = resample(denoised_extended, original_length, axis=1)
+        elif processing_mode == 'pad':
+            crop_end = pad_left + original_length
+            denoised_final_chunk = denoised_extended[:, pad_left:crop_end]
+        else:
+            denoised_final_chunk = denoised_extended
+
+        denoised_corrected = spectra_correction(chunk, denoised_final_chunk)
+        final_chunk_result = np.round(denoised_corrected, 6)
+        processed_chunks.append(final_chunk_result)
+
+    final_result = np.concatenate(processed_chunks, axis=0)
+
+    return final_result[0] if is_single_input else final_result

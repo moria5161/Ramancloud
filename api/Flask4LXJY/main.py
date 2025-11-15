@@ -12,7 +12,7 @@ os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 def setup_logging(app):
     """配置一个集中的、基于应用的日志系统。"""
-    log_dir = '/media/ramancloud/api/Flask/log'
+    log_dir = './log'
     os.makedirs(log_dir, exist_ok=True)
     log_file_path = os.path.join(log_dir, 'app.log')
 

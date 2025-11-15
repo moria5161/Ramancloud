@@ -1,12 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Jun 16 08:53:50 2021
-
-@author: Lgkgroup
-"""
 from __future__ import division
-import os
-import time
 import numpy as np
 import copy
 
@@ -223,34 +215,16 @@ def weight_resultX2(data, half_k_threshold=2):  # PEER
         new_data[l] = data[l]
     return new_data
 
-
-def read(filename):
-    file = open(filename, encoding="utf-8")
-    data_lines = file.readlines()
-    file.close
-    orign_keys = []
-    orign_values = []
-    for data_line in data_lines:
-        pair = data_line.split()
-        key = float(pair[0])
-        value = float(pair[1])
-        orign_keys.append(key)
-        orign_values.append(value)
-    return orign_keys, orign_values
-
-
 def peer(data, loops=1, half_k_threshold=2):
+    data = np.asarray(data)
     for _ in range(loops):
         data = weight_resultX2(data, half_k_threshold)
     return data
 
 
-# ————————test————————#
-if __name__ == "__main__":
-    data = np.loadtxt('/media/ramancloud/samples/Bacteria.txt')
-    spec = data[:, -1]
-    print(peer(spec))
-    # import matplotlib.pyplot as plt
-    # plt.plot(spec)
-    # plt.plot(peer(spec))
-    # plt.savefig('peer.png')
+def peer_process(spectrum, wavenumbers, loops=6, half_k_threshold=3):
+    print(type(spectrum), type(wavenumbers))
+    denoised_spectrum = peer(spectrum, loops, half_k_threshold)
+    denoised_spectrum = np.array(denoised_spectrum, dtype=np.float32)
+
+    return denoised_spectrum, wavenumbers

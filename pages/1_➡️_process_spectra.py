@@ -14,7 +14,6 @@ import streamlit as st
 import plotly.express as px
 
 from utils.modules import spectra_cut_module, spectra_denoise_module, spectra_baseline_module
-from utils.functions import SF
 from utils.utils import generate_download_link, exec_mysql, load_spectrum_data
 
 
