@@ -27,11 +27,12 @@ from baseline_cor.baseline_correction import (
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 def setup_logging(app):
-    """配置一个集中的、基于应用的日志系统。"""
+    """Set up a centralized, application-based logging system."""
     log_dir = '/media/ramancloud/api/logs'
     os.makedirs(log_dir, exist_ok=True)
     log_file_path = os.path.join(log_dir, 'api.log')
     
+    # Remove werkzeug's default handlers to avoid duplicate logs in the console
     werkzeug_logger = logging.getLogger('werkzeug')
     werkzeug_logger.handlers = []
 
@@ -43,6 +44,7 @@ def setup_logging(app):
     file_handler.setFormatter(formatter)
     file_handler.setLevel(logging.INFO)
 
+    # Remove any existing handlers from the app's logger
     for handler in list(app.logger.handlers):
         app.logger.removeHandler(handler)
         
@@ -79,53 +81,53 @@ airnet_model_global, airnet_device_global = airnet_load_model()
 
 @app.route('/f2p', methods=['POST'])
 def f2p_route():
-    """根据接收到的光谱数据y, 统一处理单谱和批次请求。"""
+    """Process single spectrum and batch requests for spectral data 'y' uniformly."""
     try:
         data = request.get_json()
         if 'y' not in data:
-            return jsonify({'code': 1, 'msg': '请求体中缺少光谱数据y', 'data': None})
+            return jsonify({'code': 1, 'msg': 'Missing spectral data y in request body', 'data': None})
 
         y_data = data['y']
         if not isinstance(y_data, list) or not y_data:
-            return jsonify({'code': 1, 'msg': '光谱数据y必须是一个非空列表', 'data': None})
+            return jsonify({'code': 1, 'msg': 'Spectral data y must be a non-empty list', 'data': None})
 
         is_batch = isinstance(y_data[0], list)
 
         if is_batch:
-            app.logger.info(f"[F2P] 接收到批次请求, 包含 {len(y_data)} 条光谱")
+            app.logger.info(f"[F2P] Received batch request with {len(y_data)} spectra")
             spectra_to_process = [np.array(spec, dtype=np.float32) for spec in y_data]
             processed_results = f2p_process(spectra_to_process, f2p_model_global, f2p_device_global)
             response_y = [res.tolist() for res in processed_results]
         else:
-            app.logger.info("[F2P] 接收到单谱请求")
+            app.logger.info("[F2P] Received single spectrum request")
             spectrum = np.array(y_data, dtype=np.float32)
             if spectrum.ndim != 1:
-                return jsonify({'code': 1, 'msg': '单谱数据格式错误, 必须为一维列表', 'data': None})
+                return jsonify({'code': 1, 'msg': 'Incorrect format for single spectrum data, must be a 1D list', 'data': None})
             
             processed_spectrum = f2p_process(spectrum, f2p_model_global, f2p_device_global)
             response_y = processed_spectrum.tolist()
             
-        return jsonify({'code': 0, 'msg': '成功', 'data': {'y': response_y}})
+        return jsonify({'code': 0, 'msg': 'Success', 'data': {'y': response_y}})
 
     except Exception as e:
-        app.logger.error(f"[F2P] 处理异常: {e}")
-        return jsonify({'code': 1, 'msg': f'服务器内部错误: {e}', 'data': None})
+        app.logger.error(f"[F2P] Processing exception: {e}")
+        return jsonify({'code': 1, 'msg': f'Internal server error: {e}', 'data': None})
 
 @app.route('/peer', methods=['POST'])
 def peer_route():
-    """处理PEER算法的请求。"""
+    """Handle requests for the PEER algorithm."""
     try:
         data = request.get_json()
-        app.logger.info("[PEER] 接收到请求")
+        app.logger.info("[PEER] Received request")
 
         if 'x' not in data or 'y' not in data:
-            return jsonify({'code': 1, 'msg': '缺少光谱数据(y)或波数数据(x)', 'data': None})
+            return jsonify({'code': 1, 'msg': 'Missing spectral data (y) or wavenumber data (x)', 'data': None})
         
         spectrum = np.array(data['y'], dtype=np.float32)
         wavenumbers = np.array(data['x'], dtype=np.float32)
 
         if spectrum.ndim != 1 or len(spectrum) != len(wavenumbers):
-            return jsonify({'code': 1, 'msg': '数据格式错误或光谱与波数长度不匹配', 'data': None})
+            return jsonify({'code': 1, 'msg': 'Data format error or mismatch between spectrum and wavenumber lengths', 'data': None})
 
         processed_spectrum, original_wavenumbers = peer_process(spectrum, wavenumbers)
         
@@ -133,36 +135,36 @@ def peer_route():
             'x': original_wavenumbers.tolist(), 
             'y': processed_spectrum.tolist()
         }
-        return jsonify({'code': 0, 'msg': '成功', 'data': response_data})
+        return jsonify({'code': 0, 'msg': 'Success', 'data': response_data})
     
     except Exception as e:
-        app.logger.error(f"[PEER] 发生未捕获的异常: {str(e)}", exc_info=True)
-        return jsonify({'code': 1, 'msg': f'服务器内部错误: {str(e)}', 'data': None})
+        app.logger.error(f"[PEER] An uncaught exception occurred: {str(e)}", exc_info=True)
+        return jsonify({'code': 1, 'msg': f'Internal server error: {str(e)}', 'data': None})
 
 @app.route('/tsvd', methods=['POST'])
 def tsvd_route():
-    """处理TSVD算法的请求。"""
+    """Handle requests for the TSVD algorithm."""
     try:
         data = request.get_json()
-        app.logger.info("[TSVD] 接收到请求")
+        app.logger.info("[TSVD] Received request")
 
         if 'y' not in data:
-            return jsonify({'code': 1, 'msg': '请求体中缺少光谱数据y', 'data': None})
+            return jsonify({'code': 1, 'msg': 'Missing spectral data y in request body', 'data': None})
 
         y_data = data['y']
         if not isinstance(y_data, list) or not y_data or not isinstance(y_data[0], list):
-            return jsonify({'code': 1, 'msg': '光谱数据y必须是一个二维列表 (batch)', 'data': None})
+            return jsonify({'code': 1, 'msg': 'Spectral data y must be a 2D list (batch)', 'data': None})
 
         threshold = data.get('threshold', 0.001)
         
         spectra = np.array(y_data, dtype=np.float32)
         processed_spectra = tsvd(spectra, threshold=threshold)
         
-        return jsonify({'code': 0, 'msg': '成功', 'data': {'y': processed_spectra.tolist()}})
+        return jsonify({'code': 0, 'msg': 'Success', 'data': {'y': processed_spectra.tolist()}})
 
     except Exception as e:
-        app.logger.error(f"[TSVD] 发生未捕获的异常: {str(e)}", exc_info=True)
-        return jsonify({'code': 1, 'msg': f'服务器内部错误: {str(e)}', 'data': None})
+        app.logger.error(f"[TSVD] An uncaught exception occurred: {str(e)}", exc_info=True)
+        return jsonify({'code': 1, 'msg': f'Internal server error: {str(e)}', 'data': None})
 
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -172,11 +174,11 @@ def tsvd_route():
 def _handle_baseline_request(method_name, process_func, required_params=['y'], optional_params={}):
     try:
         data = request.get_json()
-        app.logger.info(f"[{method_name}] 接收到请求")
+        app.logger.info(f"[{method_name}] Received request")
 
         for param in required_params:
             if param not in data:
-                return jsonify({'code': 1, 'msg': f'缺少必需参数: {param}', 'data': None})
+                return jsonify({'code': 1, 'msg': f'Missing required parameter: {param}', 'data': None})
 
         y_data = data['y']
         is_batch = isinstance(y_data, list) and y_data and isinstance(y_data[0], list)
@@ -202,11 +204,11 @@ def _handle_baseline_request(method_name, process_func, required_params=['y'], o
         if 'x' in required_params:
             response_data['x'] = data['x']
 
-        return jsonify({'code': 0, 'msg': '成功', 'data': response_data})
+        return jsonify({'code': 0, 'msg': 'Success', 'data': response_data})
 
     except Exception as e:
-        app.logger.error(f"[{method_name}] 发生未捕获的异常: {str(e)}", exc_info=True)
-        return jsonify({'code': 1, 'msg': f'服务器内部错误: {str(e)}', 'data': None})
+        app.logger.error(f"[{method_name}] An uncaught exception occurred: {str(e)}", exc_info=True)
+        return jsonify({'code': 1, 'msg': f'Internal server error: {str(e)}', 'data': None})
 
 @app.route('/baseline_cor/aabs', methods=['POST'])
 def aabs_route():
@@ -214,24 +216,24 @@ def aabs_route():
 
 @app.route('/baseline_cor/airnet', methods=['POST'])
 def airnet_route():
-    """处理AirNet算法的请求。"""
+    """Handle requests for the AirNet algorithm."""
     try:
         data = request.get_json()
-        app.logger.info("[AirNet] 接收到请求")
+        app.logger.info("[AirNet] Received request")
 
         if 'y' not in data:
-            return jsonify({'code': 1, 'msg': '请求体中缺少光谱数据y', 'data': None})
+            return jsonify({'code': 1, 'msg': 'Missing spectral data y in request body', 'data': None})
 
         y_data = data['y']
         itermax = data.get('itermax', 500)
         
         processed_result = AirNet_process(y_data, airnet_model_global, airnet_device_global, itermax=itermax)
         
-        return jsonify({'code': 0, 'msg': '成功', 'data': {'y': processed_result.tolist()}})
+        return jsonify({'code': 0, 'msg': 'Success', 'data': {'y': processed_result.tolist()}})
 
     except Exception as e:
-        app.logger.error(f"[AirNet] 发生未捕获的异常: {str(e)}", exc_info=True)
-        return jsonify({'code': 1, 'msg': f'服务器内部错误: {str(e)}', 'data': None})
+        app.logger.error(f"[AirNet] An uncaught exception occurred: {str(e)}", exc_info=True)
+        return jsonify({'code': 1, 'msg': f'Internal server error: {str(e)}', 'data': None})
 
 @app.route('/baseline_cor/airpls_old', methods=['POST'])
 def airpls_old_route():
@@ -255,26 +257,26 @@ def airpls_route():
 def aspls_route():
     return _handle_baseline_request('aspls', aspls, optional_params={'lambda_': 1e7, 'order_': 3})
 
-# @app.route('/baseline_cor/mormol', methods=['POST'])
-# def mormol_route():
-#     return _handle_baseline_request('mormol', mormol, optional_params={'half_window': 40})
+@app.route('/baseline_cor/mormol', methods=['POST'])
+def mormol_route():
+    return _handle_baseline_request('mormol', mormol, optional_params={'half_window': 40})
 
-# @app.route('/baseline_cor/rolling_ball', methods=['POST'])
-# def rolling_ball_route():
-#     return _handle_baseline_request('rolling_ball', rolling_ball, optional_params={'half_window': 40})
+@app.route('/baseline_cor/rolling_ball', methods=['POST'])
+def rolling_ball_route():
+    return _handle_baseline_request('rolling_ball', rolling_ball, optional_params={'half_window': 40})
 
-# @app.route('/baseline_cor/irsqr', methods=['POST'])
-# def irsqr_route():
-#     return _handle_baseline_request('irsqr', irsqr, optional_params={'lam': 50, 'quantile': 0.05})
+@app.route('/baseline_cor/irsqr', methods=['POST'])
+def irsqr_route():
+    return _handle_baseline_request('irsqr', irsqr, optional_params={'lam': 50, 'quantile': 0.05})
 
-# @app.route('/baseline_cor/snip', methods=['POST'])
-# def snip_route():
-#     return _handle_baseline_request('snip', snip, optional_params={'max_half_window': 20, 'smooth_half_window': 7})
+@app.route('/baseline_cor/snip', methods=['POST'])
+def snip_route():
+    return _handle_baseline_request('snip', snip, optional_params={'max_half_window': 20, 'smooth_half_window': 7})
 
 
 if __name__ == '__main__':
-    app.logger.info("服务器启动...")
-    app.logger.info(f"日志将记录在: {log_file_path}")
-    app.logger.info("按 Ctrl+C 可以停止服务器")
+    app.logger.info("Server starting...")
+    app.logger.info(f"Logs will be recorded at: {log_file_path}")
+    app.logger.info("Press Ctrl+C to stop the server")
     
     app.run(host='0.0.0.0', port=5050, threaded=True)
