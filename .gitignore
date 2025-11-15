@@ -13,5 +13,7 @@ tmp.*
 *.ipynb
 
 cache/
+log/
+logs/
 
 *.sh
