@@ -13,7 +13,7 @@ import requests
 # API_BASE_URL = "http://127.0.0.1:5050"  # 本地测试使用本地ip
 API_BASE_URL = "http://219.229.100.24:5050"  # 访问网页时, 请确保直接访问服务器ip而非本地ip
 
-def _call_api(endpoint, payload, timeout=120):
+def _call_api(endpoint, payload, timeout=600):
     """通用API调用函数"""
     api_url = f"{API_BASE_URL}/{endpoint}"
     try:

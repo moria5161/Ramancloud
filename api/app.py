@@ -1,10 +1,17 @@
 import os
+import io
+import zipfile
+import numpy as np
 import logging
 from logging.handlers import TimedRotatingFileHandler
 import numpy as np
-from flask import Flask, request, jsonify, g
+from flask import Flask, request, jsonify, g, send_file
 from flask_cors import CORS
 import time
+
+from functools import partial
+from concurrent.futures import ProcessPoolExecutor
+from read_data.horiba_format import read_horiba, write_horiba
 
 from denoising.F2P import load_model as f2p_load_model, f2p_process
 from denoising.PEER import peer_process
@@ -23,6 +30,9 @@ from baseline_cor.baseline_correction import (
     irsqr,
     snip,
 )
+
+from analysis.peak_fit import fit_voigt_peak, filter_and_zero_results
+
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
@@ -69,6 +79,101 @@ def log_request_info(response):
     )
     app.logger.info(log_msg)
     return response
+
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Read hyperspectra data routes
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+from werkzeug.utils import secure_filename
+UPLOAD_FOLDER = 'read_data/uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+@app.route('/read_horiba', methods=['POST'])
+def read_horiba_route():
+    """Read Horiba format spectral data from uploaded file."""
+    filepath = None
+    try:
+        if 'file' not in request.files:
+            return jsonify({'code': 1, 'msg': 'No file part in the request.', 'data': None})
+
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'code': 1, 'msg': 'No selected file.', 'data': None})
+
+        if file:
+            # 1. 安全地保存上传的文件
+            original_filename = secure_filename(file.filename)
+            unique_filename = str(int(time.time())) + '_' + original_filename
+            filepath = os.path.join(UPLOAD_FOLDER, unique_filename)
+            file.save(filepath)
+            
+            # 2. 调用函数读取数据
+            app.logger.info(f"[Read Horiba] Processing file: {filepath}")
+            horiba_data = read_horiba(filepath)
+            
+            # 3. 将numpy数组转换为list以便JSON序列化
+            response_data = {
+                'waves': horiba_data['waves'].tolist(),
+                'x': horiba_data['x'].tolist(),
+                'y': horiba_data['y'].tolist(),
+                'size': horiba_data['size'],
+                'spectra': horiba_data['spectra'].tolist()
+            }
+            
+            app.logger.info(f"[Read Horiba] Successfully processed file: {original_filename}")
+            return jsonify({
+                'code': 0,
+                'msg': 'Successfully read Horiba data.',
+                'data': response_data
+            })
+
+    except Exception as e:
+        app.logger.error(f"[Read Horiba] An uncaught exception occurred: {str(e)}", exc_info=True)
+        return jsonify({'code': 1, 'msg': f'Internal server error: {str(e)}', 'data': None})
+
+    finally:
+        # 4. 无论成功或失败, 都尝试删除临时文件
+        if filepath and os.path.exists(filepath):
+            os.remove(filepath)
+            app.logger.info(f"[Read Horiba] Cleaned up temporary file: {filepath}")
+
+@app.route('/write_horiba', methods=['POST'])
+def write_horiba_route():
+    save_path = None
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'code': 1, 'msg': 'No JSON data provided.'})
+
+        required_keys = ['waves', 'x', 'y', 'spectra']
+        if not all(key in data for key in required_keys):
+            return jsonify({'code': 1, 'msg': 'Missing required data keys.'})
+
+        processed_data = {
+            'waves': np.array(data['waves']),
+            'x': np.array(data['x']),
+            'y': np.array(data['y']),
+            'spectra': np.array(data['spectra'])
+        }
+
+        filename = f"output_{int(time.time())}.txt"
+        save_path = os.path.join(UPLOAD_FOLDER, filename)
+        
+        write_horiba(processed_data, save_path)
+        
+        app.logger.info(f"[Write Horiba] Successfully created file: {save_path}")
+        
+        return send_file(save_path, as_attachment=True)
+
+    except Exception as e:
+        app.logger.error(f"[Write Horiba] An uncaught exception occurred: {str(e)}", exc_info=True)
+        return jsonify({'code': 1, 'msg': f'Internal server error: {str(e)}'})
+
+    finally:
+        if save_path and os.path.exists(save_path):
+            os.remove(save_path)
+            app.logger.info(f"[Write Horiba] Cleaned up temporary file: {save_path}")
+
 
 # Models loading
 f2p_model_global, f2p_device_global = f2p_load_model()
@@ -272,6 +377,108 @@ def irsqr_route():
 @app.route('/baseline_cor/snip', methods=['POST'])
 def snip_route():
     return _handle_baseline_request('snip', snip, optional_params={'max_half_window': 20, 'smooth_half_window': 7})
+
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# analysis routes
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+@app.route('/fit_voigt_peaks', methods=['POST'])
+def fit_voigt_peaks_route():
+    data = request.get_json()
+    if not data:
+        return jsonify({'code': 1, 'msg': 'No JSON data provided.'})
+
+    required_keys = ['waves', 'x', 'y', 'spectra', 'search_range', 'prominence_threshold']
+    if not all(key in data for key in required_keys):
+        return jsonify({'code': 1, 'msg': 'Missing required data keys.'})
+        
+    waves = np.array(data['waves'])
+    spectra = np.array(data['spectra'])
+    x = np.array(data['x'])
+    y = np.array(data['y'])
+    search_range = data['search_range']
+    prominence_threshold = data['prominence_threshold']
+    
+    left_offset = data.get('left_offset', 5)
+    right_offset = data.get('right_offset', 30)
+    
+    h, w = len(x), len(y)
+    if h * w != spectra.shape[0]:
+        return jsonify({
+            'code': 1, 
+            'msg': f'Data dimensions mismatch: {h}x{w} != {spectra.shape[0]}.'
+        })
+    
+    fit_function = partial(
+        fit_voigt_peak, 
+        wavenumbers=waves, 
+        search_range=search_range,
+        prominence_threshold=prominence_threshold,
+        left_offset=left_offset,
+        right_offset=right_offset
+    )
+    
+    with ProcessPoolExecutor() as executor:
+        results_iterator = executor.map(fit_function, spectra)
+        results_list = list(results_iterator)
+
+    results_array = filter_and_zero_results(results_list)
+
+    param_maps = {
+        'peak_center': results_array[:, 0].reshape(h, w),
+        'peak_amplitude': results_array[:, 1].reshape(h, w),
+        'peak_fwhm': results_array[:, 2].reshape(h, w),
+        'peak_area': results_array[:, 3].reshape(h, w)
+    }
+    
+    response_data = {
+        name: data_map.tolist() for name, data_map in param_maps.items()
+    }
+    
+    return jsonify({
+        'code': 0,
+        'msg': 'Peak fitting completed successfully.',
+        'data': response_data
+    })
+
+
+@app.route('/download_param_maps', methods=['POST'])
+def download_param_maps_route():
+    data = request.get_json()
+    if not data:
+        return jsonify({'code': 1, 'msg': 'No JSON data provided.'})
+
+    param_maps = data.get('param_maps')
+    base_filename = data.get('base_filename', 'fit_results')
+
+    if not isinstance(param_maps, dict) or not param_maps:
+        return jsonify({'code': 1, 'msg': '`param_maps` must be a non-empty dictionary.'})
+
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zf:
+        for map_name, map_data in param_maps.items():
+            if not isinstance(map_data, list):
+                continue 
+
+            data_map_np = np.array(map_data)
+            txt_filename = f"{base_filename}_{map_name}.txt"
+            
+            txt_buffer = io.BytesIO()
+            np.savetxt(txt_buffer, data_map_np, fmt='%.6f')
+            txt_buffer.seek(0)
+            
+            zf.writestr(txt_filename, txt_buffer.read())
+            
+    zip_buffer.seek(0)
+    
+    return send_file(
+        zip_buffer,
+        as_attachment=True,
+        download_name=f'{base_filename}.zip',
+        mimetype='application/zip'
+    )
+
 
 
 if __name__ == '__main__':

@@ -5,7 +5,15 @@ from scipy.stats import kurtosis
 from scipy.sparse import csc_matrix, eye, diags
 from scipy.sparse.linalg import spsolve
 from scipy.interpolate import interp1d
+import multiprocessing as mp # 导入多进程库
 
+# =====================================================================================
+# 0. 为多进程创建的顶层 Worker 函数
+# =====================================================================================
+def whittaker_smooth_worker(args):
+    """一个简单的包装函数，以便被多进程池调用"""
+    x, w, lambda_, differences = args
+    return WhittakerSmooth(x, w, lambda_, differences)
 
 # =====================================================================================
 # 1. 模型定义
@@ -144,7 +152,7 @@ def auto_select_lambda(spectrum_batch, weights_batch, differences=2,
     weights_np = weights_batch.cpu().numpy()
     batch_size = spectrum_np.shape[0]
     best_lambdas = []
-
+    
     for i in range(batch_size):
         spectrum = spectrum_np[i]
         weights = weights_np[i]
@@ -203,7 +211,7 @@ def auto_select_lambda(spectrum_batch, weights_batch, differences=2,
     return best_lambdas
 
 def AirNet_process(spectra, model, device, itermax=500, max_batch_size=1024):
-    # model, device = load_model()
+    model, device = load_model()
     model.eval()
     spectra_np = np.asarray(spectra)
     if spectra_np.ndim == 1:
@@ -212,6 +220,7 @@ def AirNet_process(spectra, model, device, itermax=500, max_batch_size=1024):
     else:
         spectra_to_process = spectra_np 
         is_single_input = False
+
     all_corrected_spectra = []
     
     interpolated_spectra = []
@@ -226,6 +235,10 @@ def AirNet_process(spectra, model, device, itermax=500, max_batch_size=1024):
     
     spectra_np = np.array(interpolated_spectra)
     num_spectra = spectra_np.shape[0]
+    
+    num_cores = max(1, mp.cpu_count() - 48)
+    pool = mp.Pool(processes=num_cores)
+
     for i in range(0, num_spectra, max_batch_size):
         chunk_np = spectra_np[i : i + max_batch_size]
 
@@ -236,20 +249,21 @@ def AirNet_process(spectra, model, device, itermax=500, max_batch_size=1024):
         with torch.no_grad():
             weights_batch = model(input_tensor).squeeze(1) 
 
-        spectrum_np = input_tensor.squeeze(1).cpu().numpy()
-        weights_np = weights_batch.cpu().numpy()
-        max_vals_np = max_vals
+        spectrum_np_batch = input_tensor.squeeze(1).cpu().numpy()
+        weights_np_batch = weights_batch.cpu().numpy()
+        max_vals_np = max_vals[i : i + max_batch_size]
 
         best_lambdas = auto_select_lambda(input_tensor.squeeze(1), weights_batch, differences=2)
         
-        a4_np = weights_np.copy()
+        a4_np = weights_np_batch.copy()
         
         for m in range(1, itermax + 1):
-            z_np = np.zeros_like(a4_np)
-            for j in range(a4_np.shape[0]):
-                z_np[j] = WhittakerSmooth(spectrum_np[j], a4_np[j], best_lambdas[j], differences=2)
+            tasks = [(spectrum_np_batch[j], a4_np[j], best_lambdas[j], 2) for j in range(a4_np.shape[0])]
+            
+            z_np_list = pool.map(whittaker_smooth_worker, tasks)
+            z_np = np.array(z_np_list)
 
-            d_np = spectrum_np - z_np
+            d_np = spectrum_np_batch - z_np
             neg_indices_np = d_np < 0
             
             if not np.any(neg_indices_np):
@@ -272,11 +286,11 @@ def AirNet_process(spectra, model, device, itermax=500, max_batch_size=1024):
             a4_np[:, 0] = max_weights_per_spectrum.squeeze()
             a4_np[:, -1] = max_weights_per_spectrum.squeeze()
 
-        baseline_corrected_np = np.zeros_like(a4_np)
-        for j in range(a4_np.shape[0]):
-            baseline_corrected_np[j] = WhittakerSmooth(spectrum_np[j], a4_np[j], best_lambdas[j], differences=2)
-        
-        spectrum_peer_denorm = spectrum_np * max_vals_np
+        final_tasks = [(spectrum_np_batch[j], a4_np[j], best_lambdas[j], 2) for j in range(a4_np.shape[0])]
+        baseline_corrected_list = pool.map(whittaker_smooth_worker, final_tasks)
+        baseline_corrected_np = np.array(baseline_corrected_list)
+      
+        spectrum_peer_denorm = spectrum_np_batch * max_vals_np
         baseline_corrected_denorm = baseline_corrected_np * max_vals_np
         output_corrected_np = spectrum_peer_denorm - baseline_corrected_denorm
         original_corrected_spectra = []
@@ -292,6 +306,9 @@ def AirNet_process(spectra, model, device, itermax=500, max_batch_size=1024):
         output_corrected_np = np.array(original_corrected_spectra)
         all_corrected_spectra.append(output_corrected_np)
 
+    pool.close()
+    pool.join()
+    
     final_results = np.concatenate(all_corrected_spectra, axis=0)
     
     return final_results[0] if is_single_input else final_results
