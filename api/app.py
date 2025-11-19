@@ -2,6 +2,8 @@ import os
 import io
 import zipfile
 import numpy as np
+import pywt
+from scipy.signal import savgol_filter
 import logging
 from logging.handlers import TimedRotatingFileHandler
 import numpy as np
@@ -32,6 +34,8 @@ from baseline_cor.baseline_correction import (
 )
 
 from analysis.peak_fit import fit_voigt_peak, filter_and_zero_results
+from analysis.mor_filter import morphological_filter
+from analysis.separate_edge_core import separate_edge_core
 
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
@@ -272,6 +276,71 @@ def tsvd_route():
         return jsonify({'code': 1, 'msg': f'Internal server error: {str(e)}', 'data': None})
 
 
+@app.route('/sg', methods=['POST'])
+def sg_route():
+    data = request.get_json()
+    if not data or 'y' not in data:
+        return jsonify({'code': 1, 'msg': 'Missing spectral data (y)', 'data': None})
+
+    y = np.array(data['y'], dtype=np.float32)
+    x = data.get('x', [])
+
+    window_length = int(data.get('window_length', 15))
+    polyorder = int(data.get('polyorder', 3))
+
+    if window_length % 2 == 0:
+        window_length += 1
+    
+    if window_length >= len(y):
+        window_length = len(y) - 1 if (len(y) - 1) % 2 != 0 else len(y) - 2
+
+    if window_length < polyorder + 2:
+        return jsonify({'code': 1, 'msg': 'Window length must be greater than polyorder', 'data': None})
+
+    processed_y = savgol_filter(y, window_length, polyorder)
+
+    return jsonify({
+        'code': 0, 
+        'msg': 'SG filter applied', 
+        'data': {
+            'x': x, 
+            'y': processed_y.tolist()
+        }
+    })
+
+
+def _perform_wtd(data_array, wavelet='db3', level=3):
+    coeffs = pywt.wavedec(data_array, wavelet, level=level)
+    threshold = 0.8 * np.sqrt(2 * np.log(len(data_array))) * np.median(np.abs(coeffs[-1])) / 0.6745
+    coeffs_denoised = [pywt.threshold(c, threshold, mode='soft') if i > 0 else c for i, c in enumerate(coeffs)]
+    res = pywt.waverec(coeffs_denoised, wavelet)
+    return res[:len(data_array)]
+
+@app.route('/wtd', methods=['POST'])
+def wtd_route():
+    data = request.get_json()
+    if not data or 'y' not in data:
+        return jsonify({'code': 1, 'msg': 'Missing spectral data (y)', 'data': None})
+
+    y = np.array(data['y'], dtype=np.float32)
+    x = data.get('x', [])
+    
+    wavelet = data.get('wavelet', 'db3')
+    level = int(data.get('level', 3))
+
+    processed_y = _perform_wtd(y, wavelet, level)
+
+    return jsonify({
+        'code': 0, 
+        'msg': 'WTD filter applied', 
+        'data': {
+            'x': x, 
+            'y': processed_y.tolist()
+        }
+    })
+
+
+
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Baseline correction routes
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -441,6 +510,79 @@ def fit_voigt_peaks_route():
         'msg': 'Peak fitting completed successfully.',
         'data': response_data
     })
+
+
+@app.route('/mol_filter', methods=['POST'])
+def mol_filter_route():
+    req_data = request.get_json()
+    if not req_data:
+        return jsonify({'code': 1, 'msg': 'No JSON data provided.'})
+
+    input_payload = req_data.get('data', req_data)
+    min_size = req_data.get('min_size', 10)
+
+    target_keys = ['peak_center', 'peak_amplitude', 'peak_fwhm', 'peak_area']
+    numpy_maps = {}
+    
+    for key in target_keys:
+        if key in input_payload:
+            numpy_maps[key] = np.array(input_payload[key])
+
+    if not numpy_maps:
+        return jsonify({'code': 1, 'msg': 'No valid parameter maps found (e.g., peak_area).'})
+
+    filtered_maps = morphological_filter(numpy_maps, min_size)
+
+    response_data = {k: v.tolist() for k, v in filtered_maps.items()}
+
+    return jsonify({
+        'code': 0,
+        'msg': f'Morphological filter applied (min_size={min_size}).',
+        'data': response_data
+    })
+
+
+@app.route('/separate_edge_core', methods=['POST'])
+def separate_edge_core_route():
+    req_data = request.get_json()
+    if not req_data:
+        return jsonify({'code': 1, 'msg': 'No JSON data provided.'})
+
+    input_payload = req_data.get('data', req_data)
+    layers = req_data.get('layers', 2)
+    roi = req_data.get('roi', None) 
+
+    target_keys = ['peak_center', 'peak_amplitude', 'peak_fwhm', 'peak_area']
+    numpy_maps = {}
+    
+    for key in target_keys:
+        if key in input_payload:
+            numpy_maps[key] = np.array(input_payload[key])
+
+    if not numpy_maps:
+        return jsonify({'code': 1, 'msg': 'No valid parameter maps found.'})
+
+    ref_key = 'peak_area' if 'peak_area' in numpy_maps else next(iter(numpy_maps))
+    ref_matrix = numpy_maps[ref_key]
+
+    edge_mask, core_mask = separate_edge_core(ref_matrix, layers, roi)
+
+    edge_result = {}
+    core_result = {}
+
+    for key, matrix in numpy_maps.items():
+        edge_result[key] = np.where(edge_mask, matrix, 0).tolist()
+        core_result[key] = np.where(core_mask, matrix, 0).tolist()
+
+    return jsonify({
+        'code': 0,
+        'msg': f'Separation completed (layers={layers}).',
+        'data': {
+            'edge': edge_result,
+            'core': core_result
+        }
+    })
+
 
 
 @app.route('/download_param_maps', methods=['POST'])
