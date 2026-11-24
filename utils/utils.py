@@ -2,6 +2,7 @@
 This file contains some general and useful tools, except for the functions and algorithms used in the modules.
 '''
 
+import os
 import io
 import re
 import streamlit as st
@@ -129,10 +130,14 @@ def generate_download_link(file, filename):
 
 def exec_mysql(sql, params):
     print("--- DEBUG: exec_mysql函数被调用。---")
+    username = os.environ.get('RAMANCLOUD_LEGACY_DB_USER', '').strip()
+    password = os.environ.get('RAMANCLOUD_LEGACY_DB_PASSWORD', '')
+    if not username or username.casefold() == 'root' or not password:
+        raise RuntimeError('Configure a non-root RamanCloud database account before enabling database features.')
     db_config = {
         "host": "127.0.0.1",
-        "user": "root",
-        "password": "moria5161",
+        "user": username,
+        "password": password,
         "db": "ramancloud_db",
         "port": 3306,
         "connect_timeout": 5
