@@ -2,6 +2,7 @@
 This file contains some general and useful tools, except for the functions and algorithms used in the modules.
 '''
 
+import os
 import io
 import re
 import streamlit as st
@@ -130,10 +131,14 @@ def generate_download_link(file, filename):
 def exec_mysql(sql):
 
     # Define the database connection parameters
+    username = os.environ.get('RAMANCLOUD_LEGACY_DB_USER', '').strip()
+    password = os.environ.get('RAMANCLOUD_LEGACY_DB_PASSWORD', '')
+    if not username or username.casefold() == 'root' or not password:
+        raise RuntimeError('Configure a non-root RamanCloud database account before enabling database features.')
     db_config = {
     "host": "10.26.50.40",  # Use Docker container hostname or IP address if needed
-    "user": "root",
-    "password": "123456",
+    "user": username,
+    "password": password,
     "db": "ramancloud_database",  # Use your database name
     "port": 3306,  # This should match the port mapping you used when running the container
     }
